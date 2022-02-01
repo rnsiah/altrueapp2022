@@ -6,12 +6,11 @@ part of 'companies_supporting.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CompaniesSupporting _$CompaniesSupportingFromJson(Map<String, dynamic> json) {
-  return CompaniesSupporting(
-    json['companyName'] as String,
-    json['companyLogo'] as String,
-  );
-}
+CompaniesSupporting _$CompaniesSupportingFromJson(Map<String, dynamic> json) =>
+    CompaniesSupporting(
+      json['companyName'] as String,
+      json['companyLogo'] as String,
+    );
 
 Map<String, dynamic> _$CompaniesSupportingToJson(
         CompaniesSupporting instance) =>

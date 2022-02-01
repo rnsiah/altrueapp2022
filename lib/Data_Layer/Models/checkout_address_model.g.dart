@@ -6,16 +6,15 @@ part of 'checkout_address_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CheckoutAddress _$CheckoutAddressFromJson(Map<String, dynamic> json) {
-  return CheckoutAddress(
-    user: Profile.fromJson(json['user'] as Map<String, dynamic>),
-    country: json['country'] as String,
-    zip: json['zip'] as String,
-    streetAddress: json['streetAddress'] as String,
-  )
-    ..apartmentNumber = json['apartment_address'] as String?
-    ..specialDirections = json['special_directions'] as String?;
-}
+CheckoutAddress _$CheckoutAddressFromJson(Map<String, dynamic> json) =>
+    CheckoutAddress(
+      user: Profile.fromJson(json['user'] as Map<String, dynamic>),
+      country: json['country'] as String,
+      zip: json['zip'] as String,
+      streetAddress: json['streetAddress'] as String,
+    )
+      ..apartmentNumber = json['apartment_address'] as String?
+      ..specialDirections = json['special_directions'] as String?;
 
 Map<String, dynamic> _$CheckoutAddressToJson(CheckoutAddress instance) =>
     <String, dynamic>{

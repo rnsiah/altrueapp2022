@@ -530,7 +530,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<key>License</key>
 			<string>BSD</string>
 			<key>Title</key>
-			<string>path_provider</string>
+			<string>path_provider_ios</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
@@ -635,7 +635,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<key>License</key>
 			<string>BSD</string>
 			<key>Title</key>
-			<string>url_launcher</string>
+			<string>url_launcher_ios</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

@@ -65,7 +65,9 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
                       fontWeight: FontWeight.bold),
                 ),
                 color: Colors.black,
-                onPressed: () {},
+                onPressed: () {
+                  _modalBottomSheetMenu();
+                },
               ),
               MaterialButton(
                 elevation: 12,

@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 final userTable = 'userTable';
-final userOrder = 'userOrder';
+final orderItems = 'orderItems';
 
 class DatabaseProvider {
   static final DatabaseProvider dbProvider = DatabaseProvider();
@@ -16,6 +16,7 @@ class DatabaseProvider {
   Future<Database?> get database async {
     // ignore: unnecessary_null_comparison
     if (_database != null) {
+      print(_database!.path);
       return _database;
     }
     _database = await createDatabase();
@@ -56,12 +57,12 @@ class DatabaseProvider {
         "hasProfile INTEGER "
         ")");
 
-    // await database.execute("CREATE TABLE $userOrder ("
-    //     "id INTEGER PRIMARY KEY, "
-    //     "shirt TEXT, "
-    //     "color TEXT, "
-    //     "price INTEGER, "
-    //     "quantity INTEGER "
-    //     ")");
+    await database.execute("CREATE TABLE $orderItems ("
+        "id INTEGER PRIMARY KEY, "
+        "shirt TEXT, "
+        "color TEXT, "
+        "price INTEGER, "
+        "quantity INTEGER "
+        ")");
   }
 }

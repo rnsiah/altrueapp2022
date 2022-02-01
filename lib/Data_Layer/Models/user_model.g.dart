@@ -6,18 +6,16 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserFromAPI _$UserFromAPIFromJson(Map<String, dynamic> json) {
-  return UserFromAPI(
-    email: json['email'] as String,
-    url: json['url'] as String,
-    firstname: json['first_name'] as String,
-    id: json['id'] as int,
-    lastName: json['last_name'] as String,
-    profile: json['profile'] as String,
-    profileCreated: json['profile_created'] as bool,
-    userName: json['username'] as String,
-  );
-}
+UserFromAPI _$UserFromAPIFromJson(Map<String, dynamic> json) => UserFromAPI(
+      email: json['email'] as String,
+      url: json['url'] as String,
+      firstname: json['first_name'] as String,
+      id: json['id'] as int,
+      lastName: json['last_name'] as String,
+      profile: json['profile'] as String,
+      profileCreated: json['profile_created'] as bool,
+      userName: json['username'] as String,
+    );
 
 Map<String, dynamic> _$UserFromAPIToJson(UserFromAPI instance) =>
     <String, dynamic>{
@@ -31,15 +29,13 @@ Map<String, dynamic> _$UserFromAPIToJson(UserFromAPI instance) =>
       'profile_created': instance.profileCreated,
     };
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-    id: json['id'] as int,
-    key: json['key'] as String?,
-    email: json['email'] as String?,
-    altid: json['altid'] as int?,
-    hasProfile: json['hasProfile'] as int?,
-  );
-}
+User _$UserFromJson(Map<String, dynamic> json) => User(
+      id: json['id'] as int,
+      key: json['key'] as String?,
+      email: json['email'] as String?,
+      altid: json['altid'] as int?,
+      hasProfile: json['hasProfile'] as int?,
+    );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
@@ -49,55 +45,53 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'hasProfile': instance.hasProfile,
     };
 
-Profile _$ProfileFromJson(Map<String, dynamic> json) {
-  return Profile(
-    json['user'] as int?,
-    json['has_company'] as bool?,
-    json['has_nonprofit'] as bool?,
-    json['is_companyContributor'] as bool?,
-    json['is_nonprofitContributor'] as bool?,
-    json['title'] as String?,
-    json['amount_following'] as int?,
-    (json['userdonations'] as List<dynamic>?)
-        ?.map((e) => UserDonation.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    json['dob'] as String?,
-    json['altruepoints'] as int?,
-    json['address'] as String?,
-    json['country'] as String?,
-    json['city'] as String?,
-    json['zip'] as String?,
-    json['qr_code_img'] as String?,
-    (json['atrocity_list'] as List<dynamic>?)
-        ?.map((e) => Atrocity.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    (json['balance'] as num?)?.toDouble(),
-    (json['donor'] as List<dynamic>?)
-        ?.map((e) => Donor.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    (json['nonProfit_list'] as List<dynamic>?)
-        ?.map((e) => NonProfit.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    (json['orders'] as List<dynamic>?)
-        ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    json['profile_picture'] == null
-        ? null
-        : ProfilePicture.fromJson(
-            json['profile_picture'] as Map<String, dynamic>),
-    (json['shirt_list'] as List<dynamic>?)
-        ?.map((e) => Shirt.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    json['username'] as String?,
-  )
-    ..requirementsForNextLevel =
-        (json['requirementsForNextLevel'] as List<dynamic>?)
-            ?.map((e) => AltrueAction.fromJson(e as Map<String, dynamic>))
-            .toList()
-    ..altrueLevel = json['altrue_level'] == null
-        ? null
-        : AltrueLevel.fromJson(json['altrue_level'] as Map<String, dynamic>);
-}
+Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
+      json['user'] as int?,
+      json['has_company'] as bool?,
+      json['has_nonprofit'] as bool?,
+      json['is_companyContributor'] as bool?,
+      json['is_nonprofitContributor'] as bool?,
+      json['title'] as String?,
+      json['amount_following'] as int?,
+      (json['userdonations'] as List<dynamic>?)
+          ?.map((e) => UserDonation.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      json['dob'] as String?,
+      json['altruepoints'] as int?,
+      json['address'] as String?,
+      json['country'] as String?,
+      json['city'] as String?,
+      json['zip'] as String?,
+      json['qr_code_img'] as String?,
+      (json['atrocity_list'] as List<dynamic>?)
+          ?.map((e) => Atrocity.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['balance'] as num?)?.toDouble(),
+      (json['donor'] as List<dynamic>?)
+          ?.map((e) => Donor.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['nonProfit_list'] as List<dynamic>?)
+          ?.map((e) => NonProfit.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['orders'] as List<dynamic>?)
+          ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      json['profile_picture'] == null
+          ? null
+          : ProfilePicture.fromJson(
+              json['profile_picture'] as Map<String, dynamic>),
+      (json['shirt_list'] as List<dynamic>?)
+          ?.map((e) => Shirt.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      json['username'] as String?,
+    )
+      ..requirementsForNextLevel =
+          (json['requirementsForNextLevel'] as List<dynamic>?)
+              ?.map((e) => AltrueAction.fromJson(e as Map<String, dynamic>))
+              .toList()
+      ..altrueLevel = json['altrue_level'] == null
+          ? null
+          : AltrueLevel.fromJson(json['altrue_level'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) {
   final val = <String, dynamic>{
@@ -141,17 +135,16 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) {
   return val;
 }
 
-ProfileCompletion _$ProfileCompletionFromJson(Map<String, dynamic> json) {
-  return ProfileCompletion(
-    username: json['username'] as String,
-    title: json['title'] as String,
-    dob: json['dob'] as String,
-    address: json['address'] as String,
-    city: json['city'] as String,
-    country: json['country'] as String,
-    zip: json['zip'] as String,
-  )..profilePicture = json['profile_picture'] as String?;
-}
+ProfileCompletion _$ProfileCompletionFromJson(Map<String, dynamic> json) =>
+    ProfileCompletion(
+      username: json['username'] as String,
+      title: json['title'] as String,
+      dob: json['dob'] as String,
+      address: json['address'] as String,
+      city: json['city'] as String,
+      country: json['country'] as String,
+      zip: json['zip'] as String,
+    )..profilePicture = json['profile_picture'] as String?;
 
 Map<String, dynamic> _$ProfileCompletionToJson(ProfileCompletion instance) =>
     <String, dynamic>{
@@ -166,58 +159,34 @@ Map<String, dynamic> _$ProfileCompletionToJson(ProfileCompletion instance) =>
     };
 
 ProfileRepresentation _$ProfileRepresentationFromJson(
-    Map<String, dynamic> json) {
-  return ProfileRepresentation(
-    username: json['username'],
-    id: json['id'] as int,
-  );
-}
+        Map<String, dynamic> json) =>
+    ProfileRepresentation(
+      username: json['username'],
+      id: json['id'] as int,
+    )..profilePicture = json['profile_picture'] == null
+        ? null
+        : ProfilePicture.fromJson(
+            json['profile_picture'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ProfileRepresentationToJson(
         ProfileRepresentation instance) =>
     <String, dynamic>{
       'id': instance.id,
       'username': instance.username,
+      'profile_picture': instance.profilePicture?.toJson(),
     };
 
-ProfileFollow _$ProfileFollowFromJson(Map<String, dynamic> json) {
-  return ProfileFollow(
-    id: json['id'] as int,
-    action: _$enumDecode(_$FollowActionEnumMap, json['action']),
-  );
-}
+ProfileFollow _$ProfileFollowFromJson(Map<String, dynamic> json) =>
+    ProfileFollow(
+      id: json['id'] as int,
+      action: $enumDecode(_$FollowActionEnumMap, json['action']),
+    );
 
 Map<String, dynamic> _$ProfileFollowToJson(ProfileFollow instance) =>
     <String, dynamic>{
       'id': instance.id,
       'action': _$FollowActionEnumMap[instance.action],
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$FollowActionEnumMap = {
   FollowAction.follow: 'follow',

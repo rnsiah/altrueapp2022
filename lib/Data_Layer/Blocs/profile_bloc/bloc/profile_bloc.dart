@@ -6,7 +6,9 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/Data_Layer/Blocs/session_cubit.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
+import 'package:mobile/Data_Layer/Models/manage_followers_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
+import 'package:mobile/Data_Layer/Models/order_item_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/user_repository.dart';
@@ -118,12 +120,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield state.copyWith(status: ProfileStatus.failure);
       }
     }
-    if (event is AddUserToFollow) {
+    if (event is AddFollower) {
       try {
         await userRepository.manageFollowers(
-            user: state.user!,
-            id: event.profileToFollow,
-            action: FollowAction.follow);
+          manageFollower: event.interaction,
+          user: state.user!,
+        );
         Profile profile =
             await userRepository.getProfileFromApi(user: state.user!);
         yield state.copyWith(

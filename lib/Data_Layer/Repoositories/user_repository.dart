@@ -9,7 +9,9 @@ import 'package:mobile/Data_Layer/Local%20Storage/user_data_access_object.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
 import 'package:mobile/Data_Layer/Models/authentication_models/userLogin_model.dart';
 import 'package:mobile/Data_Layer/Models/company_model.dart';
+import 'package:mobile/Data_Layer/Models/manage_followers_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
+import 'package:mobile/Data_Layer/Models/order_item_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 
@@ -113,6 +115,15 @@ class UserRepository {
         key: key,
         id: user.id);
     return returnedUser;
+  }
+
+  Future<Cart> getCart() async {
+    List<OrderItem> cart = await userDao.checkCart();
+    return cart as Cart;
+  }
+
+  Future<void> addToCart(OrderItem item) async {
+    await userDao.addToCart(item);
   }
 
   Future<void> confirmSignUpWithConfirmation({
@@ -276,20 +287,23 @@ class UserRepository {
     }
   }
 
-  Future<void> manageFollowers(
-      {required User user, required int id, FollowAction? action}) async {
-    if (action == FollowAction.follow) {
-      await _apiProvider.patchAuthenticatedData(
-          'api/userprofile/${user.altid}/manageUserFollowers',
-          user.key!,
-          user.altid!,
-          {'id': id, 'follow': ''});
-    } else if (action == FollowAction.unfollow) {
-      await _apiProvider.patchAuthenticatedData(
-          'api/userprofile/${user.altid}/manageUserFollowers',
-          user.key!,
-          user.altid!,
-          {'id': id, 'delete': ''});
+  Future<void> manageFollowers({
+    required User user,
+    ManageFollower? manageFollower,
+  }) async {
+    Map data = {'id': manageFollower!.id, "following": 'follow'};
+    User? user = await userDao.getCurrentUser(0);
+    if (user != null) {
+      final response = await http.patch(
+          Uri.parse(
+              'http://localhost:8000/api/userprofile/${user.altid}/manageUserFollowers/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            HttpHeaders.authorizationHeader: 'Token ${user.key}'
+          },
+          body: data);
+      if (response.statusCode == 200) {}
+      throw Exception('Did Not Update');
     }
   }
 

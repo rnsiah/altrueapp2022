@@ -38,11 +38,11 @@ class ShirtListBloc extends Bloc<ShirtListEvent, ShirtListState> {
         List<Category> categoryList =
             await categoryRepository.fetchCatgegories();
 
-        List<Shirt> povertyShirts =
+        List<Shirt> shirtList =
             await shirtRepository.fetchShirtByCategory(event.category);
-        if (povertyShirts.length > 1) {
+        if (shirtList.length > 1) {
           yield WorldPovertryShirtList(
-              shirtList: povertyShirts, status: ShirtsLoaded.complete);
+              shirtList: shirtList, status: ShirtsLoaded.complete);
         } else {
           List<Shirt> allshirts = await shirtRepository.fetchShirtList();
           yield WorldPovertryShirtList(

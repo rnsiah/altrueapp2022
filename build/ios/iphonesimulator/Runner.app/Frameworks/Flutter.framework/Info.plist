@@ -21,10 +21,10 @@
   <key>CFBundleVersion</key>
   <string>1.0</string>
   <key>MinimumOSVersion</key>
-  <string>8.0</string>
+  <string>9.0</string>
   <key>FlutterEngine</key>
-  <string>f57e986aa80c30889522af02d71fa149485bbc28</string>
+  <string>890a5fca2e34db413be624fc83aeea8e61d42ce6</string>
   <key>ClangVersion</key>
-  <string>Fuchsia clang version 13.0.0 (https://llvm.googlesource.com/a/llvm-project 3dc24bc31edbc01dea085b24a6a6b024d7ae531c)</string>
+  <string>b'Apple clang version 12.0.0 (clang-1200.0.32.2)'</string>
 </dict>
 </plist>

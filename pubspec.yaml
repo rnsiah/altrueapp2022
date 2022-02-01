@@ -36,24 +36,31 @@ dependencies:
   country_code_picker: ^2.0.1
   url_launcher: ^6.0.4
   flutter_swiper: ^1.1.6
-  json_annotation: ^4.0.0
-  carousel_slider: ^3.0.0
-  share_plus: ^2.1.4
+  json_annotation: ^4.4.0
+  carousel_slider: ^4.0.0
+  share_plus: ^3.0.4
   image_picker: ^0.8.0+3
   flutter_email_sender: ^5.0.0
   sliding_up_panel: ^2.0.0+1
   velocity_x: ^3.3.0
-  flutter_smart_dialog: ^2.3.8
+  flutter_smart_dialog: ^3.3.6
   flutter_rating_bar: ^4.0.0
   modal_bottom_sheet: ^2.0.0
   menu_button: ^1.4.2+1
   selection_menu: ^1.0.0
   flutter_credit_card: ^3.0.1
   awesome_select: ^5.0.5
+  photo_view: ^0.13.0
+  numberpicker: ^2.1.1
+  flutter_number_picker: ^1.0.4
+  syncfusion_flutter_sliders: ^19.4.47
+  select_form_field: ^2.2.0
+  awesome_dropdown: ^0.0.4
+  direct_select: ^2.0.0
 
 dev_dependencies:
   build_runner: ^2.0.0
-  json_serializable: ^4.0.0
+  json_serializable: ^6.1.4
   flutter_test:
     sdk: flutter
 

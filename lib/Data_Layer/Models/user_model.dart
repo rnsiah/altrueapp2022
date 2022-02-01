@@ -173,8 +173,13 @@ class ProfileCompletion {
 class ProfileRepresentation {
   int id;
   dynamic username;
+  @JsonKey(name: 'profile_picture')
+  ProfilePicture? profilePicture;
 
-  ProfileRepresentation({required this.username, required this.id});
+  ProfileRepresentation({
+    required this.username,
+    required this.id,
+  });
 
   factory ProfileRepresentation.fromJson(Map<String, dynamic> data) =>
       _$ProfileRepresentationFromJson(data);

@@ -7,6 +7,7 @@ part 'nonprofit_project_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class NonProfitProject {
+  int id;
   String information;
   String title;
   List<ProfileRepresentation>? supporters;
@@ -17,7 +18,7 @@ class NonProfitProject {
   @JsonKey(name: 'fundraising_goal')
   String fundraisingGoal;
 
-  NonProfitProject(this.information, this.fundraisingGoal, this.title);
+  NonProfitProject(this.id, this.information, this.fundraisingGoal, this.title);
 
   factory NonProfitProject.fromJson(Map<String, dynamic> data) =>
       _$NonProfitProjectFromJson(data);

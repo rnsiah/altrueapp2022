@@ -40,8 +40,8 @@ class OrderRepository {
             headers: {
           HttpHeaders.authorizationHeader: 'Token ${user.key}',
         });
-    Iterable responseJson = jsonDecode(response.body);
-    List<Order> orders = responseJson.map((e) => Order.fromJson(e)).toList();
+    var responseJson = jsonDecode(response.body);
+    List<dynamic> orders = responseJson.map((e) => Order.fromJson(e)).toList();
     for (var order in orders) {
       completedOrders.add(order);
     }

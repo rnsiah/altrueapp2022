@@ -6,13 +6,11 @@ part of 'altrue_level_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AltrueLevel _$AltrueLevelFromJson(Map<String, dynamic> json) {
-  return AltrueLevel(
-    name: json['name'] as String,
-    maximumPoints: json['maximum_points'] as int,
-    minimumPoints: json['minimum_points'] as int,
-  );
-}
+AltrueLevel _$AltrueLevelFromJson(Map<String, dynamic> json) => AltrueLevel(
+      name: json['name'] as String,
+      maximumPoints: json['maximum_points'] as int,
+      minimumPoints: json['minimum_points'] as int,
+    );
 
 Map<String, dynamic> _$AltrueLevelToJson(AltrueLevel instance) =>
     <String, dynamic>{

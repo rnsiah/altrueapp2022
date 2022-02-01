@@ -1,3 +1,4 @@
+import 'package:mobile/Data_Layer/Models/order_item_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 
 import 'user_db.dart';
@@ -38,13 +39,37 @@ class UserDao {
   Future<void> updateUser(User user) async {
     if (user.hasProfile == 1) {
       final db = await dbProvider.database;
-     await (db!.rawUpdate('''
+      await (db!.rawUpdate('''
       UPDATE userTable
       SET hasProfile = ?
       WHERE _id = ?
     ''', [1, 0]));
     }
-    
+  }
+
+  Future<String> addToCart(OrderItem item) async {
+    final db = await dbProvider.database;
+    await db!.insert(orderItems, item.toMap());
+    return item.toString();
+  }
+
+  Future<void> deleteFromCart(OrderItem item) async {
+    final db = await dbProvider.database;
+    await db!.delete(orderItems, where: 'id = ?', whereArgs: [item.id]);
+  }
+
+  Future<dynamic> checkCart() async {
+    final db = await dbProvider.database;
+    List<OrderItem> cart = [];
+    List<Map<String, Object?>> res = await db!.query(orderItems);
+    if (res.length > 0) {
+      for (var item in res) {
+        cart.add(OrderItem.fromJson(item));
+      }
+      return cart;
+    } else {
+      return 0;
+    }
   }
 
   Future<int> checkIfProfileComplete(int altid) async {

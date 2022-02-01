@@ -1,11 +1,9 @@
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/Data_Layer/Blocs/bloc/NonProfit_Signup_bloc/bloc/nonprofitsignup_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/form_submission_status.dart';
-import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 
 class NonProfitSignUp extends StatelessWidget {

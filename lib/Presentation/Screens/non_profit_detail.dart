@@ -40,7 +40,7 @@ class NonProfitDetails extends StatelessWidget {
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
-                      builder: (context) => NpDonate(
+                      builder: (_) => NpDonate(
                             nonProfit: nonProfit,
                             profile: profile,
                           ));

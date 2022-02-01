@@ -1,53 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:mobile/Data_Layer/Models/shirt_model.dart';
 
 class ShirtCounter extends StatefulWidget {
+  final Shirt shirt;
+
+  ShirtCounter({required this.shirt});
+
   @override
   _ShirtCounterState createState() => _ShirtCounterState();
 }
 
 class _ShirtCounterState extends State<ShirtCounter> {
-  int numOfItems = 3;
+  int numOfItems = 1;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        SizedBox(
-          width: 40,
-          height: 32,
-          child: OutlinedButton(
-            style: ButtonStyle(),
-            onPressed: () {
-              if (numOfItems > 1) {
-                setState(() {
-                  numOfItems--;
-                });
-              }
-            },
-            child: Icon(Icons.remove),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: Text(
-            // if our item is less  then 10 then  it shows 01 02 like that
-            numOfItems.toString().padLeft(2, "0"),
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        SizedBox(
-          width: 40,
-          height: 32,
-          child: OutlinedButton(
-            style: ButtonStyle(),
-            onPressed: () {
+    return Container(
+        width: 120,
+        height: 70,
+        child: Center(
+          child: CustomNumberPicker(
+            customAddButton: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                ),
+                height: 39,
+                width: 30,
+                child: Center(
+                  child: Icon(Icons.add),
+                ),
+              ),
+            ),
+            customMinusButton: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                ),
+                height: 40,
+                width: 30,
+                child: Center(
+                  child: Icon(Icons.remove),
+                ),
+              ),
+            ),
+            initialValue: numOfItems,
+            maxValue: 5,
+            minValue: 1,
+            step: 1,
+            valueTextStyle: TextStyle(color: Colors.amber, fontSize: 22),
+            onValue: (value) {
               setState(() {
-                numOfItems++;
+                value = numOfItems;
               });
             },
-            child: Icon(Icons.add),
           ),
-        ),
-      ],
-    );
+        ));
   }
 }

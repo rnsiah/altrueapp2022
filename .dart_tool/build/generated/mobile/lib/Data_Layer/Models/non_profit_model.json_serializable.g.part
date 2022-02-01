@@ -2,45 +2,43 @@
 // JsonSerializableGenerator
 // **************************************************************************
 
-NonProfit _$NonProfitFromJson(Map<String, dynamic> json) {
-  return NonProfit(
-    id: json['id'] as int,
-    name: json['name'] as String,
-    logo: json['logo'] as String,
-    description: json['description'] as String?,
-    yearStarted: json['year_started'] as int?,
-    missionStatement: json['mission_statement'] as String?,
-    projects: (json['projects'] as List<dynamic>?)
-        ?.map((e) => NonProfitProject.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    visionStatement: json['vision_statement'] as String?,
-    websiteUrl: json['website_url'] as String?,
-    category: (json['category'] as List<dynamic>?)
-        ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    slug: json['slug'] as String?,
-    atrocity: (json['atrocity_List'] as List<dynamic>?)
-        ?.map((e) => Atrocity.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    shirtList: (json['shirtList'] as List<dynamic>?)
-        ?.map((e) => Shirt.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    mainImage: json['main_image'] as String?,
-    balance: (json['total_balance'] as num?)?.toDouble(),
-    companiesSupporting: (json['companiesSupporting'] as List<dynamic>?)
-        ?.map((e) => CompaniesSupporting.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    contributors: (json['contributors'] as List<dynamic>?)
-        ?.map((e) => Profile.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    owner: json['owner'] == null
-        ? null
-        : Profile.fromJson(json['owner'] as Map<String, dynamic>),
-    links: (json['links'] as List<dynamic>?)
-        ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+NonProfit _$NonProfitFromJson(Map<String, dynamic> json) => NonProfit(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      logo: json['logo'] as String,
+      description: json['description'] as String?,
+      yearStarted: json['year_started'] as int?,
+      missionStatement: json['mission_statement'] as String?,
+      projects: (json['projects'] as List<dynamic>?)
+          ?.map((e) => NonProfitProject.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      visionStatement: json['vision_statement'] as String?,
+      websiteUrl: json['website_url'] as String?,
+      category: (json['category'] as List<dynamic>?)
+          ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      slug: json['slug'] as String?,
+      atrocity: (json['atrocity_List'] as List<dynamic>?)
+          ?.map((e) => Atrocity.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      shirtList: (json['shirtList'] as List<dynamic>?)
+          ?.map((e) => Shirt.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      mainImage: json['main_image'] as String?,
+      balance: (json['total_balance'] as num?)?.toDouble(),
+      companiesSupporting: (json['companiesSupporting'] as List<dynamic>?)
+          ?.map((e) => CompaniesSupporting.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      contributors: (json['contributors'] as List<dynamic>?)
+          ?.map((e) => Profile.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      owner: json['owner'] == null
+          ? null
+          : Profile.fromJson(json['owner'] as Map<String, dynamic>),
+      links: (json['links'] as List<dynamic>?)
+          ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$NonProfitToJson(NonProfit instance) => <String, dynamic>{
       'id': instance.id,
@@ -65,20 +63,19 @@ Map<String, dynamic> _$NonProfitToJson(NonProfit instance) => <String, dynamic>{
       'projects': instance.projects?.map((e) => e.toJson()).toList(),
     };
 
-NonProfitCompletion _$NonProfitCompletionFromJson(Map<String, dynamic> json) {
-  return NonProfitCompletion(
-    json['website_url'] as String?,
-    json['instagram'] as String?,
-    name: json['name'] as String,
-    description: json['description'] as String,
-    facebook: json['facebook'] as String?,
-    missionStatement: json['mission_statement'] as String,
-    visionStatement: json['vision_statement'] as String,
-    yearStarted: json['year_started'] as int,
-    profile:
-        ProfileRepresentation.fromJson(json['profile'] as Map<String, dynamic>),
-  );
-}
+NonProfitCompletion _$NonProfitCompletionFromJson(Map<String, dynamic> json) =>
+    NonProfitCompletion(
+      json['website_url'] as String?,
+      json['instagram'] as String?,
+      name: json['name'] as String,
+      description: json['description'] as String,
+      facebook: json['facebook'] as String?,
+      missionStatement: json['mission_statement'] as String,
+      visionStatement: json['vision_statement'] as String,
+      yearStarted: json['year_started'] as int,
+      profile: ProfileRepresentation.fromJson(
+          json['profile'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$NonProfitCompletionToJson(
         NonProfitCompletion instance) =>
@@ -94,13 +91,11 @@ Map<String, dynamic> _$NonProfitCompletionToJson(
       'description': instance.description,
     };
 
-NonProfitRep _$NonProfitRepFromJson(Map<String, dynamic> json) {
-  return NonProfitRep(
-    id: json['id'] as int,
-    logo: json['logo'] as String,
-    name: json['name'] as String,
-  );
-}
+NonProfitRep _$NonProfitRepFromJson(Map<String, dynamic> json) => NonProfitRep(
+      id: json['id'] as int,
+      logo: json['logo'] as String,
+      name: json['name'] as String,
+    );
 
 Map<String, dynamic> _$NonProfitRepToJson(NonProfitRep instance) =>
     <String, dynamic>{

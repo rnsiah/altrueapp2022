@@ -7,15 +7,14 @@ part of 'company_atrocity_matching_model.dart';
 // **************************************************************************
 
 CompanyAtrocityMatchRelationShip _$CompanyAtrocityMatchRelationShipFromJson(
-    Map<String, dynamic> json) {
-  return CompanyAtrocityMatchRelationShip(
-    atrocity:
-        CompanyAtrocity.fromJson(json['atrocity'] as Map<String, dynamic>),
-    fundingLimit: (json['funding_limit'] as num).toDouble(),
-    matchLevel: json['match_level'] as int,
-    totalRaised: (json['total_raised'] as num).toDouble(),
-  );
-}
+        Map<String, dynamic> json) =>
+    CompanyAtrocityMatchRelationShip(
+      atrocity:
+          CompanyAtrocity.fromJson(json['atrocity'] as Map<String, dynamic>),
+      fundingLimit: (json['funding_limit'] as num).toDouble(),
+      matchLevel: json['match_level'] as int,
+      totalRaised: (json['total_raised'] as num).toDouble(),
+    );
 
 Map<String, dynamic> _$CompanyAtrocityMatchRelationShipToJson(
         CompanyAtrocityMatchRelationShip instance) =>

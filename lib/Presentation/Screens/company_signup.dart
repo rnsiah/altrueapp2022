@@ -105,9 +105,8 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
                 .read<CreateCompanyBloc>()
                 .add(CompanyNameChange(companyName: value))
           },
-          validator: (value) => state.companyName.length > 3
-              ? null
-              : "Invalid website, please correct the web address",
+          // validator: (value) =>
+          //     value!.length > 3 ? value : "Please choose a company name",
           // state.city.length > 3 ? null : "Select A Valid Ciy",
         );
       },
@@ -130,9 +129,9 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
                 .read<CreateCompanyBloc>()
                 .add(CompanyWebsiteChange(companyWebsite: value))
           },
-          validator: (value) => state.wehsite.length > 3
-              ? null
-              : "Invalid website, please correct the web address",
+          // validator: (value) => value!.length > 3
+          //     ? value
+          //     : "Invalid website, please correct the web address",
         );
       },
     );
@@ -154,10 +153,9 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
                 .read<CreateCompanyBloc>()
                 .add(CompanyYearStartedChanged(companyYear: value))
           },
-          validator: (value) => state.yearStarted.length == 4 &&
-                  int.parse(state.yearStarted) > 1900
-              ? null
-              : "Invalid year",
+          // validator: (value) => value!.length == 4 && int.parse(value) > 1900
+          //     ? value
+          //     : "Invalid year",
         );
       },
     );
@@ -179,9 +177,8 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
                 .read<CreateCompanyBloc>()
                 .add(CompanyAddressChange(companyAddress: value))
           },
-          validator: (value) => state.companyAddress.length < 7
-              ? null
-              : 'Please choose a valid address',
+          // validator: (value) =>
+          //     value!.length < 7 ? null : 'Please choose a valid address',
         );
       },
     );
@@ -202,11 +199,10 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
           onChanged: (value) => {
             context
                 .read<CreateCompanyBloc>()
-                .add(CompanyMissionChanged(comMission: value))
+                .add(CompanyMissionChanged(mission: value))
           },
-          validator: (value) => state.missionStatement.length > 7
-              ? null
-              : "Describe your company's mission",
+          // validator: (value) =>
+          //     value!.length > 7 ? value : "Describe your company's mission",
         );
       },
     );
@@ -232,9 +228,8 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
           //     .read<UserProfileEditBloc>()
           //     .add(UserProfileZipChange(zip: value)),
           ,
-          validator: (value) => state.instagram.length > 5
-              ? null
-              : 'Please enter a valid zip code',
+          // validator: (value) =>
+          //     value!.length > 5 ? value : 'Please enter a valid zip code',
         );
       },
     );
@@ -274,9 +269,9 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
                 .read<CreateCompanyBloc>()
                 .add(CompanyDescriptionChange(companyDescription: value))
           },
-          validator: (value) => state.description.length > 7
-              ? null
-              : "Please describe the company's purpose",
+          // validator: (value) => value!.length > 7
+          //     ? value
+          //     : "Please describe the company's purpose",
         );
       },
     );
@@ -305,14 +300,13 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
                     context.read<CreateCompanyBloc>().add(CompanyAttemptCreate(
                           profile: widget.profile,
                           completedCompany: CompanyCompletion(
-                              logo: state.logo,
-                              mainImage: state.mainImage,
+                              // logo: state.logo,
                               instagram: state.instagram,
                               companyName: state.companyName,
                               description: state.description,
                               facebook: state.facebook,
                               companyAddress: state.companyAddress,
-                              missionStatement: state.missionStatement,
+                              missionStatement: state.mission,
                               yearStarted: state.yearStarted,
                               profile: widget.profile),
                         ));

@@ -68,11 +68,11 @@ class CompanyYearStartedChanged extends CreateCompanyEvent {
 }
 
 class CompanyMissionChanged extends CreateCompanyEvent {
-  final String comMission;
-  CompanyMissionChanged({required this.comMission});
+  final String mission;
+  CompanyMissionChanged({required this.mission});
 
   @override
-  List<Object> get props => [comMission];
+  List<Object> get props => [mission];
 }
 
 class CompanyLogoChanged extends CreateCompanyEvent {

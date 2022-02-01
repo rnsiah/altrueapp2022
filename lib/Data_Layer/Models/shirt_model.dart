@@ -1,18 +1,24 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/country_model.dart';
+import 'package:mobile/Data_Layer/Models/shirt_color_model.dart';
+import 'package:mobile/Data_Layer/Models/shirt_variation_model.dart';
 import 'atrocity_model.dart';
+import 'shirt_size_model.dart';
 part 'shirt_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Shirt {
   Shirt(
       {this.id,
+      this.variations,
       this.name,
       this.price,
       this.country,
       this.shirtImage,
       this.slug,
+      this.availableColors,
+      this.shirtSizes,
       this.atrocity,
       this.originalImage,
       this.category,
@@ -35,6 +41,11 @@ class Shirt {
   String? altrueInfo;
   @JsonKey(name: 'similar_shirts')
   List<Shirt>? otherShirts;
+  @JsonKey(name: 'available_colors')
+  List<ShirtColor>? availableColors;
+  @JsonKey(name: 'available_sizes')
+  List<ShirtSize>? shirtSizes;
+  List<ShirtVariation>? variations;
 
   factory Shirt.fromJson(Map<String, dynamic> data) => _$ShirtFromJson(data);
 

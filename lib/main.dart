@@ -11,6 +11,7 @@ import 'package:mobile/Data_Layer/Blocs/session_cubit.dart';
 import 'package:mobile/Data_Layer/Blocs/session_event_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/session_state.dart';
 import 'package:mobile/Data_Layer/Blocs/shirt_bloc/bloc/shirt_bloc.dart';
+import 'package:mobile/Data_Layer/Blocs/shirt_order_bloc/bloc/shirt_order_bloc_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/user_completed_orders_bloc/bloc/completed_userorders_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/user_profile_edit_bloc.dart/user_profile_edit_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/validationCubit.dart';
@@ -97,6 +98,9 @@ class MyApp extends StatelessWidget {
                 userRepository: context.read<UserRepository>())),
         BlocProvider<AtrocityBlocBloc>(
           create: (context) => AtrocityBlocBloc(atrocityRepository: atrocity),
+        ),
+        BlocProvider<ShirtOrderBlocBloc>(
+          create: (context) => ShirtOrderBlocBloc(),
         ),
         BlocProvider(
           create: (context) => ShirtBloc(shirtRepository: shirt),

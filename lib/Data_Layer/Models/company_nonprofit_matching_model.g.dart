@@ -7,14 +7,14 @@ part of 'company_nonprofit_matching_model.dart';
 // **************************************************************************
 
 CompanyNonProfitMatchRelationship _$CompanyNonProfitMatchRelationshipFromJson(
-    Map<String, dynamic> json) {
-  return CompanyNonProfitMatchRelationship(
-    fundingLimit: (json['funding_limit'] as num).toDouble(),
-    matchLevel: json['match_level'] as int,
-    nonProfit: NonProfitRep.fromJson(json['nonprofit'] as Map<String, dynamic>),
-    totalRaised: (json['total_raised'] as num).toDouble(),
-  );
-}
+        Map<String, dynamic> json) =>
+    CompanyNonProfitMatchRelationship(
+      fundingLimit: (json['funding_limit'] as num).toDouble(),
+      matchLevel: json['match_level'] as int,
+      nonProfit:
+          NonProfitRep.fromJson(json['nonprofit'] as Map<String, dynamic>),
+      totalRaised: (json['total_raised'] as num).toDouble(),
+    );
 
 Map<String, dynamic> _$CompanyNonProfitMatchRelationshipToJson(
         CompanyNonProfitMatchRelationship instance) =>

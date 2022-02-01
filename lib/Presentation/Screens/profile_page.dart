@@ -55,7 +55,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 flex: 4,
                 child: Stack(
                   children: [
-                    OpaqueImage(imageUrl: widget.profile.profilePicture),
                     SafeArea(
                         child: Padding(
                       padding: EdgeInsets.all(16),

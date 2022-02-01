@@ -6,20 +6,18 @@ part of 'user_donation_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserDonation _$UserDonationFromJson(Map<String, dynamic> json) {
-  return UserDonation(
-    amount: json['amount'] as String,
-    id: json['id'] as int,
-  )
-    ..atrocity = json['atrocity'] == null
-        ? null
-        : UserDonationAtrocity.fromJson(
-            json['atrocity'] as Map<String, dynamic>)
-    ..nonprofit = json['nonprofit'] == null
-        ? null
-        : UserDonationNonProfit.fromJson(
-            json['nonprofit'] as Map<String, dynamic>);
-}
+UserDonation _$UserDonationFromJson(Map<String, dynamic> json) => UserDonation(
+      amount: json['amount'] as String,
+      id: json['id'] as int,
+    )
+      ..atrocity = json['atrocity'] == null
+          ? null
+          : UserDonationAtrocity.fromJson(
+              json['atrocity'] as Map<String, dynamic>)
+      ..nonprofit = json['nonprofit'] == null
+          ? null
+          : UserDonationNonProfit.fromJson(
+              json['nonprofit'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$UserDonationToJson(UserDonation instance) =>
     <String, dynamic>{
@@ -29,15 +27,15 @@ Map<String, dynamic> _$UserDonationToJson(UserDonation instance) =>
       'nonprofit': instance.nonprofit?.toJson(),
     };
 
-UserDonationAtrocity _$UserDonationAtrocityFromJson(Map<String, dynamic> json) {
-  return UserDonationAtrocity(
-    id: json['id'] as int,
-    title: json['title'] as String,
-    category: (json['category'] as List<dynamic>)
-        .map((e) => Category.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+UserDonationAtrocity _$UserDonationAtrocityFromJson(
+        Map<String, dynamic> json) =>
+    UserDonationAtrocity(
+      id: json['id'] as int,
+      title: json['title'] as String,
+      category: (json['category'] as List<dynamic>)
+          .map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$UserDonationAtrocityToJson(
         UserDonationAtrocity instance) =>
@@ -48,13 +46,12 @@ Map<String, dynamic> _$UserDonationAtrocityToJson(
     };
 
 UserDonationNonProfit _$UserDonationNonProfitFromJson(
-    Map<String, dynamic> json) {
-  return UserDonationNonProfit(
-    id: json['id'] as int,
-    logo: json['logo'] as String,
-    name: json['name'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    UserDonationNonProfit(
+      id: json['id'] as int,
+      logo: json['logo'] as String,
+      name: json['name'] as String,
+    );
 
 Map<String, dynamic> _$UserDonationNonProfitToJson(
         UserDonationNonProfit instance) =>

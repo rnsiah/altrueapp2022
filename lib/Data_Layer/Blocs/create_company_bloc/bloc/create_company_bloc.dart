@@ -4,12 +4,14 @@ import 'package:mobile/Data_Layer/Blocs/form_submission_status.dart';
 import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/company_repository.dart';
+import 'package:mobile/Data_Layer/Repoositories/user_repository.dart';
 
 part 'create_company_event.dart';
 part 'create_company_state.dart';
 
 class CreateCompanyBloc extends Bloc<CreateCompanyEvent, CreateCompanyState> {
   final CompanyRepository companyRepository = CompanyRepository();
+  final UserRepository userRepository = UserRepository();
 
   CreateCompanyBloc() : super(CreateCompanyState());
 
@@ -25,7 +27,7 @@ class CreateCompanyBloc extends Bloc<CreateCompanyEvent, CreateCompanyState> {
     } else if (event is CompanyYearStartedChanged) {
       yield state.copyWith(yearStarted: event.companyYear);
     } else if (event is CompanyMissionChanged) {
-      yield state.copyWith(missionStatement: event.comMission);
+      yield state.copyWith(mission: event.mission);
     } else if (event is CompanyLogoChanged) {
       yield state.copyWith(logo: event.logo);
     } else if (event is CompanyDescriptionChange) {
@@ -37,21 +39,19 @@ class CreateCompanyBloc extends Bloc<CreateCompanyEvent, CreateCompanyState> {
     } else if (event is CompanyAttemptCreate) {
       yield state.copyWith(formStatus: FormSubmitting());
       try {
+        User? user = await userRepository.userDao.getCurrentUser(0);
         CompanyCompletion company = CompanyCompletion(
             companyAddress: state.companyAddress,
             companyName: state.companyName,
             description: state.description,
-            logo: state.logo,
             instagram: state.instagram,
             facebook: state.facebook,
-            mainImage: state.mainImage,
             wehsite: state.wehsite,
             profile: event.profile,
             yearStarted: state.yearStarted);
 
         bool companyCreated =
-            await companyRepository.createCompany(completedCompany: company);
-
+            await companyRepository.newCompany(company: company, user: user);
         if (companyCreated == true) {
           state.copyWith(formStatus: SubmissionSuccess());
         }

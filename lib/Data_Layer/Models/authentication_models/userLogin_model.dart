@@ -26,6 +26,7 @@ class UserSignUpLoginIn {
 
 @JsonSerializable(explicitToJson: true)
 class Token {
+  @JsonKey(name: 'key')
   String token;
   UserInfoFromKey user;
 

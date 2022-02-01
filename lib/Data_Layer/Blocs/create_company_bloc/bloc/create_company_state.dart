@@ -3,13 +3,12 @@ part of 'create_company_bloc.dart';
 class CreateCompanyState extends Equatable {
   final String companyName;
   final Profile? profile;
-  final String missionStatement;
+  final String mission;
   final String companyAddress;
   final String description;
   final String facebook;
   final String instagram;
-  final dynamic logo;
-  final dynamic mainImage;
+
   final String wehsite;
   final String yearStarted;
   final FormSubmissionStatus? formStatus;
@@ -22,9 +21,7 @@ class CreateCompanyState extends Equatable {
       this.description = '',
       this.facebook = '',
       this.instagram = '',
-      this.logo,
-      this.missionStatement = '',
-      this.mainImage,
+      this.mission = '',
       this.yearStarted = ''});
 
   CreateCompanyState copyWith(
@@ -38,7 +35,7 @@ class CreateCompanyState extends Equatable {
       dynamic mainImage,
       String? yearStarted,
       Profile? profile,
-      String? missionStatement,
+      String? mission,
       FormSubmissionStatus? formStatus}) {
     return CreateCompanyState(
         companyAddress: companyAddress ?? this.companyAddress,
@@ -46,9 +43,7 @@ class CreateCompanyState extends Equatable {
         companyName: companyName ?? this.companyName,
         facebook: facebook ?? this.facebook,
         instagram: instagram ?? this.instagram,
-        mainImage: mainImage ?? this.mainImage,
-        logo: logo ?? this.logo,
-        missionStatement: missionStatement ?? this.missionStatement,
+        mission: mission ?? this.mission,
         description: description ?? this.description,
         profile: profile ?? this.profile,
         yearStarted: yearStarted ?? this.yearStarted,
@@ -62,11 +57,9 @@ class CreateCompanyState extends Equatable {
         facebook,
         instagram,
         wehsite,
-        missionStatement,
+        mission,
         description,
         yearStarted,
-        logo,
-        mainImage,
       ];
 }
 

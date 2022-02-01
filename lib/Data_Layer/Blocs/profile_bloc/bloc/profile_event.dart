@@ -51,3 +51,19 @@ class AddUserToFollow extends ProfileEvent {
   final int profileToFollow;
   AddUserToFollow({required this.profileToFollow});
 }
+
+class AddOrderItem extends ProfileEvent {
+  final OrderItem orderItem;
+  AddOrderItem({required this.orderItem});
+}
+
+class SubmitOrderItems extends ProfileEvent {
+  final List<OrderItem> orderItems;
+  SubmitOrderItems({required this.orderItems});
+}
+
+class AddFollower extends ProfileEvent {
+  final ManageFollower interaction;
+
+  AddFollower({required this.interaction});
+}

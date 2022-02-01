@@ -49,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
                       foregroundImage:
                           NetworkImage(profile.profilePicture!.url),
                       backgroundImage:
-                          NetworkImage(profile.profilePicture.toString()),
+                          NetworkImage(profile.profilePicture!.url),
                     ),
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

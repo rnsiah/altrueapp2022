@@ -6,14 +6,27 @@ part of 'order_item_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
-  return OrderItem(
-    quantity: json['quantity'] as int,
-    shirt: Shirt.fromJson(json['ordered_shirt'] as Map<String, dynamic>),
-  );
-}
+OrderItem _$OrderItemFromJson(Map<String, dynamic> json) => OrderItem(
+      quantity: json['quantity'] as int,
+      shirt: Shirt.fromJson(json['ordered_shirt'] as Map<String, dynamic>),
+      color: ShirtColor.fromJson(json['color'] as Map<String, dynamic>),
+      size: ShirtSize.fromJson(json['size'] as Map<String, dynamic>),
+    )..id = json['id'] as int?;
 
 Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
       'ordered_shirt': instance.shirt.toJson(),
       'quantity': instance.quantity,
+      'size': instance.size.toJson(),
+      'color': instance.color.toJson(),
+      'id': instance.id,
+    };
+
+Cart _$CartFromJson(Map<String, dynamic> json) => Cart(
+      items: (json['items'] as List<dynamic>)
+          .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
+      'items': instance.items,
     };

@@ -102,18 +102,22 @@ class CompanyNonProfit {
   Map<String, dynamic> toJson() => _$CompanyNonProfitToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class CompanyCompletion {
+  @JsonKey(name: 'name')
   final String companyName;
+  @JsonKey(name: 'owner')
   final Profile profile;
+  @JsonKey(name: 'mission')
   final String? missionStatement;
+  @JsonKey(name: 'address')
   final String companyAddress;
   final String description;
   final String? facebook;
   final String? instagram;
-  final dynamic logo;
-  final dynamic mainImage;
+  @JsonKey(name: 'website_address')
   final String? wehsite;
+  @JsonKey(name: 'year_started')
   final String yearStarted;
 
   CompanyCompletion(
@@ -122,8 +126,6 @@ class CompanyCompletion {
       required this.description,
       this.facebook,
       this.instagram,
-      required this.logo,
-      required this.mainImage,
       this.missionStatement,
       required this.profile,
       this.wehsite,

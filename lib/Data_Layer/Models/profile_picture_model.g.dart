@@ -6,12 +6,11 @@ part of 'profile_picture_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProfilePicture _$ProfilePictureFromJson(Map<String, dynamic> json) {
-  return ProfilePicture(
-    url: json['url'] as String,
-    image: json['image'] as String?,
-  );
-}
+ProfilePicture _$ProfilePictureFromJson(Map<String, dynamic> json) =>
+    ProfilePicture(
+      url: json['url'] as String,
+      image: json['image'] as String?,
+    );
 
 Map<String, dynamic> _$ProfilePictureToJson(ProfilePicture instance) =>
     <String, dynamic>{

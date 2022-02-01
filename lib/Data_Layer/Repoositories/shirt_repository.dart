@@ -1,6 +1,7 @@
 import 'package:mobile/Data_Layer/Data_Providers/user_profile_api.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
+import 'package:mobile/Data_Layer/Models/shirt_variation_model.dart';
 
 class ShirtRepository {
   NonAuthenticatedApiProvider _provider = NonAuthenticatedApiProvider();
@@ -53,4 +54,8 @@ class ShirtRepository {
     }
     return shirts;
   }
+
+  // Future<String> getShirtColor(ShirtVariation variation)async{
+
+  // }
 }

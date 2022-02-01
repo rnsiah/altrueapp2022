@@ -1,0 +1,15 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+ManageFollower _$ManageFollowerFromJson(Map<String, dynamic> json) =>
+    ManageFollower(
+      id: json['id'] as int,
+      follow: json['following'] as String,
+    );
+
+Map<String, dynamic> _$ManageFollowerToJson(ManageFollower instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'following': instance.follow,
+    };

@@ -2,25 +2,22 @@
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserLogin _$UserLoginFromJson(Map<String, dynamic> json) {
-  return UserLogin(
-    email: json['email'] as String,
-    password: json['password'] as String,
-  );
-}
+UserLogin _$UserLoginFromJson(Map<String, dynamic> json) => UserLogin(
+      email: json['email'] as String,
+      password: json['password'] as String,
+    );
 
 Map<String, dynamic> _$UserLoginToJson(UserLogin instance) => <String, dynamic>{
       'email': instance.email,
       'password': instance.password,
     };
 
-UserSignUpLoginIn _$UserSignUpLoginInFromJson(Map<String, dynamic> json) {
-  return UserSignUpLoginIn(
-    email: json['email'] as String,
-    password: json['password'] as String,
-    password2: json['password2'] as String?,
-  );
-}
+UserSignUpLoginIn _$UserSignUpLoginInFromJson(Map<String, dynamic> json) =>
+    UserSignUpLoginIn(
+      email: json['email'] as String,
+      password: json['password'] as String,
+      password2: json['password2'] as String?,
+    );
 
 Map<String, dynamic> _$UserSignUpLoginInToJson(UserSignUpLoginIn instance) =>
     <String, dynamic>{
@@ -29,25 +26,22 @@ Map<String, dynamic> _$UserSignUpLoginInToJson(UserSignUpLoginIn instance) =>
       'password2': instance.password2,
     };
 
-Token _$TokenFromJson(Map<String, dynamic> json) {
-  return Token(
-    token: json['token'] as String,
-    user: UserInfoFromKey.fromJson(json['user'] as Map<String, dynamic>),
-  );
-}
+Token _$TokenFromJson(Map<String, dynamic> json) => Token(
+      token: json['key'] as String,
+      user: UserInfoFromKey.fromJson(json['user'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$TokenToJson(Token instance) => <String, dynamic>{
-      'token': instance.token,
+      'key': instance.token,
       'user': instance.user.toJson(),
     };
 
-UserInfoFromKey _$UserInfoFromKeyFromJson(Map<String, dynamic> json) {
-  return UserInfoFromKey(
-    profileCreated: json['profile_created'] as bool,
-    altid: json['id'] as int,
-    email: json['email'] as String,
-  );
-}
+UserInfoFromKey _$UserInfoFromKeyFromJson(Map<String, dynamic> json) =>
+    UserInfoFromKey(
+      profileCreated: json['profile_created'] as bool,
+      altid: json['id'] as int,
+      email: json['email'] as String,
+    );
 
 Map<String, dynamic> _$UserInfoFromKeyToJson(UserInfoFromKey instance) =>
     <String, dynamic>{

@@ -15,7 +15,7 @@ class NonprofitsignupBloc
   NonProfitRespository nonProfitRespository = NonProfitRespository();
   UserRepository userRepository = UserRepository();
 
-  NonprofitsignupBloc(NonprofitsignupState initialState) : super(initialState);
+  NonprofitsignupBloc() : super(const NonprofitsignupState());
 
   @override
   Stream<NonprofitsignupState> mapEventToState(
