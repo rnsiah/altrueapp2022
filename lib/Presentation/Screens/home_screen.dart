@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage>
   AtrocityRepository atrocityRepository = AtrocityRepository();
   ShirtRepository shirtRepository = ShirtRepository();
 
+  GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
   List<Atrocity> atrocityList = [];
   List<Shirt> featuredShirts = [];
 
@@ -154,6 +155,11 @@ class _HomePageState extends State<HomePage>
         BlocProvider(create: (context) => context.read<ProfileBloc>()),
       ],
       child: Scaffold(
+        onDrawerChanged: (isOpened) {
+          context
+              .read<ProfileBloc>()
+              .add(FetchProfile(profile: widget.profile));
+        },
         backgroundColor: Colors.white,
         drawer: ProfileDrawer(
             profile: widget.profile, animationController: animationController),

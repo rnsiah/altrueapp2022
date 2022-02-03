@@ -26,6 +26,7 @@ import 'package:mobile/Presentation/Router/app_router.dart';
 import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 import 'package:mobile/Presentation/Screens/home_screen.dart';
+import 'package:mobile/Presentation/Widgets/Intro_Slider/intro_slider.dart';
 
 import 'Data_Layer/Repoositories/user_repository.dart';
 import 'Presentation/Screens/userProfile_fillScreen.dart';

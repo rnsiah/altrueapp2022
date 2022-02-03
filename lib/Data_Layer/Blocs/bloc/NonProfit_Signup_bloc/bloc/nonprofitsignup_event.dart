@@ -113,32 +113,14 @@ class NonProfitYearStartedChangeOnForm extends NonprofitsignupEvent {
 }
 
 class NonProfitSignUpFormCompletion extends NonprofitsignupEvent {
-  final String name;
-  final String website;
-  final String mission;
-  final String vision;
-  final int yearStarteed;
-  final String description;
+  final NonProfitCompletion nonprofit;
   final Profile profile;
 
-  final String? facebook;
-  final String? instagram;
-
-  NonProfitSignUpFormCompletion({
-    required this.name,
-    this.instagram,
-    this.facebook,
-    required this.profile,
-    required this.mission,
-    required this.vision,
-    required this.description,
-    required this.website,
-    required this.yearStarteed,
-  });
+  NonProfitSignUpFormCompletion(
+      {required this.nonprofit, required this.profile});
 
   @override
-  List<Object> get props =>
-      [name, mission, profile, vision, description, website, yearStarteed];
+  List<Object> get props => [nonprofit, profile];
 }
 
 class NonProfitCreationError extends NonprofitsignupEvent {

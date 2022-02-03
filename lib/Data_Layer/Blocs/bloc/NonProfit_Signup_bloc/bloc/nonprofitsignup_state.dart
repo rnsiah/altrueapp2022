@@ -15,7 +15,7 @@ class NonprofitsignupState extends Equatable {
   // final dynamic logo;
   // final dynamic mainImage;
   final FormSubmissionStatus status;
-  const NonprofitsignupState(
+  NonprofitsignupState(
       {this.address = '',
       this.yearStarted = 1999,
       this.name = '',

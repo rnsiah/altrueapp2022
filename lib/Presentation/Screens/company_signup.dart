@@ -94,21 +94,25 @@ class _CompanySignupPageState extends State<CompanySignupPage> {
     return BlocBuilder<CreateCompanyBloc, CreateCompanyState>(
       builder: (context, state) {
         return TextFormField(
-          style: TextStyle(color: Colors.amber),
-          decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.amber)),
-              labelText: 'Company Name',
-              labelStyle: TextStyle(fontSize: 15, color: Colors.white)),
-          onChanged: (value) => {
-            context
-                .read<CreateCompanyBloc>()
-                .add(CompanyNameChange(companyName: value))
-          },
-          // validator: (value) =>
-          //     value!.length > 3 ? value : "Please choose a company name",
-          // state.city.length > 3 ? null : "Select A Valid Ciy",
-        );
+            style: TextStyle(color: Colors.amber),
+            decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.amber)),
+                labelText: 'Company Name',
+                labelStyle: TextStyle(fontSize: 15, color: Colors.white)),
+            onChanged: (value) => {
+                  context
+                      .read<CreateCompanyBloc>()
+                      .add(CompanyNameChange(companyName: value))
+                },
+            validator: (value) {
+              if (value == null || value.isEmpty || value.length < 3) {
+                return 'Please choos a company name';
+              }
+              return null;
+            }
+            // state.city.length > 3 ? null : "Select A Valid Ciy",
+            );
       },
     );
   }

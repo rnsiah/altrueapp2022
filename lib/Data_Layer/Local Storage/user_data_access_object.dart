@@ -36,6 +36,15 @@ class UserDao {
     }
   }
 
+  Future<void> introDone() async {
+    final db = await dbProvider.database;
+    await (db!.rawUpdate('''
+    UPDATE userExperience
+    SET doneIntro = ?
+    WHERE _id = 0
+    ''', [1, 0]));
+  }
+
   Future<void> updateUser(User user) async {
     if (user.hasProfile == 1) {
       final db = await dbProvider.database;

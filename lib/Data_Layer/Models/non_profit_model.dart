@@ -35,7 +35,7 @@ class NonProfit {
 
   final int id;
   final String name;
-  final String logo;
+  String logo;
   @JsonKey(required: false)
   String? description;
   @JsonKey(name: 'year_started', required: false)
@@ -71,7 +71,8 @@ class NonProfit {
 
 @JsonSerializable(explicitToJson: true)
 class NonProfitCompletion {
-  final ProfileRepresentation profile;
+  @JsonKey(name: 'owner')
+  final Profile profile;
   @JsonKey(name: 'year_started')
   final int yearStarted;
   final String name;
@@ -88,18 +89,19 @@ class NonProfitCompletion {
   // final dynamic mainImage;
 
   NonProfitCompletion(
+
+      // this.logo,
+      // this.mainImage, {
+      {
     this.website,
     this.instagram,
-    // this.logo,
-    // this.mainImage, {
-    {
+    required this.profile,
     required this.name,
     required this.description,
     required this.facebook,
     required this.missionStatement,
     required this.visionStatement,
     required this.yearStarted,
-    required this.profile,
   });
 
   factory NonProfitCompletion.fromJson(Map<String, dynamic> data) =>

@@ -15,9 +15,7 @@ class NonprofitsignupBloc
   NonProfitRespository nonProfitRespository = NonProfitRespository();
   UserRepository userRepository = UserRepository();
 
-  NonprofitsignupBloc() : super(const NonprofitsignupState());
-
-  @override
+  NonprofitsignupBloc() : super(NonprofitsignupState());
   Stream<NonprofitsignupState> mapEventToState(
       NonprofitsignupEvent event) async* {
     if (event is NonProfitAddressChangeOnForm) {
@@ -28,10 +26,6 @@ class NonprofitsignupBloc
       yield state.copyWith(facebook: event.npFacebook);
     } else if (event is NonProfitInstagramChangeOnForm) {
       yield state.copyWith(instagram: event.npInstagram);
-      // } else if (event is NonProfitLogoChangeOnForm) {
-      //   yield state.copyWith(logo: event.npLogo);
-      // } else if (event is NonProfitMainImageChangeOnForm) {
-      //   yield state.copyWith(mainImage: event.npMainImage);
     } else if (event is NonProfitMissionStatementChangeOnForm) {
       yield state.copyWith(missionStatement: event.npMission);
     } else if (event is NonProfitNameChangeOnForm) {
@@ -50,29 +44,21 @@ class NonprofitsignupBloc
         User? user = await userRepository.userDao.getCurrentUser(0);
 
         NonProfitCompletion nonprofit = NonProfitCompletion(
-            state.website, state.instagram,
-            name: state.name,
-            description: state.description,
-            facebook: state.facebook,
-            missionStatement: state.missionStatement,
-            visionStatement: state.visionStatement,
-            yearStarted: state.yearStarted!,
-            profile: ProfileRepresentation(
-                id: event.profile.user!, username: event.profile.username));
-        print([
-          nonprofit.description,
-          nonprofit.website,
-          nonprofit.visionStatement,
-          nonprofit.name,
-          nonprofit.profile,
-          nonprofit.yearStarted,
-          nonprofit.description,
-          nonprofit.facebook,
-          nonprofit.instagram
-        ]);
-        await nonProfitRespository.newNonProfit(
+          website: state.website,
+          profile: event.profile,
+          instagram: state.instagram,
+          name: state.name,
+          description: state.description,
+          facebook: state.facebook,
+          missionStatement: state.missionStatement,
+          visionStatement: state.visionStatement,
+          yearStarted: state.yearStarted!,
+        );
+        bool created = await nonProfitRespository.newNonProfit(
             nonprofit: nonprofit, user: user!);
-        yield state.copyWith(status: SubmissionSuccess());
+        if (created == true) {
+          yield state.copyWith(status: SubmissionSuccess());
+        }
       } catch (e) {
         yield state.copyWith(status: SubmissionFaiiled(e.toString()));
         print(e.toString());

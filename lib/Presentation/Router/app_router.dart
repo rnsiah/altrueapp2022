@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intro_slider/intro_slider.dart';
 
 import 'package:mobile/Data_Layer/Blocs/validationCubit.dart';
 
 import 'package:mobile/Presentation/Forms/user_login_form.dart';
 import 'package:mobile/Presentation/Screens/confirmation_screen.dart';
 import 'package:mobile/Presentation/Screens/signup_screen.dart';
+import 'package:mobile/Presentation/Widgets/Intro_Slider/intro_slider.dart';
 
 class AuthNavigator extends StatelessWidget {
   @override
@@ -14,6 +16,8 @@ class AuthNavigator extends StatelessWidget {
       builder: (context, state) {
         return Navigator(
           pages: [
+            if (state == ValidationState.intro)
+              MaterialPage(child: IntroductionSlider()),
             if (state == ValidationState.login)
               MaterialPage(child: LoginPageUp()),
             if (state == ValidationState.signUpWithOutConfirmation)

@@ -53,10 +53,10 @@ class CreateCompanyBloc extends Bloc<CreateCompanyEvent, CreateCompanyState> {
         bool companyCreated =
             await companyRepository.newCompany(company: company, user: user);
         if (companyCreated == true) {
-          state.copyWith(formStatus: SubmissionSuccess());
+          yield state.copyWith(formStatus: SubmissionSuccess());
         }
       } catch (e) {
-        state.copyWith(formStatus: SubmissionFaiiled(e.toString()));
+        yield state.copyWith(formStatus: SubmissionFaiiled(e.toString()));
         print(e.toString());
       }
     }

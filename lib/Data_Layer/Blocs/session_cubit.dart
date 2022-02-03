@@ -13,7 +13,7 @@ class SessionBLoc extends Bloc<SessionEvent, SessionState> {
   SessionBLoc({
     required this.userRepository,
   }) : super(UnknownSessionState()) {
-    attemptAutoLogin();
+    // attemptAutoLogin();
   }
 
   void attemptAutoLogin() async {

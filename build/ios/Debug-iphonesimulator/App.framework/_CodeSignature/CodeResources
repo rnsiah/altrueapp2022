@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		F0xyosGYywqLYSl4IcHeHUYM6Q8=
+		LUR2s67NqOAonJYzdW9AJVN3zBc=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		9RcnVkWlykb9S7KNKTXFkJ7xciE=
+		4yHpbNYDFa0sCLLilK5608qX++Q=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		aRZFEXWXgVTWKCmr6nvDsVS7QhU=
+		xzy4rNojHGC1L+TiJBJIAkq2I1E=
 		</data>
 		<key>flutter_assets/packages/country_code_picker/flags/ad.png</key>
 		<data>
@@ -1404,6 +1404,10 @@
 		<data>
 		KmKhs3pgVU+ZgfsHSJ1M97pmry0=
 		</data>
+		<key>flutter_assets/videos/Ending%20poverty%20and%20hunger.mp4</key>
+		<data>
+		rsRrCj8gEM0jKz71IieVD8kNJ/w=
+		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
 		cuieaQ9j+9gCTKYPRhW1tc4y4co=
@@ -1415,11 +1419,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			F0xyosGYywqLYSl4IcHeHUYM6Q8=
+			LUR2s67NqOAonJYzdW9AJVN3zBc=
 			</data>
 			<key>hash2</key>
 			<data>
-			ODE0k9h2IBQCs/o8x33EBgJtheJ7NqJ9QjrY2K0bKpA=
+			GMLK0+dDjoaoDj7kf7bNZoTeMQd2A/usLXutQdl+b3g=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -1437,11 +1441,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9RcnVkWlykb9S7KNKTXFkJ7xciE=
+			4yHpbNYDFa0sCLLilK5608qX++Q=
 			</data>
 			<key>hash2</key>
 			<data>
-			sjuzntdyqw6RgVt1tIdWA4XssfQ6cH2D+y1ARr45KeY=
+			2mqGH0Ew2tORmnSuRdLCIIbdFSWdFp6Rbqp5KjBuxJM=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -1569,11 +1573,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			aRZFEXWXgVTWKCmr6nvDsVS7QhU=
+			xzy4rNojHGC1L+TiJBJIAkq2I1E=
 			</data>
 			<key>hash2</key>
 			<data>
-			DyrJa9EoJ6h/8fZquovVbQIYrEcvg67Ri78pnuMSY1o=
+			WoC1j3pTi1/7j+70k+HKV5gqPIGm99HMHxunO+uqgtQ=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/country_code_picker/flags/ad.png</key>
@@ -5248,6 +5252,17 @@
 			<key>hash2</key>
 			<data>
 			0JZbJerKV2f29GD5annnU6pkQ6WWZBGfswGIE1GqRUs=
+			</data>
+		</dict>
+		<key>flutter_assets/videos/Ending%20poverty%20and%20hunger.mp4</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rsRrCj8gEM0jKz71IieVD8kNJ/w=
+			</data>
+			<key>hash2</key>
+			<data>
+			E2cJ0jRdBZ2JiD3TW7dhfdTe5WO7bJH1C2B6nU6l67g=
 			</data>
 		</dict>
 		<key>flutter_assets/vm_snapshot_data</key>

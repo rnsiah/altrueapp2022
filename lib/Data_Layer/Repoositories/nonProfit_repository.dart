@@ -44,7 +44,7 @@ class NonProfitRespository {
     return nonprofits;
   }
 
-  Future<void> newNonProfit(
+  Future<bool> newNonProfit(
       {required NonProfitCompletion nonprofit, User? user}) async {
     String url = 'http://localhost:8000/api/registernp/';
 
@@ -54,8 +54,9 @@ class NonProfitRespository {
           "Authorization": "Token ${user!.key}",
         },
         body: json.encode(nonprofit));
-    if (response.statusCode == 200) {
-      print(nonprofit);
+    if (response.statusCode == 201) {
+      print(response.body);
+      return true;
     } else {
       throw Exception('Did not update');
     }

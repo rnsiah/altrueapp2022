@@ -75,6 +75,7 @@ class CompanyRepository {
         },
         body: json.encode(company));
     if (response.statusCode == 201) {
+      print(response.body);
       return true;
     } else {
       throw Exception('Did not update');

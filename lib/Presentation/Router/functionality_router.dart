@@ -22,6 +22,7 @@ import 'package:mobile/Presentation/Screens/profile_page.dart';
 import 'package:mobile/Presentation/Screens/qr_screen.dart';
 import 'package:mobile/Presentation/Screens/shirt_details.dart';
 import 'package:mobile/Presentation/Screens/shirts_list.dart';
+import 'package:mobile/Presentation/Screens/signup_screen.dart';
 import 'package:mobile/Presentation/Screens/supporters.dart';
 import 'package:mobile/Presentation/Screens/userProfile_fillScreen.dart';
 import 'package:mobile/Presentation/Screens/user_nonprofitsList.dart';
@@ -49,6 +50,8 @@ Widget _buildRoute(
       return ProfileScreen(
         profile: profile,
       );
+    case '/signup':
+      return SignUpScreen();
     case '/usernonprofits':
       Profile profile = arguments as Profile;
       return UserNonProfits(
@@ -76,7 +79,10 @@ Widget _buildRoute(
       );
     case '/nonProfitView':
       final argument = arguments as NonProfitDetailArguments;
-      return NonProfitDetails(nonProfit: argument.nonProfit, profile: argument.profile,);
+      return NonProfitDetails(
+        nonProfit: argument.nonProfit,
+        profile: argument.profile,
+      );
     case '/atrocities':
       return AtrocityList();
     case '/atrocityView':

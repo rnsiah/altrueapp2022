@@ -53,9 +53,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         User? user = await userRepository.userDao.getCurrentUser(0);
         Profile profile = await userRepository.getProfileFromApi(user: user!);
-
-        yield (state.copyWith(
-            profile: profile, user: user, status: ProfileStatus.successfull));
+        ProfileState newState = state.copyWith(
+            profile: profile, user: user, status: ProfileStatus.successfull);
+        yield (newState);
+        print('profile has been updated');
       } catch (e) {
         print(e.toString());
       }

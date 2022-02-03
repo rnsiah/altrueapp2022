@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 final userTable = 'userTable';
 final orderItems = 'orderItems';
+final userExperiences = ' experiences';
 
 class DatabaseProvider {
   static final DatabaseProvider dbProvider = DatabaseProvider();
@@ -63,6 +64,13 @@ class DatabaseProvider {
         "color TEXT, "
         "price INTEGER, "
         "quantity INTEGER "
+        ")");
+
+    await database.execute("CREATE TABLE $userExperiences ("
+        "id INTEGER PRIMARY KEY, "
+        "doneIntro INTEGER, "
+        "doneNP INTEGER, "
+        "doneCompany INTEGER, "
         ")");
   }
 }

@@ -19,6 +19,10 @@ class UserRepository {
   final userDao = UserDao();
   final _apiProvider = ApiProvider();
 
+  Future introDone() async {
+    await userDao.introDone();
+  }
+
 //  Grabs information from login Bloc and and then acccess the user authetntication
 // data service which returns a key. Once key is returned, it creates a User object
 // from the Key object which hold hte user email, key, and the altrue id , and gives

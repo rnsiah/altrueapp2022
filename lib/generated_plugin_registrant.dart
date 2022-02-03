@@ -8,6 +8,7 @@
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:share_plus_web/share_plus_web.dart';
 import 'package:url_launcher_web/url_launcher_web.dart';
+import 'package:video_player_web/video_player_web.dart';
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -16,5 +17,6 @@ void registerPlugins(Registrar registrar) {
   ImagePickerPlugin.registerWith(registrar);
   SharePlusPlugin.registerWith(registrar);
   UrlLauncherPlugin.registerWith(registrar);
+  VideoPlayerPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }
