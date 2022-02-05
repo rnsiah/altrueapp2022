@@ -41,14 +41,14 @@ class _HomePageState extends State<HomePage>
   List<Atrocity> atrocityList = [];
   List<Shirt> featuredShirts = [];
 
-  Future<List<Atrocity>> getAtrocities() async {
-    List<Atrocity> atr = [];
-    List<Atrocity> allAtro = await atrocityRepository.getFeaturedAtrocities();
-    for (Atrocity atro in allAtro) {
-      atr.add(atro);
-    }
-    return atr;
-  }
+  // Future<List<Atrocity>> getAtrocities() async {
+  //   List<Atrocity> atr = [];
+  //   List<Atrocity> allAtro = await atrocityRepository.getFeaturedAtrocities();
+  //   for (Atrocity atro in allAtro) {
+  //     atr.add(atro);
+  //   }
+  //   return atr;
+  // }
 
   Future<List<Shirt>> getFeaturedShirts() async {
     List<Shirt> shir = [];
@@ -61,14 +61,14 @@ class _HomePageState extends State<HomePage>
 
   AnimationController? animationController;
 
-  void setUP() async {
-    await getAtrocities().then((value) async {
-      atrocityList = value;
-    });
-    await getFeaturedShirts().then((shirtValue) async {
-      featuredShirts = shirtValue;
-    });
-  }
+  // void setUP() async {
+  //   await getAtrocities().then((value) async {
+  //     atrocityList = value;
+  //   });
+  //   await getFeaturedShirts().then((shirtValue) async {
+  //     featuredShirts = shirtValue;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -147,12 +147,14 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    ProfileBloc profileBloc = context.read<ProfileBloc>();
+    ShirtBloc shirtBloc = context.read<ShirtBloc>();
+    AtrocityBlocBloc atrocityBloc = context.read<AtrocityBlocBloc>();
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => context.read<SessionBLoc>(),
-        ),
-        BlocProvider(create: (context) => context.read<ProfileBloc>()),
+        BlocProvider<ProfileBloc>.value(value: profileBloc),
+        BlocProvider<ShirtBloc>.value(value: shirtBloc),
+        BlocProvider<AtrocityBlocBloc>.value(value: atrocityBloc),
       ],
       child: Scaffold(
         onDrawerChanged: (isOpened) {
@@ -161,8 +163,13 @@ class _HomePageState extends State<HomePage>
               .add(FetchProfile(profile: widget.profile));
         },
         backgroundColor: Colors.white,
-        drawer: ProfileDrawer(
-            profile: widget.profile, animationController: animationController),
+        drawer: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return ProfileDrawer(
+                profile: state.profile!,
+                animationController: animationController);
+          },
+        ),
         appBar: AppBar(
           backgroundColor: Colors.black,
           elevation: 0,
@@ -181,27 +188,22 @@ class _HomePageState extends State<HomePage>
         ),
         body: ListView(
           children: [
+            Text(widget.profile.user.toString()),
             Container(
               margin: EdgeInsets.all(7),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   'Featured Atrocities'.text.black.size(18).bold.make(),
-                  BlocProvider(
-                    create: (context) => context.read<AtrocityBlocBloc>(),
-                    child: MaterialButton(
-                        color: Colors.black,
-                        child: Text(
-                          'All Atrocities',
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
-                        onPressed: () {
-                          context
-                              .read<AtrocityBlocBloc>()
-                              .add(AtrocityListFetched());
-                          Navigator.of(context).pushNamed('/atrocities');
-                        }),
-                  ),
+                  MaterialButton(
+                      color: Colors.black,
+                      child: Text(
+                        'All Atrocities',
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/atrocities');
+                      }),
                 ],
               ),
             ),
@@ -223,136 +225,116 @@ class _HomePageState extends State<HomePage>
                 return Container(
                   height: 200,
                   width: double.infinity,
-                  child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: atrocityList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _shirtSelector(index, atrocityList);
-                      }),
+                  child: Center(child: CircularProgressIndicator()),
                 );
               },
             ),
-            BlocProvider(
-              create: (context) => context.read<ShirtBloc>(),
-              child: BlocBuilder<ShirtBloc, ShirtState>(
-                builder: (context, state) {
-                  for (Shirt shirt in state.featuredShirts) {
-                    print(shirt.shirtRepresentation(shirt));
-                  }
-                  if (state.featuredShirts.isNotEmpty) {
-                    return FeaturedShirts(
-                        shirtlist: state.featuredShirts,
-                        title: "Altrue's collection of the week",
-                        imageHeight: 150,
-                        imageWidth: 100);
-                  }
+            BlocBuilder<ShirtBloc, ShirtState>(
+              builder: (context, state) {
+                if (state.featuredShirts.isNotEmpty) {
                   return FeaturedShirts(
-                      shirtlist: featuredShirts,
+                      shirtlist: state.featuredShirts,
                       title: "Altrue's collection of the week",
                       imageHeight: 150,
                       imageWidth: 100);
-                },
-              ),
+                }
+                return Container(
+                  height: 150,
+                  width: double.infinity,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              },
             ),
-            BlocProvider(
-              create: (context) => context.read<ShirtBloc>(),
-              child: MaterialButton(
-                color: Colors.black,
-                child: Text(
-                  'Shirts',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/shirts');
-                  context.read<ShirtBloc>().add(FetchShirts());
-                  context.read<CategoryBloc>().add(FetchCategory());
-                },
-              ),
-            ),
-            MultiBlocProvider(
-                providers: [
-                  BlocProvider<NonprofitBloc>(
-                    create: (context) => context.read<NonprofitBloc>(),
-                  ),
-                  BlocProvider<CategoryBloc>(
-                      create: (context) => context.read<CategoryBloc>()),
-                ],
-                child: Column(children: [
-                  MaterialButton(
-                    color: Colors.black,
+            BlocBuilder<ShirtBloc, ShirtState>(
+              builder: (context, state) {
+                if (state.status == ShirtStatus.successful) {
+                  return MaterialButton(
+                    color: Colors.green,
                     child: Text(
-                      'Non Profits',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                    onPressed: () {
-                      context.read<CategoryBloc>().add(FetchCategory());
-                      context.read<NonprofitBloc>().add(FetchNonProfitList());
-                      Navigator.of(context)
-                          .pushNamed('/nonprofits', arguments: widget.profile);
-                    },
-                  ),
-                  MaterialButton(
-                    child: Text(
-                      'Causes',
+                      'Shirts',
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
-                    color: Colors.black,
                     onPressed: () {
+                      Navigator.of(context).pushNamed('/shirts');
+                      // context.read<ShirtBloc>().add(FetchShirts());
                       context.read<CategoryBloc>().add(FetchCategory());
-                      Navigator.of(context).pushNamed('/causes');
                     },
+                  );
+                }
+                return MaterialButton(
+                  color: Colors.red,
+                  child: Text(
+                    'Shirts',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
-                  MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create: (context) => context.read<CompanyListBloc>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => context.read<ProfileBloc>(),
-                      ),
-                    ],
-                    child: MaterialButton(
-                        child: Text('Companies',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 24)),
-                        color: Colors.black,
-                        onPressed: () {
-                          context
-                              .read<CompanyListBloc>()
-                              .add(FetchCompanyList(user: widget.user));
-                          Navigator.of(context).pushNamed('/companies');
-                        }),
-                  ),
-                  BlocProvider<AllUsersBloc>(
-                    create: (context) => context.read<AllUsersBloc>(),
-                    child: MaterialButton(
-                      child: Text(
-                        'Find Friends',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      color: Colors.black,
-                      onPressed: () {
-                        context.read<AllUsersBloc>().add(FetchFindUserList());
-                        Navigator.of(context)
-                            .pushNamed('/findfriends', arguments: widget.user);
-                      },
-                    ),
-                  ),
-                  MaterialButton(
-                      child: Text('company match'),
-                      onPressed: () => Navigator.of(context).pushNamed(
-                          '/companyDashboard',
-                          arguments: DashBoardScreenArguments(
-                              animationController: animationController!,
-                              profile: widget.profile))),
-                  MaterialButton(
-                      child: Text('CreditCard'),
-                      onPressed: () => Navigator.of(context)
-                          .pushNamed('/creditCardDetails')),
-                ])),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/shirts');
+                    // context.read<ShirtBloc>().add(FetchShirts());
+                    // context.read<CategoryBloc>().add(FetchCategory());
+                  },
+                );
+              },
+            ),
+            MaterialButton(
+              color: Colors.black,
+              child: Text(
+                'Non Profits',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed('/nonprofits', arguments: widget.profile);
+                // context.read<CategoryBloc>().add(FetchCategory());
+                // context.read<NonprofitBloc>().add(FetchNonProfitList());
+              },
+            ),
+            MaterialButton(
+              child: Text(
+                'Causes',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              color: Colors.black,
+              onPressed: () {
+                context.read<CategoryBloc>().add(FetchCategory());
+                Navigator.of(context).pushNamed('/causes');
+              },
+            ),
+            MaterialButton(
+                child: Text('Companies',
+                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                color: Colors.black,
+                onPressed: () {
+                  context
+                      .read<CompanyListBloc>()
+                      .add(FetchCompanyList(user: widget.user));
+                  Navigator.of(context).pushNamed('/companies');
+                }),
+            MaterialButton(
+              child: Text(
+                'Find Friends',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.black,
+              onPressed: () {
+                context.read<AllUsersBloc>().add(FetchFindUserList());
+                Navigator.of(context)
+                    .pushNamed('/findfriends', arguments: widget.user);
+              },
+            ),
+            MaterialButton(
+                child: Text('company match'),
+                onPressed: () => Navigator.of(context).pushNamed(
+                    '/companyDashboard',
+                    arguments: DashBoardScreenArguments(
+                        animationController: animationController!,
+                        profile: widget.profile))),
+            MaterialButton(
+                child: Text('CreditCard'),
+                onPressed: () =>
+                    Navigator.of(context).pushNamed('/creditCardDetails')),
             Text(widget.user.email!)
           ],
         ),

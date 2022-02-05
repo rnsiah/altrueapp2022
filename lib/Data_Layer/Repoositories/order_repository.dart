@@ -35,7 +35,7 @@ class OrderRepository {
   Future<List<Order>> getUserCompletedOrders(user) async {
     List<Order> completedOrders = [];
     final response = await http
-        .get(Uri.parse('http://localhost:8000/api/allusercompletedorders'),
+        .get(Uri.parse('http://10.0.0.238:8000/api/allusercompletedorders'),
             // Send authorization headers to the backend.
             headers: {
           HttpHeaders.authorizationHeader: 'Token ${user.key}',

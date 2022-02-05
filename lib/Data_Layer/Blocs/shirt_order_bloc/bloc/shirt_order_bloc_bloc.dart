@@ -23,6 +23,13 @@ class ShirtOrderBlocBloc
     on<ShirtColorChange>(_shirtColorChange);
     on<ShirtSizeChange>(_shirtSizeChange);
     on<ShirtPictureChange>(_shirtPictureChange);
+    on<ShirtOrderStarted>(_shirtOrderStarted);
+  }
+
+  void _shirtOrderStarted(
+      ShirtOrderStarted event, Emitter<ShirtOrderBlocState> emit) async {
+    final state = this.state;
+    emit(OrderInProgress());
   }
 
   void _shirtPictureChange(

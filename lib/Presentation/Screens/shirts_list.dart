@@ -88,235 +88,54 @@ class _ShirtListState extends State<ShirtList> {
                   },
                   builder: (context, state) {
                     if (state.categoryShirtList.isNotEmpty) {
-                      return Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            child: GridView.builder(
-                                itemCount: state.categoryShirtList.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing: 27,
-                                        mainAxisSpacing: 13,
-                                        childAspectRatio: .75,
-                                        crossAxisCount: 2),
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                      onTap: () {
-                                        print(state.categoryShirtList[index]
-                                            .getShirt());
-
-                                        Navigator.of(context).pushNamed(
-                                            '/ShirtDetail',
-                                            arguments:
-                                                state.categoryShirtList[index]);
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                            child: Image.network(
-                                              state.categoryShirtList[index]
-                                                  .shirtImage!,
-                                              scale: .7,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 2),
-                                            child: Text(
-                                              state.categoryShirtList[index]
-                                                  .name!,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Text(
-                                            state.categoryShirtList[index].price
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      ),
-                                    ))),
-                      );
+                      return buildShirtListByCateogory(state);
                     } else if (state.categoryShirtList.isEmpty &&
                         state.shirtlist.isNotEmpty) {
-                      return Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            child: GridView.builder(
-                                itemCount: state.shirtlist.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing: 27,
-                                        mainAxisSpacing: 13,
-                                        childAspectRatio: .75,
-                                        crossAxisCount: 2),
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            '/ShirtDetail',
-                                            arguments: state.shirtlist[index]);
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                            child: Image.network(
-                                              state
-                                                  .shirtlist[index].shirtImage!,
-                                              scale: .7,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 2),
-                                            child: Text(
-                                              state.shirtlist[index].name!,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Text(
-                                            state.shirtlist[index].price
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      ),
-                                    ))),
-                      );
+                      return buildShirtList(state);
                     }
                     {
-                      return Expanded(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            child: GridView.builder(
-                                itemCount: state.shirtlist.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing: 27,
-                                        mainAxisSpacing: 13,
-                                        childAspectRatio: .75,
-                                        crossAxisCount: 2),
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                      onTap: () {
-                                        print(state.categoryShirtList[index]
-                                            .getShirt());
-
-                                        Navigator.of(context).pushNamed(
-                                            '/ShirtDetail',
-                                            arguments: state.shirtlist[index]);
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                            child: Image.network(
-                                              state
-                                                  .shirtlist[index].shirtImage!,
-                                              scale: .7,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 2),
-                                            child: Text(
-                                              state.shirtlist[index].name!,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Text(
-                                            state.shirtlist[index].price
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      ),
-                                    ))),
-
-                        // return Expanded(
-                        //   child: Padding(
-                        //       padding: EdgeInsets.symmetric(horizontal: 2),
-                        //       child: GridView.builder(
-                        //           itemCount: state.shirtlist.length,
-                        //           gridDelegate:
-                        //               SliverGridDelegateWithFixedCrossAxisCount(
-                        //                   crossAxisSpacing: 27,
-                        //                   mainAxisSpacing: 13,
-                        //                   childAspectRatio: .75,
-                        //                   crossAxisCount: 2),
-                        //           itemBuilder: (context, index) => GestureDetector(
-                        //                 onTap: () {
-                        //                   print(state.shirtlist[index].getShirt());
-
-                        //                   Navigator.of(context).pushNamed(
-                        //                       '/ShirtDetail',
-                        //                       arguments: state.shirtlist[index]);
-                        //                 },
-                        //                 child: Column(
-                        //                   children: [
-                        //                     Container(
-                        //                       padding: EdgeInsets.all(8),
-                        //                       decoration: BoxDecoration(
-                        //                         color: Colors.white,
-                        //                         borderRadius:
-                        //                             BorderRadius.circular(16),
-                        //                       ),
-                        //                       child: Image.network(
-                        //                         state.shirtlist[index].shirtImage!,
-                        //                         scale: .7,
-                        //                       ),
-                        //                     ),
-                        //                     Padding(
-                        //                       padding: const EdgeInsets.symmetric(
-                        //                           vertical: 2),
-                        //                       child: Text(
-                        //                         state.shirtlist[index].name!,
-                        //                         style: TextStyle(
-                        //                             fontSize: 14,
-                        //                             fontWeight: FontWeight.bold),
-                        //                       ),
-                        //                     ),
-                        //                     Text(
-                        //                       state.shirtlist[index].price.toString(),
-                        //                       style: TextStyle(
-                        //                           fontWeight: FontWeight.bold),
-                        //                     )
-                        //                   ],
-                        //                 ),
-                        //               ))),
-                        // );
-                      );
+                      return buildShirtList(state);
                     }
                   })
             ],
           ),
         ));
+  }
+
+  Expanded buildShirtList(ShirtState state) {
+    return Expanded(
+      child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2),
+          child: GridView.builder(
+              itemCount: state.shirtlist.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 27,
+                  mainAxisSpacing: 13,
+                  childAspectRatio: .75,
+                  crossAxisCount: 2),
+              itemBuilder: (context, index) => ShirtCard(
+                  shirt: state.shirtlist[index],
+                  press: () => Navigator.of(context).pushNamed('/ShirtDetail',
+                      arguments: state.shirtlist[index])))),
+    );
+  }
+
+  Expanded buildShirtListByCateogory(ShirtState state) {
+    return Expanded(
+      child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2),
+          child: GridView.builder(
+              itemCount: state.categoryShirtList.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 27,
+                  mainAxisSpacing: 13,
+                  childAspectRatio: .75,
+                  crossAxisCount: 2),
+              itemBuilder: (context, index) => ShirtCard(
+                  shirt: state.categoryShirtList[index],
+                  press: () => Navigator.of(context).pushNamed('/ShirtDetail',
+                      arguments: state.categoryShirtList[index])))),
+    );
   }
 }
 
@@ -328,7 +147,9 @@ class ShirtCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        press();
+      },
       child: Column(
         children: [
           Container(

@@ -28,7 +28,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   autoUploadProfile() async {
     User? user = await userRepository.userDao.getCurrentUser(0);
     if (user != null) {
-      emit(state.copyWith(status: ProfileStatus.failure));
       try {
         Profile profile = await userRepository.getProfileFromApi(user: user);
         emit(state.copyWith(

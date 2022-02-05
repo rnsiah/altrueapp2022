@@ -14,17 +14,17 @@ class AtrocityRepository {
     return atrocities;
   }
 
-
-  Future<List<Atrocity>>getAtrocityListByCategory(Category category) async{
-    List<Atrocity> atrocities =[];
-    final atrocityList = await _provider.get('api/atrocoties/$category');
-    for(var atrocity in atrocityList){
+  Future<List<Atrocity>> getAtrocityListByCategory(Category category) async {
+    List<Atrocity> atrocities = [];
+    final atrocityList =
+        await _provider.get('api/atrocities/category/?cat=${category.id}');
+    for (var atrocity in atrocityList) {
       atrocities.add(Atrocity.fromJson(atrocity));
     }
     return atrocities;
   }
 
-  Future<Atrocity> getAtrocity(int id) async{
+  Future<Atrocity> getAtrocity(int id) async {
     final response = await _provider.get('api/atrocities/$id');
     return Atrocity.fromJson(response);
   }

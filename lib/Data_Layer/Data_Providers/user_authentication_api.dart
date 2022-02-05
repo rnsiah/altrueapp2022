@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:mobile/Data_Layer/Models/authentication_models/userLogin_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/user_repository.dart';
 
-final _mobileBaseUrl = 'http://dd05-2601-2c6-47e-4690-e9bb-3d97-d2ca-570a.ngrok.io';
-final _base = "http://localhost:8000";
+final _mobileBaseUrl =
+    'http://dd05-2601-2c6-47e-4690-e9bb-3d97-d2ca-570a.ngrok.io';
+final _base = "http://10.0.0.238:8000";
 final _loginKeyEndpoint = "/auth/login/";
 final _registerKeyEndpoint = '/auth/registration/';
 
@@ -44,12 +45,10 @@ Future<Token> getKeyFromSignUp(UserSignUpLoginIn userSignUpLoginIn) async {
     print(json.decode(response.body).toString());
     throw Exception(json.decode(response.body));
   }
-  
 }
 
-
-
-Future<Token> getKeyFromConfirmation(UserConfirmationModel userConfirmationModel) async {
+Future<Token> getKeyFromConfirmation(
+    UserConfirmationModel userConfirmationModel) async {
   print(_registrationKeyURL);
   final http.Response response = await http.post(
     _registrationKeyURL,
@@ -64,6 +63,4 @@ Future<Token> getKeyFromConfirmation(UserConfirmationModel userConfirmationModel
     print(json.decode(response.body).toString());
     throw Exception(json.decode(response.body));
   }
-  
 }
-

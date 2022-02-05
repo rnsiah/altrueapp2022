@@ -1,8 +1,11 @@
 import 'package:awesome_dropdown/awesome_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:mobile/Data_Layer/Blocs/shirt_bloc/bloc/shirt_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/shirt_order_bloc/bloc/shirt_order_bloc_bloc.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
+import 'package:mobile/Data_Layer/Models/shirt_size_model.dart';
 import 'package:mobile/Presentation/Widgets/shirt_order/shirt_couter.dart';
 import 'package:mobile/Presentation/Widgets/shirt_order/shirt_size_picker.dart';
 import 'package:photo_view/photo_view.dart';
@@ -39,8 +42,9 @@ class _ShirtOrderFormState extends State<ShirtOrderForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ShirtOrderBlocBloc>(
-      create: (context) => ShirtOrderBlocBloc(),
+    final shirtBlocOrder = context.read<ShirtOrderBlocBloc>();
+    return BlocProvider.value(
+      value: shirtBlocOrder,
       child: Container(
         color: Colors.transparent,
         height: 600,
@@ -77,7 +81,38 @@ class _ShirtOrderFormState extends State<ShirtOrderForm> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      ShirtCounter(shirt: widget.shirt),
+                      BlocBuilder<ShirtOrderBlocBloc, ShirtOrderBlocState>(
+                        builder: (context, state) {
+                          if (state is OrderInProgress) {
+                            return Container(
+                                width: 120,
+                                height: 70,
+                                child: Center(
+                                    child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          shirtBlocOrder.add(
+                                              ShirtQuantityChange(
+                                                  quantity:
+                                                      state.quantity! + 1));
+                                        },
+                                        icon: Icon(Icons.add)),
+                                    Text(state.quantity.toString()),
+                                    IconButton(
+                                        onPressed: () {
+                                          shirtBlocOrder.add(
+                                              ShirtQuantityChange(
+                                                  quantity:
+                                                      state.quantity! - 1));
+                                        },
+                                        icon: Icon(Icons.remove))
+                                  ],
+                                )));
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      ),
                       SizedBox(
                         height: 25,
                       ),
@@ -91,8 +126,13 @@ class _ShirtOrderFormState extends State<ShirtOrderForm> {
                             );
                           }).toList(),
                           onChanged: (value) {
+                            print('Shirt Size has been changed to $value');
                             setState(() {
                               _selectedSize = value!;
+                              context.read<ShirtOrderBlocBloc>().add(
+                                  ShirtSizeChange(
+                                      shirtSize:
+                                          ShirtSize(id: 2, size: value)));
                             });
                           })
 

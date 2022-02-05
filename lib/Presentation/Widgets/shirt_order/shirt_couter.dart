@@ -46,7 +46,7 @@ class _ShirtCounterState extends State<ShirtCounter> {
                 ),
               ),
             ),
-            initialValue: numOfItems,
+            initialValue: 1,
             maxValue: 5,
             minValue: 1,
             step: 1,

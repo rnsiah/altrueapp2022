@@ -41,4 +41,4 @@ class NonprofitState extends Equatable {
       ];
 }
 
-class NonProfitFaili extends NonprofitState {}
+class NonProfitFailure extends NonprofitState {}

@@ -59,3 +59,5 @@ class ShirtOrderSubmitted extends ShirtOrderBlocEvent {
 }
 
 class ShirtOrderCanceled extends ShirtOrderBlocEvent {}
+
+class ShirtOrderStarted extends ShirtOrderBlocEvent {}

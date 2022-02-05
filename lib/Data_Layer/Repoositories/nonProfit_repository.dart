@@ -28,7 +28,7 @@ class NonProfitRespository {
 
   Future<List<NonProfit>> fetchFeaturedNonProfits() async {
     List<NonProfit> nonProfitList = [];
-    final response = await _provider.get('/api/featurednonprofits');
+    final response = await _provider.get('api/featurednonprofits');
     for (var nonprofits in response) {
       nonProfitList.add(NonProfit.fromJson(nonprofits));
     }
@@ -37,7 +37,8 @@ class NonProfitRespository {
 
   Future<List<NonProfit>> fetchNonProfitByCategory(Category category) async {
     List<NonProfit> nonprofits = [];
-    final response = await _provider.get('api/nonprofits/$category');
+    final response =
+        await _provider.get('api/nonprofits/category/?cat=${category.id}');
     for (var nonprofit in response) {
       nonprofits.add(NonProfit.fromJson(nonprofit));
     }
@@ -46,7 +47,7 @@ class NonProfitRespository {
 
   Future<bool> newNonProfit(
       {required NonProfitCompletion nonprofit, User? user}) async {
-    String url = 'http://localhost:8000/api/registernp/';
+    String url = 'http://10.0.0.238:8000/api/registernp/';
 
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{

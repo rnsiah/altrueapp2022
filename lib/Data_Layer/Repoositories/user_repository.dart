@@ -148,6 +148,7 @@ class UserRepository {
 
   Future<bool> hasToken() async {
     bool result = await userDao.checkUser(0);
+
     return result;
   }
 
@@ -167,7 +168,7 @@ class UserRepository {
     String keyOfUser = user.key!;
     int altId = user.altid!;
 
-    var postUri = Uri.parse('http://localhost:8000/api/userprofile/$altId/');
+    var postUri = Uri.parse('http://10.0.0.238:8000/api/userprofile/$altId/');
     var request = new http.MultipartRequest('patch', postUri);
     request.headers['Authorization'] = 'Token ${user.key}';
     request.fields['username'] = profile.username.toString();
@@ -194,7 +195,7 @@ class UserRepository {
     if (user != null) {
       final String local = 'localhost:8000';
       var postUri = Uri.parse(
-          'http://localhost:8000/api/userprofile/${user.altid}/add_profilePic/');
+          'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_profilePic/');
       var request = new http.MultipartRequest('patch', postUri);
       request.headers['Authorization'] = 'Token ${user.key}';
       http.MultipartFile multipartFile =
@@ -219,7 +220,7 @@ class UserRepository {
 
       final response = await http.patch(
           Uri.parse(
-              'http://localhost:8000/api/userprofile/${user.altid}/add_nonprofit/'),
+              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_nonprofit/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -239,7 +240,7 @@ class UserRepository {
 
       final response = await http.patch(
           Uri.parse(
-              'http://localhost:8000/api/userprofile/${user.altid}/add_atrocity/'),
+              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_atrocity/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -259,7 +260,7 @@ class UserRepository {
 
       final response = await http.patch(
           Uri.parse(
-              'http://localhost:8000/api/userprofile/${user.altid}/add_shirt/'),
+              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_shirt/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -278,7 +279,7 @@ class UserRepository {
     if (user != null) {
       final response = await http.patch(
           Uri.parse(
-              'http://localhost:8000/api/userprofile/${user.altid}/add_company/'),
+              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_company/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -300,7 +301,7 @@ class UserRepository {
     if (user != null) {
       final response = await http.patch(
           Uri.parse(
-              'http://localhost:8000/api/userprofile/${user.altid}/manageUserFollowers/'),
+              'http://10.0.0.238:8000/api/userprofile/${user.altid}/manageUserFollowers/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: 'Token ${user.key}'

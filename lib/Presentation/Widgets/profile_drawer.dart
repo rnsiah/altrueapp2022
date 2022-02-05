@@ -51,6 +51,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
               return CircularProgressIndicator();
             } else if (state.status == ProfileStatus.failure) {
               return Container(
+                color: Colors.white,
                 child: Text('Something Went Wrong'),
               );
             }
@@ -247,10 +248,10 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                           color: Colors.white),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed('/companyDashboard',
-                          arguments: DashBoardScreenArguments(
-                              animationController: widget.animationController!,
-                              profile: widget.profile));
+                      // Navigator.of(context).pushNamed('/companyDashboard',
+                      //     arguments: DashBoardScreenArguments(
+                      //         animationController: widget.animationController!,
+                      //         profile: widget.profile));
                     },
                   ),
                 ),

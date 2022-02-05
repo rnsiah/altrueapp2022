@@ -16,15 +16,15 @@ class AtrocityList extends StatelessWidget {
             ),
             backgroundColor: Colors.black),
         body: RepositoryProvider(
-          create: (_) => AtrocityRepository(),
-          child: MultiBlocProvider(
+            create: (_) => AtrocityRepository(),
+            child: MultiBlocProvider(
               providers: [
                 BlocProvider(
                   create: (_) => context.read<AtrocityBlocBloc>(),
                 ),
                 BlocProvider(create: (_) => context.read<CategoryBloc>())
               ],
-              child: ListView(
+              child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
@@ -45,60 +45,101 @@ class AtrocityList extends StatelessWidget {
                       );
                     },
                   ),
-                  BlocBuilder<AtrocityBlocBloc, AtrocityBlocState>(
+                  BlocConsumer<AtrocityBlocBloc, AtrocityBlocState>(
+                    listener: (context, state) {},
+                    buildWhen: (p, c) => p.atrocities != p.atrocityCategoryList,
                     builder: (context, state) {
-                      return Container(
-                          height: 800,
-                          width: double.infinity,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: state.atrocities.length,
-                            itemBuilder: (context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  context.read<AtrocityBlocBloc>().add(
-                                      AtrocityItemFteched(
-                                          atrocity: state.atrocities[index]));
-                                  Navigator.of(context).pushNamed(
-                                      '/atrocityView',
-                                      arguments: state.atrocities[index]);
-                                },
-                                child: Container(
-                                    margin: EdgeInsets.all(10),
-                                    height: 190,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 3,
-                                            blurRadius: 7,
-                                            offset: Offset(0, 3))
-                                      ],
-                                      image: DecorationImage(
-                                          image: NetworkImage(state
-                                              .atrocities[index].imageUrl!),
-                                          fit: BoxFit.cover),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        state.atrocities[index].title,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.black,
-                                            backgroundColor: Colors.white),
-                                      ),
-                                    )),
-                              );
-                            },
-                          ));
+                      if (state.atrocityCategoryList.isNotEmpty) {
+                        return buildCategoryAtrocityList(state);
+                      } else if (state.atrocityCategoryList.isEmpty &&
+                          state.atrocities.isNotEmpty) {
+                        return buildAtrocityList(state);
+                      }
+                      return buildAtrocityList(state);
                     },
-                  )
+                  ),
+                  SizedBox(
+                    height: 200,
+                  ),
                 ],
-              )),
+              ),
+            )));
+  }
+
+  Container buildAtrocityList(AtrocityBlocState state) {
+    return Container(
+        height: 800,
+        width: double.infinity,
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: state.atrocities.length,
+          itemBuilder: (context, int index) {
+            return AtrocityBox(
+              atrocity: state.atrocities[index],
+            );
+          },
         ));
+  }
+}
+
+Container buildCategoryAtrocityList(AtrocityBlocState state) {
+  return Container(
+      height: 800,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: state.atrocityCategoryList.length,
+        itemBuilder: (context, int index) {
+          return AtrocityBox(
+            atrocity: state.atrocityCategoryList[index],
+          );
+        },
+      ));
+}
+
+class AtrocityBox extends StatelessWidget {
+  final Atrocity atrocity;
+  const AtrocityBox({
+    required this.atrocity,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context
+            .read<AtrocityBlocBloc>()
+            .add(AtrocityItemFteched(atrocity: atrocity));
+        Navigator.of(context).pushNamed('/atrocityView', arguments: atrocity);
+      },
+      child: Container(
+          margin: EdgeInsets.all(10),
+          height: 190,
+          width: 100,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: Offset(0, 3))
+            ],
+            image: DecorationImage(
+                image: NetworkImage(atrocity.imageUrl!), fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              atrocity.title,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                  backgroundColor: Colors.white),
+            ),
+          )),
+    );
   }
 }
 
@@ -120,96 +161,96 @@ class BottomLoader extends StatelessWidget {
   }
 }
 
-class ShirtSelector extends StatefulWidget {
-  final int index;
+// class ShirtSelector extends StatefulWidget {
+//   final int index;
 
-  const ShirtSelector({Key? key, required this.index}) : super(key: key);
-  @override
-  _ShirtSelectorState createState() => _ShirtSelectorState();
-}
+//   const ShirtSelector({Key? key, required this.index}) : super(key: key);
+//   @override
+//   _ShirtSelectorState createState() => _ShirtSelectorState();
+// }
 
-class _ShirtSelectorState extends State<ShirtSelector> {
-  PageController pageController = PageController();
-  late AtrocityBlocBloc atrocityBloc;
+// class _ShirtSelectorState extends State<ShirtSelector> {
+//   PageController pageController = PageController();
+//   late AtrocityBlocBloc atrocityBloc;
 
-  late Atrocity atrocity;
+//   late Atrocity atrocity;
 
-  @override
-  void initState() {
-    pageController = PageController(initialPage: 1, viewportFraction: 0.8);
-    atrocityBloc = context.read<AtrocityBlocBloc>();
-    super.initState();
-  }
+//   @override
+//   void initState() {
+//     pageController = PageController(initialPage: 1, viewportFraction: 0.8);
+//     atrocityBloc = context.read<AtrocityBlocBloc>();
+//     super.initState();
+//   }
 
-  @override
-  Widget build(
-    BuildContext context,
-  ) {
-    var index;
-    return AnimatedBuilder(
-      animation: pageController,
-      builder: (context, Widget? widget) {
-        double value = 1;
-        if (pageController.position.haveDimensions) {
-          value = pageController.page! - index;
-          value = (1 - (value.abs() * 0.3) + 0.6).clamp(0.0, 1.0);
-        }
-        return Center(
-            child: SizedBox(
-          height: Curves.easeInOut.transform(value) * 270.0,
-          width: Curves.easeInOut.transform(value) * 400,
-          child: widget,
-        ));
-      },
-      child: BlocBuilder<AtrocityBlocBloc, AtrocityBlocState>(
-        builder: (context, state) {
-          return AtrocityCard(
-            atrocity: atrocity,
-          );
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(
+//     BuildContext context,
+//   ) {
+//     var index;
+//     return AnimatedBuilder(
+//       animation: pageController,
+//       builder: (context, Widget? widget) {
+//         double value = 1;
+//         if (pageController.position.haveDimensions) {
+//           value = pageController.page! - index;
+//           value = (1 - (value.abs() * 0.3) + 0.6).clamp(0.0, 1.0);
+//         }
+//         return Center(
+//             child: SizedBox(
+//           height: Curves.easeInOut.transform(value) * 270.0,
+//           width: Curves.easeInOut.transform(value) * 400,
+//           child: widget,
+//         ));
+//       },
+//       child: BlocBuilder<AtrocityBlocBloc, AtrocityBlocState>(
+//         builder: (context, state) {
+//           return AtrocityCard(
+//             atrocity: atrocity,
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
 
-class AtrocityCard extends StatelessWidget {
-  final Atrocity atrocity;
+// class AtrocityCard extends StatelessWidget {
+//   final Atrocity atrocity;
 
-  const AtrocityCard({Key? key, required this.atrocity}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Stack(
-        children: [
-          Center(
-            child: Container(
-              child: Center(
-                child: Hero(
-                  tag: atrocity.imageUrl!,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image(
-                      image: NetworkImage(atrocity.imageUrl!),
-                      height: 220.0,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-              left: 30,
-              bottom: 40,
-              child: Text(
-                atrocity.title.toUpperCase(),
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400),
-              ))
-        ],
-      ),
-    );
-  }
-}
+//   const AtrocityCard({Key? key, required this.atrocity}) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       child: Stack(
+//         children: [
+//           Center(
+//             child: Container(
+//               child: Center(
+//                 child: Hero(
+//                   tag: atrocity.imageUrl!,
+//                   child: ClipRRect(
+//                     borderRadius: BorderRadius.circular(10),
+//                     child: Image(
+//                       image: NetworkImage(atrocity.imageUrl!),
+//                       height: 220.0,
+//                       fit: BoxFit.fill,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//           Positioned(
+//               left: 30,
+//               bottom: 40,
+//               child: Text(
+//                 atrocity.title.toUpperCase(),
+//                 style: TextStyle(
+//                     fontSize: 18,
+//                     color: Colors.white,
+//                     fontWeight: FontWeight.w400),
+//               ))
+//         ],
+//       ),
+//     );
+//   }
+// }

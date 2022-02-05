@@ -45,17 +45,17 @@ class _ShirtDetailsState extends State<ShirtDetails>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => context.read<ShirtOrderBlocBloc>(),
+      create: (context) => ShirtOrderBlocBloc(),
       child: Scaffold(
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              context.read<ShirtOrderBlocBloc>();
               showModalBottomSheet(
                   backgroundColor: Colors.white.withOpacity(.9),
                   context: context,
-                  builder: (_) => ShirtOrderForm(
-                        shirt: widget.shirt,
-                      ));
+                  builder: (_) {
+                    context.read<ShirtOrderBlocBloc>().add(ShirtOrderStarted());
+                    return ShirtOrderForm(shirt: widget.shirt);
+                  });
             },
             backgroundColor: Colors.amber,
             label: Text(

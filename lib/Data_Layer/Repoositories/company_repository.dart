@@ -66,7 +66,7 @@ class CompanyRepository {
 
   Future<bool> newCompany(
       {required CompanyCompletion company, User? user}) async {
-    String url = 'http://localhost:8000/api/registerCompany/';
+    String url = 'http://10.0.0.238:8000/api/registerCompany/';
 
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{
@@ -98,7 +98,7 @@ class CompanyRepository {
   Future<void> editCompanyDetails(
       User user, ForProfitCompany company, Profile profile) async {
     var postUri =
-        Uri.parse('http://localhost:8000/api/companies/${company.id}/');
+        Uri.parse('http://10.0.0.238:8000/api/companies/${company.id}/');
     var request = new http.MultipartRequest('patch', postUri);
     request.headers['Authorization'] = 'Token ${user.key}';
     request.fields['owner'] = profile.username.toString();

@@ -24,9 +24,13 @@ import 'package:mobile/Data_Layer/Repoositories/order_repository.dart';
 import 'package:mobile/Data_Layer/Repoositories/shirt_repository.dart';
 import 'package:mobile/Presentation/Router/app_router.dart';
 import 'package:mobile/Presentation/Router/functionality_router.dart';
+import 'dart:io';
+
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:mobile/Presentation/Screens/home_screen.dart';
-import 'package:mobile/Presentation/Widgets/Intro_Slider/intro_slider.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'Data_Layer/Repoositories/user_repository.dart';
 import 'Presentation/Screens/userProfile_fillScreen.dart';
@@ -89,6 +93,11 @@ class MyApp extends StatelessWidget {
   final CompanyRepository companyRepository = CompanyRepository();
   final AllUsersRepository allUsersRepository = AllUsersRepository();
 
+  Future<void> getPath() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    print('path:' + documentsDirectory.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -104,10 +113,12 @@ class MyApp extends StatelessWidget {
           create: (context) => ShirtOrderBlocBloc(),
         ),
         BlocProvider(
-          create: (context) => ShirtBloc(shirtRepository: shirt),
+          create: (context) =>
+              ShirtBloc(shirtRepository: context.read<ShirtRepository>()),
         ),
         BlocProvider<NonprofitBloc>(
-          create: (context) => NonprofitBloc(nonProfitRespository: nonprofit),
+          create: (context) => NonprofitBloc(
+              nonProfitRespository: context.read<NonProfitRespository>()),
         ),
         BlocProvider<CategoryBloc>(
           create: (context) =>
@@ -137,10 +148,15 @@ class MyApp extends StatelessWidget {
               return true;
             },
             listener: (context, state) {
-              if (state is Authenticated) {
-                print(state.user.email.toString() +
-                    state.user.altid.toString() +
-                    state.user.hasProfile.toString());
+              if (state is AuthenticatedWithProfile) {
+                getPath();
+                // context.read<ShirtBloc>().add(fetchfeaturedShirtsOnLogin());
+                context.read<AtrocityBlocBloc>().fetchAtrocitiesonStart();
+                context.read<NonprofitBloc>().fetchNonProfitsOnLogin();
+                context.read<CategoryBloc>().add(FetchCategory());
+                Navigator.of(context).pushNamed('/home',
+                    arguments: HomeArguments(
+                        profile: state.profile, user: state.user));
               }
             },
             buildWhen: (previous, current) {
@@ -154,7 +170,10 @@ class MyApp extends StatelessWidget {
             builder: (context, state) {
               if (state is AuthenticatedWithProfile &&
                   state.user.hasProfile == 1) {
-                return HomePage(user: state.user, profile: state.profile);
+                // context.read<ShirtBloc>().fetchfeaturedShirtsOnLogin();
+                // context.read<AtrocityBlocBloc>().fetchAtrocitiesonStart();
+                // context.read<NonprofitBloc>().fetchNonProfitsOnLogin();
+                // context.read<CategoryBloc>().add(FetchCategory());
               } else if (state is Authenticated) {
                 return UserProfileComplete(
                   user: state.user,

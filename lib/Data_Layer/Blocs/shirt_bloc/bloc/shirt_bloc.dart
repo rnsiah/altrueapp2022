@@ -22,7 +22,7 @@ class ShirtBloc extends Bloc<ShirtEvent, ShirtState> {
       List<Shirt> all = await shirtRepository.fetchShirtList();
       List<Shirt> featured = await shirtRepository.featuredShirts();
       if (featured.length > 0) {
-        ShirtState newState = ShirtState(
+        ShirtState newState = state.copyWith(
             shirtlist: all,
             featuredShirts: featured,
             status: ShirtStatus.successful);

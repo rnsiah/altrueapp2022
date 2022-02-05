@@ -15,12 +15,14 @@ import 'package:mobile/Presentation/Screens/company_match_screen.dart';
 import 'package:mobile/Presentation/Screens/company_signup.dart';
 import 'package:mobile/Presentation/Screens/credit_card_page.dart';
 import 'package:mobile/Presentation/Screens/find_friends_screen.dart';
+import 'package:mobile/Presentation/Screens/home_screen.dart';
 import 'package:mobile/Presentation/Screens/non_profit_detail.dart';
 import 'package:mobile/Presentation/Screens/nonprofit_list_screen.dart';
 import 'package:mobile/Presentation/Screens/nonprofit_signup.dart';
 import 'package:mobile/Presentation/Screens/profile_page.dart';
 import 'package:mobile/Presentation/Screens/qr_screen.dart';
 import 'package:mobile/Presentation/Screens/shirt_details.dart';
+import 'package:mobile/Presentation/Screens/shirts.dart';
 import 'package:mobile/Presentation/Screens/shirts_list.dart';
 import 'package:mobile/Presentation/Screens/signup_screen.dart';
 import 'package:mobile/Presentation/Screens/supporters.dart';
@@ -44,6 +46,9 @@ Widget _buildRoute(
     required String routeName,
     Object? arguments}) {
   switch (routeName) {
+    case '/home':
+      HomeArguments homearguments = arguments as HomeArguments;
+      return HomePage(user: homearguments.user, profile: homearguments.profile);
     case '/userProfile':
       Profile profile = arguments as Profile;
 
@@ -158,3 +163,9 @@ class AtrocityListArguments {}
 class AtrocityDetailArguments {}
 
 class ShirtDetailArguments {}
+
+class HomeArguments {
+  final Profile profile;
+  final User user;
+  HomeArguments({required this.profile, required this.user});
+}

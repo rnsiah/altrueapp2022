@@ -26,8 +26,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void initState() {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    _controller =
-        VideoPlayerController.asset("videos/Ending poverty and hunger.mp4");
+    _controller = VideoPlayerController.asset(
+        Uri.encodeFull("videos/Ending poverty and hunger.mp4"));
     _controller!.initialize().then((value) {
       Timer(Duration(milliseconds: 900), () {
         setState(() {
@@ -37,9 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
     });
 
-    // Future.delayed(Duration(seconds: 4),(){
-    //   Navigator.pushAndRemoveUntil(context, newRoute, (route) => false)
-    // })
     super.initState();
   }
 
@@ -75,9 +72,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      child: Stack(
-        children: [_getVideoBackground()],
-      ),
+      child: Stack(children: [
+        _getVideoBackground(),
+        getSignUp(context),
+      ]),
     ));
   }
 
