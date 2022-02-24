@@ -3,8 +3,10 @@ part 'altrue_action_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class AltrueAction {
-  String name;
-  int pointsAwarded;
+  @JsonKey(name: 'requirement')
+  String? name;
+  @JsonKey(name: 'points_awarded')
+  int? pointsAwarded;
 
   AltrueAction({required this.name, required this.pointsAwarded});
 

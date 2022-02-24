@@ -19,6 +19,8 @@ class UserRepository {
   final userDao = UserDao();
   final _apiProvider = ApiProvider();
 
+  final String host = 'http://10.0.0.238:8000';
+
   Future introDone() async {
     await userDao.introDone();
   }
@@ -121,13 +123,22 @@ class UserRepository {
     return returnedUser;
   }
 
-  Future<Cart> getCart() async {
-    List<OrderItem> cart = await userDao.checkCart();
-    return cart as Cart;
+  Future<List<DatabaseOrderItem>> getCart() async {
+    List<DatabaseOrderItem> cart = await userDao.checkCart();
+
+    return cart;
   }
 
   Future<void> addToCart(OrderItem item) async {
     await userDao.addToCart(item);
+  }
+
+  Future<bool> deleteFromCart(int databaseId) async {
+    int result = await userDao.deleteFromCart(databaseId);
+    if (result == 1) {
+      return true;
+    }
+    return false;
   }
 
   Future<void> confirmSignUpWithConfirmation({
@@ -168,7 +179,7 @@ class UserRepository {
     String keyOfUser = user.key!;
     int altId = user.altid!;
 
-    var postUri = Uri.parse('http://10.0.0.238:8000/api/userprofile/$altId/');
+    var postUri = Uri.parse('$host/api/userprofile/$altId/');
     var request = new http.MultipartRequest('patch', postUri);
     request.headers['Authorization'] = 'Token ${user.key}';
     request.fields['username'] = profile.username.toString();
@@ -194,8 +205,8 @@ class UserRepository {
     User? user = await userDao.getCurrentUser(0);
     if (user != null) {
       final String local = 'localhost:8000';
-      var postUri = Uri.parse(
-          'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_profilePic/');
+      var postUri =
+          Uri.parse('$host/api/userprofile/${user.altid}/add_profilePic/');
       var request = new http.MultipartRequest('patch', postUri);
       request.headers['Authorization'] = 'Token ${user.key}';
       http.MultipartFile multipartFile =
@@ -219,8 +230,7 @@ class UserRepository {
       final String local = 'localhost:8000';
 
       final response = await http.patch(
-          Uri.parse(
-              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_nonprofit/'),
+          Uri.parse('$host/api/userprofile/${user.altid}/add_nonprofit/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -239,8 +249,7 @@ class UserRepository {
       final String local = 'localhost:8000';
 
       final response = await http.patch(
-          Uri.parse(
-              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_atrocity/'),
+          Uri.parse('$host/api/userprofile/${user.altid}/add_atrocity/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -259,8 +268,7 @@ class UserRepository {
       final String local = 'localhost:8000';
 
       final response = await http.patch(
-          Uri.parse(
-              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_shirt/'),
+          Uri.parse('$host/api/userprofile/${user.altid}/add_shirt/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -278,8 +286,7 @@ class UserRepository {
     User? user = await userDao.getCurrentUser(0);
     if (user != null) {
       final response = await http.patch(
-          Uri.parse(
-              'http://10.0.0.238:8000/api/userprofile/${user.altid}/add_company/'),
+          Uri.parse('$host/api/userprofile/${user.altid}/add_company/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Token ${user.key}"
@@ -293,28 +300,33 @@ class UserRepository {
   }
 
   Future<void> manageFollowers({
-    required User user,
     ManageFollower? manageFollower,
   }) async {
-    Map data = {'id': manageFollower!.id, "following": 'follow'};
+    Map data = {
+      'id': manageFollower!.id,
+      "following": manageFollower.follow.toString()
+    };
     User? user = await userDao.getCurrentUser(0);
+    print(data);
     if (user != null) {
-      final response = await http.patch(
-          Uri.parse(
-              'http://10.0.0.238:8000/api/userprofile/${user.altid}/manageUserFollowers/'),
+      final response = await http.post(
+          Uri.parse('$host/api/userprofile/${user.altid}/manageUserFollowers/'),
           headers: <String, String>{
             'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: 'Token ${user.key}'
           },
-          body: data);
-      if (response.statusCode == 200) {}
+          body: json.encode(data));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print(response.body);
+      }
       throw Exception('Did Not Update');
     }
   }
 
-  Future<Profile> fetchProfile({required int id, required User user}) async {
+  Future<Profile> fetchProfile({required int id}) async {
+    User? user = await userDao.getCurrentUser(0);
     dynamic response = await _apiProvider.getUserAuthenticatedData(
-        'api/userprofile/$id', user.key!);
+        'api/userprofile/$id', user!.key!);
     Profile profile = Profile.fromJson(response);
     return profile;
   }

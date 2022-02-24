@@ -19,9 +19,8 @@ class AllUsersBloc extends Bloc<AllUsersEvent, AllUsersState> {
     if (event is FetchFindUserList) {
       yield state.copyWith(status: ProfileListStatus.loading);
       try {
-        User? user = await userRepository.userDao.getCurrentUser(0);
         List<ProfileRepresentation> list =
-            await allUsersRepository.getAllProfiles(user!);
+            await allUsersRepository.getAllProfiles();
         yield state.copyWith(
             userList: list, status: ProfileListStatus.successful);
       } catch (e) {

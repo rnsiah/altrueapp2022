@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 class CompanyRepository {
   ApiProvider provider = ApiProvider();
   NonAuthenticatedApiProvider nonauthprov = NonAuthenticatedApiProvider();
+  final String host = 'http://10.0.0.238:8000';
 
   Future<List<ForProfitCompany>> getCompanyList({required User user}) async {
     List<ForProfitCompany> companies = [];
@@ -66,7 +67,7 @@ class CompanyRepository {
 
   Future<bool> newCompany(
       {required CompanyCompletion company, User? user}) async {
-    String url = 'http://10.0.0.238:8000/api/registerCompany/';
+    String url = '$host/api/registerCompany/';
 
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{
@@ -97,8 +98,7 @@ class CompanyRepository {
 
   Future<void> editCompanyDetails(
       User user, ForProfitCompany company, Profile profile) async {
-    var postUri =
-        Uri.parse('http://10.0.0.238:8000/api/companies/${company.id}/');
+    var postUri = Uri.parse('$host/api/companies/${company.id}/');
     var request = new http.MultipartRequest('patch', postUri);
     request.headers['Authorization'] = 'Token ${user.key}';
     request.fields['owner'] = profile.username.toString();

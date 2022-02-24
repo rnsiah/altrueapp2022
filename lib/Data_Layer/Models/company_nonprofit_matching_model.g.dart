@@ -10,9 +10,13 @@ CompanyNonProfitMatchRelationship _$CompanyNonProfitMatchRelationshipFromJson(
         Map<String, dynamic> json) =>
     CompanyNonProfitMatchRelationship(
       fundingLimit: (json['funding_limit'] as num).toDouble(),
+      company: json['company'] == null
+          ? null
+          : CompanyRep.fromJson(json['company'] as Map<String, dynamic>),
       matchLevel: json['match_level'] as int,
-      nonProfit:
-          NonProfitRep.fromJson(json['nonprofit'] as Map<String, dynamic>),
+      nonProfit: json['nonprofit'] == null
+          ? null
+          : NonProfitRep.fromJson(json['nonprofit'] as Map<String, dynamic>),
       totalRaised: (json['total_raised'] as num).toDouble(),
     );
 
@@ -22,5 +26,6 @@ Map<String, dynamic> _$CompanyNonProfitMatchRelationshipToJson(
       'match_level': instance.matchLevel,
       'total_raised': instance.totalRaised,
       'funding_limit': instance.fundingLimit,
-      'nonprofit': instance.nonProfit.toJson(),
+      'nonprofit': instance.nonProfit?.toJson(),
+      'company': instance.company?.toJson(),
     };

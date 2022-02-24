@@ -10,43 +10,43 @@ class MyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          RoundedImage(
-            imagePath: profile.profilePicture!.url,
-            size: Size.fromWidth(120.0),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                profile.username!,
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-              Text(
-                ", 24",
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "  34 kilometers",
-                style: TextStyle(color: Colors.white, fontSize: 12),
-              )
-            ],
-          ),
-        ],
-      ),
+      child: Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RoundedImage(
+              imagePath: profile.profilePicture!.url,
+              size: Size.fromWidth(120.0),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(profile.username!),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  profile.username!,
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+                Text(
+                  ", 24",
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+        //altrue level do something if null
+        Positioned(
+            bottom: 80,
+            child: profile.altrueLevel != null
+                ? Text('Altrue Level:' + profile.altrueLevel!.name)
+                : Text('Altrue Level: 0'))
+      ]),
     );
   }
 }

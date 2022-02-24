@@ -53,6 +53,10 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       json['is_nonprofitContributor'] as bool?,
       json['title'] as String?,
       json['amount_following'] as int?,
+      (json['profiles_following'] as List<dynamic>?)
+          ?.map(
+              (e) => ProfileRepresentation.fromJson(e as Map<String, dynamic>))
+          .toList(),
       (json['userdonations'] as List<dynamic>?)
           ?.map((e) => UserDonation.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -83,6 +87,10 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       (json['shirt_list'] as List<dynamic>?)
           ?.map((e) => Shirt.fromJson(e as Map<String, dynamic>))
           .toList(),
+      (json['donationTotal'] as num?)?.toDouble(),
+      json['np'] == null
+          ? null
+          : NonProfitRep.fromJson(json['np'] as Map<String, dynamic>),
       json['username'] as String?,
     )
       ..requirementsForNextLevel =
@@ -132,6 +140,10 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) {
   val['altrue_level'] = instance.altrueLevel?.toJson();
   val['altruepoints'] = instance.altruePoints;
   val['amount_following'] = instance.amountFollowing;
+  val['profiles_following'] =
+      instance.following?.map((e) => e.toJson()).toList();
+  val['np'] = instance.np?.toJson();
+  val['donationTotal'] = instance.donationTotal;
   return val;
 }
 

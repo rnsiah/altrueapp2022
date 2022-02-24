@@ -1,11 +1,11 @@
 import 'package:http/http.dart' as http;
-
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
 class ApiProvider {
   // ignore: unused_field
+
   final String _mobileBaseUrl =
       'http://dd05-2601-2c6-47e-4690-e9bb-3d97-d2ca-570a.ngrok.io';
   final String _baseUrl = "http://10.0.0.238:8000/";
@@ -26,6 +26,15 @@ class ApiProvider {
       throw FetchDataException('No Internet connection');
     }
     return responseJson;
+  }
+
+  Future uploadImage(File imge, String path) async {
+    final uri = Uri.parse(_baseUrl + 'api/$path');
+    var request = http.MultipartRequest('POST', uri);
+    var takenPicture = await http.MultipartFile.fromPath("file", imge.path);
+    request.files.add(takenPicture);
+    var response = await request.send();
+    print(response);
   }
 
   Future<http.Response> postAuthenticatedData(

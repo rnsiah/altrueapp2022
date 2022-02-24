@@ -7,6 +7,7 @@ import 'package:mobile/Data_Layer/Models/order_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 
 class OrderRepository {
+  final String host = 'http://10.0.0.238:8000';
   ApiProvider _apiProvider = ApiProvider();
   // ignore: unused_field
   NonAuthenticatedApiProvider _nonauthapi = NonAuthenticatedApiProvider();
@@ -34,8 +35,8 @@ class OrderRepository {
 
   Future<List<Order>> getUserCompletedOrders(user) async {
     List<Order> completedOrders = [];
-    final response = await http
-        .get(Uri.parse('http://10.0.0.238:8000/api/allusercompletedorders'),
+    final response =
+        await http.get(Uri.parse('$host/api/allusercompletedorders'),
             // Send authorization headers to the backend.
             headers: {
           HttpHeaders.authorizationHeader: 'Token ${user.key}',

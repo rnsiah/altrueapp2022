@@ -3,21 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/category_bloc/bloc/category_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/shirt_bloc/bloc/shirt_bloc.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/category_repository.dart';
 import 'package:mobile/Data_Layer/Repoositories/shirt_repository.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 import 'package:mobile/Presentation/Widgets/category_selector.dart';
 
 class ShirtList extends StatefulWidget {
+  final Profile profile;
+
+  ShirtList({required this.profile});
   @override
   State<ShirtList> createState() => _ShirtListState();
 }
 
 class _ShirtListState extends State<ShirtList> {
-  final ShirtRepository shirtRepository = ShirtRepository();
-
   @override
   void initState() {
-    // context.read<ShirtBloc>().add(FetchShirts());
     super.initState();
   }
 
@@ -30,7 +32,7 @@ class _ShirtListState extends State<ShirtList> {
             elevation: 0,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {},
               color: Colors.black,
             ),
             title: Text(
@@ -49,56 +51,47 @@ class _ShirtListState extends State<ShirtList> {
                 color: Colors.black,
               ),
             ]),
-        body: MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-              create: (_) => context.read<ShirtRepository>(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Text(
+                'Global Causes',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
             ),
-            RepositoryProvider(
-                create: (_) => context.read<CategoryRepository>()),
-          ],
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'Global Causes',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-              ),
-              BlocBuilder<CategoryBloc, CategoryState>(
-                builder: (context, state) {
-                  return CategorySelector(
-                    isNonProfit: false,
-                    isShirt: true,
-                    isAtrocity: false,
-                    isCompany: false,
-                    categoryList: state.categoryList,
-                  );
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                return CategorySelector(
+                  isNonProfit: false,
+                  isShirt: true,
+                  isAtrocity: false,
+                  isCompany: false,
+                  categoryList: state.categoryList,
+                );
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            BlocConsumer<ShirtBloc, ShirtState>(
+                buildWhen: (p, c) => p.shirtlist != c.categoryShirtList,
+                listener: (context, state) {
+                  // TODO: implement listener
                 },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              BlocConsumer<ShirtBloc, ShirtState>(
-                  buildWhen: (p, c) => p.shirtlist != c.categoryShirtList,
-                  listener: (context, state) {
-                    // TODO: implement listener
-                  },
-                  builder: (context, state) {
-                    if (state.categoryShirtList.isNotEmpty) {
-                      return buildShirtListByCateogory(state);
-                    } else if (state.categoryShirtList.isEmpty &&
-                        state.shirtlist.isNotEmpty) {
-                      return buildShirtList(state);
-                    }
-                    {
-                      return buildShirtList(state);
-                    }
-                  })
-            ],
-          ),
+                builder: (context, state) {
+                  if (state.categoryShirtList.isNotEmpty) {
+                    return buildShirtListByCateogory(state);
+                  } else if (state.categoryShirtList.isEmpty &&
+                      state.shirtlist.isNotEmpty) {
+                    return buildShirtList(state);
+                  }
+                  {
+                    return buildShirtList(state);
+                  }
+                })
+          ],
         ));
   }
 
@@ -116,26 +109,30 @@ class _ShirtListState extends State<ShirtList> {
               itemBuilder: (context, index) => ShirtCard(
                   shirt: state.shirtlist[index],
                   press: () => Navigator.of(context).pushNamed('/ShirtDetail',
-                      arguments: state.shirtlist[index])))),
+                      arguments: ShirtDetailArguments(
+                          shirt: state.shirtlist[index],
+                          profile: widget.profile))))),
     );
   }
 
   Expanded buildShirtListByCateogory(ShirtState state) {
     return Expanded(
-      child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2),
-          child: GridView.builder(
-              itemCount: state.categoryShirtList.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 27,
-                  mainAxisSpacing: 13,
-                  childAspectRatio: .75,
-                  crossAxisCount: 2),
-              itemBuilder: (context, index) => ShirtCard(
-                  shirt: state.categoryShirtList[index],
-                  press: () => Navigator.of(context).pushNamed('/ShirtDetail',
-                      arguments: state.categoryShirtList[index])))),
-    );
+        child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2),
+      child: GridView.builder(
+          itemCount: state.categoryShirtList.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: 27,
+              mainAxisSpacing: 13,
+              childAspectRatio: .75,
+              crossAxisCount: 2),
+          itemBuilder: (context, index) => ShirtCard(
+              shirt: state.categoryShirtList[index],
+              press: () => Navigator.of(context).pushNamed('/ShirtDetail',
+                  arguments: ShirtDetailArguments(
+                      shirt: state.categoryShirtList[index],
+                      profile: widget.profile)))),
+    ));
   }
 }
 
@@ -153,7 +150,7 @@ class ShirtCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
@@ -167,7 +164,7 @@ class ShirtCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 2),
             child: Text(
               shirt.name!,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
           Text(

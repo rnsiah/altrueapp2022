@@ -35,6 +35,10 @@ Shirt _$ShirtFromJson(Map<String, dynamic> json) => Shirt(
       otherShirts: (json['similar_shirts'] as List<dynamic>?)
           ?.map((e) => Shirt.fromJson(e as Map<String, dynamic>))
           .toList(),
+      requiredLevel: json['required_level'] == null
+          ? null
+          : AltrueLevel.fromJson(
+              json['required_level'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ShirtToJson(Shirt instance) => <String, dynamic>{
@@ -53,4 +57,5 @@ Map<String, dynamic> _$ShirtToJson(Shirt instance) => <String, dynamic>{
           instance.availableColors?.map((e) => e.toJson()).toList(),
       'available_sizes': instance.shirtSizes?.map((e) => e.toJson()).toList(),
       'variations': instance.variations?.map((e) => e.toJson()).toList(),
+      'required_level': instance.requiredLevel?.toJson(),
     };

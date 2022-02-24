@@ -14,7 +14,7 @@ part 'company_model.g.dart';
 class ForProfitCompany {
   int id;
   String name;
-  String logo;
+  String? logo;
   @JsonKey(name: 'year_started')
   String yearStarted;
   String mission;
@@ -26,8 +26,8 @@ class ForProfitCompany {
   List<CompanyAtrocity>? atrocities;
   Profile? owner;
   List<Profile>? contributors;
-  String description;
-  String headquarters;
+  String? description;
+  String? headquarters;
   List<CompanyStore>? locations;
   String image;
   List<Link>? links;
@@ -88,7 +88,7 @@ class CompanyAtrocity {
   Map<String, dynamic> toJson() => _$CompanyAtrocityToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class CompanyNonProfit {
   final int id;
   final String name;
@@ -135,4 +135,18 @@ class CompanyCompletion {
       _$CompanyCompletionFromJson(data);
 
   Map<String, dynamic> toJson() => _$CompanyCompletionToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CompanyRep {
+  String logo;
+  int id;
+  String name;
+
+  CompanyRep({required this.id, required this.logo, required this.name});
+
+  factory CompanyRep.fromJson(Map<String, dynamic> data) =>
+      _$CompanyRepFromJson(data);
+
+  Map<String, dynamic> toJson() => _$CompanyRepToJson(this);
 }

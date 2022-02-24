@@ -56,29 +56,37 @@ class UserDao {
     }
   }
 
-  Future<String> addToCart(OrderItem item) async {
+  Future<int> addToCart(OrderItem item) async {
     final db = await dbProvider.database;
-    await db!.insert(orderItems, item.toMap());
-    return item.toString();
+    var result = await db!.insert(orderItems, item.toMap());
+    return result;
   }
 
-  Future<void> deleteFromCart(OrderItem item) async {
+  Future<int> deleteFromCart(int id) async {
     final db = await dbProvider.database;
-    await db!.delete(orderItems, where: 'id = ?', whereArgs: [item.id]);
+    List<Map> res = await db!.query(orderItems);
+    int orderCount = res.length;
+    await db.delete(orderItems, where: 'id = ?', whereArgs: [id]);
+
+    List<Map> newres = await db.query(orderItems);
+    if (newres.length != orderCount) {
+      return 1;
+    }
+    return 0;
   }
 
-  Future<dynamic> checkCart() async {
+  Future<List<DatabaseOrderItem>> checkCart() async {
     final db = await dbProvider.database;
-    List<OrderItem> cart = [];
-    List<Map<String, Object?>> res = await db!.query(orderItems);
+    List<DatabaseOrderItem> cart = [];
+    List<Map> res = await db!.query(orderItems);
     if (res.length > 0) {
-      for (var item in res) {
-        cart.add(OrderItem.fromJson(item));
+      for (var re in res) {
+        DatabaseOrderItem love = DatabaseOrderItem.fromMap(re);
+        cart.add(love);
       }
       return cart;
-    } else {
-      return 0;
     }
+    return cart;
   }
 
   Future<int> checkIfProfileComplete(int altid) async {

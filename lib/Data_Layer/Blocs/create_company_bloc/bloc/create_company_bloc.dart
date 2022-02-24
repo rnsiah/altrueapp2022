@@ -48,6 +48,7 @@ class CreateCompanyBloc extends Bloc<CreateCompanyEvent, CreateCompanyState> {
             facebook: state.facebook,
             wehsite: state.wehsite,
             profile: event.profile,
+            missionStatement: state.mission,
             yearStarted: state.yearStarted);
 
         bool companyCreated =

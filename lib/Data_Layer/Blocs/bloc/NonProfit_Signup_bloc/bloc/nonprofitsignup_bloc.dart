@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';

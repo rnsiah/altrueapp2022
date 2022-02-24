@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/atrocity_repositories.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 class NonprofitAtrocityShowcase extends StatelessWidget {
   final NonProfit nonprofit;
+  final Profile profile;
 
-  const NonprofitAtrocityShowcase({Key? key, required this.nonprofit})
+  const NonprofitAtrocityShowcase(
+      {Key? key, required this.nonprofit, required this.profile})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -18,22 +22,23 @@ class NonprofitAtrocityShowcase extends StatelessWidget {
             onTap: () async {
               Atrocity atrocity = await atrocityRepository
                   .getAtrocity(nonprofit.atrocity![index].id!);
-              Navigator.of(context)
-                  .pushNamed('/atrocityView', arguments: atrocity);
+              Navigator.of(context).pushNamed('/atrocityView',
+                  arguments: AtrocityDetailArguments(
+                      atrocity: atrocity, profile: profile));
             },
             child: Column(
               children: [
-                Container(
-                  width: 300,
-                  height: 135,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Image(
-                    image: NetworkImage(nonprofit.atrocity![index].imageUrl!,
-                        scale: .7),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 120,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                                nonprofit.atrocity![index].imageUrl!))),
                   ),
                 ),
                 Padding(

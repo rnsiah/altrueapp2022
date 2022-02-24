@@ -67,3 +67,8 @@ class AddFollower extends ProfileEvent {
 
   AddFollower({required this.interaction});
 }
+
+class RemoveFollower extends ProfileEvent {
+  final ManageFollower interaction;
+  RemoveFollower({required this.interaction});
+}

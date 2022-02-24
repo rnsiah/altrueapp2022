@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mobile/Data_Layer/Models/altrue_level_model.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/country_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_color_model.dart';
@@ -23,7 +24,8 @@ class Shirt {
       this.originalImage,
       this.category,
       this.altrueInfo,
-      this.otherShirts});
+      this.otherShirts,
+      this.requiredLevel});
 
   final int? id;
   final String? name;
@@ -46,6 +48,8 @@ class Shirt {
   @JsonKey(name: 'available_sizes')
   List<ShirtSize>? shirtSizes;
   List<ShirtVariation>? variations;
+  @JsonKey(name: 'required_level')
+  AltrueLevel? requiredLevel;
 
   factory Shirt.fromJson(Map<String, dynamic> data) => _$ShirtFromJson(data);
 

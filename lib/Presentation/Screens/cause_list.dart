@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/category_bloc/bloc/category_bloc.dart';
 
-class CauseList extends StatelessWidget {
+class CauseList extends StatefulWidget {
+  @override
+  State<CauseList> createState() => _CauseListState();
+}
+
+class _CauseListState extends State<CauseList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,8 +72,8 @@ class CauseList extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                           ),
-                                          elevation: 8,
-                                          color: Colors.white,
+                                          elevation: 0,
+                                          color: Colors.transparent,
                                           child: Padding(
                                             padding: EdgeInsets.all(32),
                                             child: Column(

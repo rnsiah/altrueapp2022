@@ -42,11 +42,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     if (_controller != null) {
       _controller!.dispose();
       _controller = null;
     }
+    super.dispose();
   }
 
   _getVideoBackground() {
@@ -179,12 +179,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _showLoginLink(BuildContext context) {
     return SafeArea(
       child: TextButton(
-        child: Text(
-          "Already have an account? Log in Now",
-          style: TextStyle(color: Colors.amber),
-        ),
-        onPressed: () => context.read<ValidationCubit>().showLogin(),
-      ),
+          child: Text(
+            "Already have an account? Log in Now",
+            style: TextStyle(color: Colors.amber),
+          ),
+          onPressed: () {
+            _controller!.pause();
+            context.read<ValidationCubit>().showLogin();
+          }),
     );
   }
 

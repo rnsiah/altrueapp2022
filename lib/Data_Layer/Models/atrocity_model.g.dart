@@ -10,6 +10,10 @@ Atrocity _$AtrocityFromJson(Map<String, dynamic> json) => Atrocity(
       id: json['id'] as int?,
       title: json['title'] as String,
       region: json['region'] as String?,
+      recentDonors: (json['recentDonors'] as List<dynamic>?)
+          ?.map(
+              (e) => ProfileRepresentation.fromJson(e as Map<String, dynamic>))
+          .toList(),
       info: json['info'] as String?,
       imageUrl: json['image_url'] as String?,
       category: (json['category'] as List<dynamic>?)
@@ -46,4 +50,5 @@ Map<String, dynamic> _$AtrocityToJson(Atrocity instance) => <String, dynamic>{
           instance.shirtList?.map((e) => e.toJson()).toList(),
       'np_list': instance.nonprofitList?.map((e) => e.toJson()).toList(),
       'links': instance.links?.map((e) => e.toJson()).toList(),
+      'recentDonors': instance.recentDonors?.map((e) => e.toJson()).toList(),
     };

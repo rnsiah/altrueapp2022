@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
+import 'package:mobile/Data_Layer/Models/manage_followers_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
-import 'package:mobile/Presentation/Widgets/profile_page/opaque_image.dart';
 import 'package:mobile/Presentation/Widgets/profile_page/profile_big_info.dart';
 import 'package:mobile/Presentation/Widgets/profile_page/profile_info.dart';
+import 'package:mobile/Presentation/Widgets/profle_match_bottom_modal.dart';
 
 class ProfilePage extends StatefulWidget {
   final Profile profile;
@@ -46,188 +49,233 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: [
-        Column(
-          children: [
-            Expanded(
-                flex: 4,
-                child: Stack(
-                  children: [
-                    SafeArea(
-                        child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              widget.profile.username!,
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                          ),
-                          MyInfo(profile: widget.profile)
-                        ],
-                      ),
-                    ))
-                  ],
-                )),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'My Supported NonProfits',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+    Profile myProfile = context.read<ProfileBloc>().state.profile!;
+    List<int> list = context
+        .read<ProfileBloc>()
+        .state
+        .profile!
+        .following!
+        .map((e) => e.id)
+        .toList();
+    return BlocProvider.value(
+      value: context.read<ProfileBloc>(),
+      child: Scaffold(
+          body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                  flex: 4,
+                  child: Stack(
                     children: [
-                      for (final nonprofit in widget.profile.nonProfitList!)
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: ClipOval(
-                              child: Image.network(
-                                nonprofit.logo,
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.cover,
+                      SafeArea(
+                          child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(
+                                widget.profile.username!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
                               ),
                             ),
-                          ),
-                        )
+                            MyInfo(profile: widget.profile)
+                          ],
+                        ),
+                      ))
                     ],
+                  )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'My Supported NonProfits',
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                ),
-              ],
-            ),
-            Expanded(
-                flex: 5,
-                child: Container(
-                  padding: EdgeInsets.only(top: 50),
-                  color: Colors.white,
-                  child: Table(
-                    children: [
-                      TableRow(children: [
-                        ProfileInfoBigCard(
-                          firstText: 'Amount Of Follower',
-                          secondText:
-                              widget.profile.nonProfitList!.length.toString(),
-                          icon: Icon(
-                            Icons.person_add,
-                          ),
-                        ),
-                        ProfileInfoBigCard(
-                          firstText: 'Amount Of Follower',
-                          secondText:
-                              widget.profile.nonProfitList!.length.toString(),
-                          icon: Icon(
-                            Icons.person_add,
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        ProfileInfoBigCard(
-                          firstText: 'Amount Of Follower',
-                          secondText:
-                              widget.profile.nonProfitList!.length.toString(),
-                          icon: Icon(
-                            Icons.person_add,
-                          ),
-                        ),
-                        ProfileInfoBigCard(
-                          firstText: 'Amount Of Follower',
-                          secondText:
-                              widget.profile.nonProfitList!.length.toString(),
-                          icon: Icon(
-                            Icons.person_add,
-                          ),
-                        ),
-                      ]),
-                    ],
-                  ),
-                )),
-          ],
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * (3.15 / 10),
-          left: 16,
-          right: 16,
-          child: Container(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                // GestureDetector(
-                //   onTap: (){},
-                //     child: ProfileInfoCard(
-                //   firstText: 'Follow',
-                // )),
-                MaterialButton(
-                  onPressed: () {},
-                  color: Colors.black,
-                  child: Row(children: [
-                    Icon(Icons.add, color: Colors.amber),
-                    Text('Follow',
-                        style: TextStyle(fontSize: 16, color: Colors.amber))
-                  ]),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                MaterialButton(
-                    color: Colors.black,
-                    onPressed: () {},
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        Icon(Icons.mail, color: Colors.amber),
-                        Text(
-                          'Mssage',
-                          style: TextStyle(color: Colors.amber, fontSize: 16),
-                        ),
+                        for (final nonprofit in widget.profile.nonProfitList!)
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: ClipOval(
+                                child: Image.network(
+                                  nonprofit.logo,
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          )
                       ],
-                    )),
-
-                // GestureDetector(
-                //   onTap: () {},
-                //   child: ProfileInfoCard(
-                //     firstText: 'love',
-                //   ),
-                // ),
-                SizedBox(
-                  width: 10,
-                ),
-                MaterialButton(
-                  color: Colors.greenAccent,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.payment,
-                        color: Colors.amber,
-                      ),
-                      Text(
-                        'Match',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),
-                      )
-                    ],
+                    ),
                   ),
-                  onPressed: () {},
-                )
-              ],
-            ),
+                ],
+              ),
+              Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10),
+                    color: Colors.white,
+                    child: Table(
+                      children: [
+                        TableRow(children: [
+                          ProfileInfoBigCard(
+                            firstText: 'NonProfits Following',
+                            secondText:
+                                widget.profile.nonProfitList!.length.toString(),
+                            icon: Icon(
+                              Icons.person_add,
+                            ),
+                          ),
+                          ProfileInfoBigCard(
+                            firstText: 'Amount Of Followers',
+                            secondText:
+                                widget.profile.following!.length.toString(),
+                            icon: Icon(
+                              Icons.person_add,
+                            ),
+                          ),
+                        ]),
+                        TableRow(children: [
+                          ProfileInfoBigCard(
+                            firstText: 'Amount Raised',
+                            secondText:
+                                '\$' + widget.profile.donationTotal.toString(),
+                            icon: Icon(
+                              Icons.person_add,
+                            ),
+                          ),
+                          ProfileInfoBigCard(
+                            firstText: 'Atrocities Following',
+                            secondText:
+                                widget.profile.atrocityList!.length.toString(),
+                            icon: Icon(
+                              Icons.person_add,
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  )),
+            ],
           ),
-        )
-      ],
-    ));
+          Positioned(
+            top: MediaQuery.of(context).size.height * (3.15 / 10),
+            left: 16,
+            right: 16,
+            child: Container(
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // GestureDetector(
+                  //   onTap: (){},
+                  //     child: ProfileInfoCard(
+                  //   firstText: 'Follow',
+                  // )),
+                  list.contains(widget.profile.user)
+                      ? MaterialButton(
+                          onPressed: () {
+                            ManageFollower follow = ManageFollower(
+                                follow: 'unfollow', id: widget.profile.user!);
+                            context
+                                .read<ProfileBloc>()
+                                .add(RemoveFollower(interaction: follow));
+                            print(context
+                                .read<ProfileBloc>()
+                                .state
+                                .profile!
+                                .username);
+                          },
+                          color: Colors.amber,
+                          child: Row(children: [
+                            Icon(Icons.add, color: Colors.black),
+                            Text('Following',
+                                style: TextStyle(color: Colors.black))
+                          ]),
+                        )
+                      : MaterialButton(
+                          onPressed: () {
+                            ManageFollower follow = ManageFollower(
+                                follow: 'follow', id: widget.profile.user!);
+                            context
+                                .read<ProfileBloc>()
+                                .add(AddFollower(interaction: follow));
+                            print(context
+                                .read<ProfileBloc>()
+                                .state
+                                .profile!
+                                .username);
+                          },
+                          color: Colors.black,
+                          child: Row(children: [
+                            Icon(Icons.add, color: Colors.black),
+                            Text('Follow',
+                                style: TextStyle(color: Colors.amber))
+                          ]),
+                        ),
+
+                  MaterialButton(
+                      color: Colors.black,
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          Icon(Icons.mail, color: Colors.amber),
+                          Text(
+                            'Mssage',
+                            style: TextStyle(color: Colors.amber),
+                          ),
+                        ],
+                      )),
+
+                  // GestureDetector(
+                  //   onTap: () {},
+                  //   child: ProfileInfoCard(
+                  //     firstText: 'love',
+                  //   ),
+                  // ),
+
+                  MaterialButton(
+                    color: Colors.greenAccent,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.payment,
+                          color: Colors.amber,
+                        ),
+                        Text(
+                          'Match',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.red),
+                        )
+                      ],
+                    ),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (_) {
+                            return ProfileMatchBottomSheet(
+                              profile: widget.profile,
+                            );
+                          });
+                    },
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      )),
+    );
   }
 }
 

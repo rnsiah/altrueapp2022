@@ -142,7 +142,7 @@ class _CompanyDetailsContentState extends State<CompanyDetailsContent> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 12.0, right: 30, top: 18),
-              child: Text(widget.company.description),
+              child: Text(widget.company.description!),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),

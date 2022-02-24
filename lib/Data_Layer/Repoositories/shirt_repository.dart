@@ -1,5 +1,6 @@
 import 'package:mobile/Data_Layer/Data_Providers/user_profile_api.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
+import 'package:mobile/Data_Layer/Models/shirt_color_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_variation_model.dart';
 
@@ -14,6 +15,14 @@ class ShirtRepository {
       shirts.add(Shirt.fromJson(responses));
     }
     return shirts;
+  }
+
+  Future<ShirtVariation> shirtVariationImage(
+      {required Shirt shirt, required ShirtColor color}) async {
+    final response = await _provider
+        .get('api/shirts/${shirt.id}/getVariation/?color=${color.color}');
+    ShirtVariation variation = ShirtVariation.fromJson(response);
+    return variation;
   }
 
   Future<List<Shirt>> fetchRefugeeShirts() async {

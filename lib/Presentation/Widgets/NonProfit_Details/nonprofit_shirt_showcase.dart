@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/shirt_repository.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 class NonProfitShirtCase extends StatelessWidget {
   final NonProfit nonProfit;
+  final Profile profile;
 
-  const NonProfitShirtCase({Key? key, required this.nonProfit})
+  const NonProfitShirtCase(
+      {Key? key, required this.nonProfit, required this.profile})
       : super(key: key);
 
   @override
@@ -27,7 +31,9 @@ class NonProfitShirtCase extends StatelessWidget {
             Shirt shirt = await shirtRepository
                 .fetchShirt(nonProfit.shirtList![index].id!);
 
-            Navigator.of(context).pushNamed('/ShirtDetail', arguments: shirt);
+            Navigator.of(context).pushNamed('/ShirtDetail',
+                arguments:
+                    ShirtDetailArguments(shirt: shirt, profile: profile));
           },
           child: Column(
             children: [

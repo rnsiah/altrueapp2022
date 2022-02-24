@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 class NonProfitRespository {
   NonAuthenticatedApiProvider _provider = NonAuthenticatedApiProvider();
   ApiProvider authProvider = ApiProvider();
+  final String host = 'http://10.0.0.238:8000';
 
   Future<List<NonProfit>> fetchNonProfits() async {
     List<NonProfit> nonProfitList = [];
@@ -47,7 +48,7 @@ class NonProfitRespository {
 
   Future<bool> newNonProfit(
       {required NonProfitCompletion nonprofit, User? user}) async {
-    String url = 'http://10.0.0.238:8000/api/registernp/';
+    String url = '$host/api/registernp/';
 
     var response = await http.post(Uri.parse(url),
         headers: <String, String>{

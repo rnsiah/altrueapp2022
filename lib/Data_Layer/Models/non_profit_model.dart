@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile/Data_Layer/Models/companies_supporting.dart';
+import 'package:mobile/Data_Layer/Models/company_nonprofit_matching_model.dart';
 import 'package:mobile/Data_Layer/Models/link_model.dart';
 import 'package:mobile/Data_Layer/Models/nonprofit_project_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
@@ -16,6 +17,7 @@ class NonProfit {
     required this.name,
     required this.logo,
     this.description,
+    this.facebook,
     this.yearStarted,
     this.missionStatement,
     this.projects,
@@ -25,11 +27,13 @@ class NonProfit {
     this.slug,
     this.atrocity,
     this.shirtList,
+    this.avgDonation,
     this.mainImage,
     this.balance,
     this.companiesSupporting,
     this.contributors,
     this.owner,
+    this.matchingPartnerships,
     this.links,
   });
 
@@ -62,6 +66,10 @@ class NonProfit {
   Profile? owner;
   List<Link>? links;
   List<NonProfitProject>? projects;
+  double? avgDonation;
+  List<ProfileRepresentation>? recentDonors;
+  List<CompanyNonProfitMatchRelationship>? matchingPartnerships;
+  String? facebook;
 
   factory NonProfit.fromJson(Map<String, dynamic> data) =>
       _$NonProfitFromJson(data);

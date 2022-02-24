@@ -3,10 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/atrocity_bloc/bloc/atrocity_bloc_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/category_bloc/bloc/category_bloc.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
-import 'package:mobile/Data_Layer/Repoositories/atrocity_repositories.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 import 'package:mobile/Presentation/Widgets/category_selector.dart';
 
 class AtrocityList extends StatelessWidget {
+  final Profile profile;
+
+  AtrocityList({required this.profile});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,91 +19,91 @@ class AtrocityList extends StatelessWidget {
               image: AssetImage('images/Altrue Logo White.png'),
             ),
             backgroundColor: Colors.black),
-        body: RepositoryProvider(
-            create: (_) => AtrocityRepository(),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => context.read<AtrocityBlocBloc>(),
-                ),
-                BlocProvider(create: (_) => context.read<CategoryBloc>())
-              ],
-              child: Column(
-                children: [
-                  Padding(
+        body: SafeArea(
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: context.read<AtrocityBlocBloc>(),
+              ),
+              BlocProvider.value(value: context.read<CategoryBloc>())
+            ],
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
                       'Global Causes',
                       style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  BlocBuilder<CategoryBloc, CategoryState>(
-                    builder: (context, state) {
-                      return CategorySelector(
-                        isNonProfit: false,
-                        isAtrocity: true,
-                        isCompany: false,
-                        isShirt: false,
-                        categoryList: state.categoryList,
-                      );
-                    },
-                  ),
-                  BlocConsumer<AtrocityBlocBloc, AtrocityBlocState>(
-                    listener: (context, state) {},
-                    buildWhen: (p, c) => p.atrocities != p.atrocityCategoryList,
-                    builder: (context, state) {
-                      if (state.atrocityCategoryList.isNotEmpty) {
-                        return buildCategoryAtrocityList(state);
-                      } else if (state.atrocityCategoryList.isEmpty &&
-                          state.atrocities.isNotEmpty) {
-                        return buildAtrocityList(state);
-                      }
+                ),
+                BlocBuilder<CategoryBloc, CategoryState>(
+                  builder: (context, state) {
+                    return CategorySelector(
+                      isNonProfit: false,
+                      isAtrocity: true,
+                      isCompany: false,
+                      isShirt: false,
+                      categoryList: state.categoryList,
+                    );
+                  },
+                ),
+                BlocConsumer<AtrocityBlocBloc, AtrocityBlocState>(
+                  listener: (context, state) {},
+                  buildWhen: (p, c) => p.atrocities != p.atrocityCategoryList,
+                  builder: (context, state) {
+                    if (state.atrocityCategoryList.isNotEmpty) {
+                      return buildCategoryAtrocityList(state);
+                    } else if (state.atrocityCategoryList.isEmpty &&
+                        state.atrocities.isNotEmpty) {
                       return buildAtrocityList(state);
-                    },
-                  ),
-                  SizedBox(
-                    height: 200,
-                  ),
-                ],
-              ),
-            )));
-  }
-
-  Container buildAtrocityList(AtrocityBlocState state) {
-    return Container(
-        height: 800,
-        width: double.infinity,
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: state.atrocities.length,
-          itemBuilder: (context, int index) {
-            return AtrocityBox(
-              atrocity: state.atrocities[index],
-            );
-          },
+                    }
+                    return buildAtrocityList(state);
+                  },
+                ),
+              ],
+            ),
+          ),
         ));
   }
-}
 
-Container buildCategoryAtrocityList(AtrocityBlocState state) {
-  return Container(
-      height: 800,
-      width: double.infinity,
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: state.atrocityCategoryList.length,
-        itemBuilder: (context, int index) {
-          return AtrocityBox(
-            atrocity: state.atrocityCategoryList[index],
-          );
-        },
-      ));
+  Expanded buildAtrocityList(AtrocityBlocState state) {
+    return Expanded(
+        child: ListView.builder(
+      scrollDirection: Axis.vertical,
+      itemCount: state.atrocities.length,
+      itemBuilder: (context, int index) {
+        return AtrocityBox(
+          profile: profile,
+          atrocity: state.atrocities[index],
+        );
+      },
+    ));
+  }
+
+  Expanded buildCategoryAtrocityList(AtrocityBlocState state) {
+    return Expanded(
+        child: ListView.builder(
+      scrollDirection: Axis.vertical,
+      itemCount: state.atrocityCategoryList.length,
+      itemBuilder: (context, int index) {
+        return AtrocityBox(
+          profile: profile,
+          atrocity: state.atrocityCategoryList[index],
+        );
+      },
+    ));
+  }
 }
 
 class AtrocityBox extends StatelessWidget {
   final Atrocity atrocity;
+  final Profile profile;
   const AtrocityBox({
+    required this.profile,
     required this.atrocity,
     Key? key,
   }) : super(key: key);
@@ -111,34 +115,71 @@ class AtrocityBox extends StatelessWidget {
         context
             .read<AtrocityBlocBloc>()
             .add(AtrocityItemFteched(atrocity: atrocity));
-        Navigator.of(context).pushNamed('/atrocityView', arguments: atrocity);
+        Navigator.of(context).pushNamed('/atrocityView',
+            arguments:
+                AtrocityDetailArguments(atrocity: atrocity, profile: profile));
       },
-      child: Container(
-          margin: EdgeInsets.all(10),
-          height: 190,
-          width: 100,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 7,
-                  offset: Offset(0, 3))
-            ],
-            image: DecorationImage(
-                image: NetworkImage(atrocity.imageUrl!), fit: BoxFit.cover),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text(
-              atrocity.title,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black,
-                  backgroundColor: Colors.white),
-            ),
-          )),
+      child: atrocity.id == 2 || atrocity.id == 4
+          ? Container(
+              margin: EdgeInsets.all(10),
+              height: 130,
+              width: 100,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: Offset(0, 3))
+                ],
+                image: DecorationImage(
+                    colorFilter:
+                        ColorFilter.mode(Colors.yellow, BlendMode.darken),
+                    image: NetworkImage(atrocity.imageUrl!),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  atrocity.title,
+                  style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      backgroundColor: Colors.black.withOpacity(.4)),
+                ),
+              ))
+          : Container(
+              margin: EdgeInsets.all(10),
+              height: 130,
+              width: 100,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: Offset(0, 3))
+                ],
+                image: DecorationImage(
+                    colorFilter:
+                        ColorFilter.mode(Colors.green, BlendMode.darken),
+                    image: NetworkImage(atrocity.imageUrl!),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  atrocity.title,
+                  style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      backgroundColor: Colors.black.withOpacity(.4)),
+                ),
+              )),
     );
   }
 }

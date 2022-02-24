@@ -7,12 +7,12 @@ part of 'altrue_action_model.dart';
 // **************************************************************************
 
 AltrueAction _$AltrueActionFromJson(Map<String, dynamic> json) => AltrueAction(
-      name: json['name'] as String,
-      pointsAwarded: json['pointsAwarded'] as int,
+      name: json['requirement'] as String?,
+      pointsAwarded: json['points_awarded'] as int?,
     );
 
 Map<String, dynamic> _$AltrueActionToJson(AltrueAction instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'pointsAwarded': instance.pointsAwarded,
+      'requirement': instance.name,
+      'points_awarded': instance.pointsAwarded,
     };

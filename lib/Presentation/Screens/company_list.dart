@@ -12,12 +12,8 @@ class CompanyList extends StatefulWidget {
 }
 
 class _CompanyListState extends State<CompanyList> {
-  late PageController _pageController;
-
   @override
   void initState() {
-    _pageController = PageController(viewportFraction: 0.8, initialPage: 1);
-
     super.initState();
   }
 
@@ -154,7 +150,7 @@ class _CompanyListState extends State<CompanyList> {
                                               BorderRadius.circular(16),
                                         ),
                                         child: Image.network(
-                                          state.companies[index].logo,
+                                          state.companies[index].logo!,
                                           scale: .7,
                                         ),
                                       ),

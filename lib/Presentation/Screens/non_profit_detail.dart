@@ -10,8 +10,9 @@ import 'package:mobile/Presentation/Widgets/NonProfit_Details/nonprofit_learn_mo
 import 'package:mobile/Presentation/Widgets/NonProfit_Details/nonprofit_learn_more/nonprofit_learn_more_tabs.dart';
 import 'package:mobile/Presentation/Widgets/NonProfit_Details/nonprofitdetail_tabs.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class NonProfitDetails extends StatelessWidget {
+class NonProfitDetails extends StatefulWidget {
   final NonProfit nonProfit;
   final Profile profile;
 
@@ -20,11 +21,25 @@ class NonProfitDetails extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<NonProfitDetails> createState() => _NonProfitDetailsState();
+}
+
+class _NonProfitDetailsState extends State<NonProfitDetails> {
+  _launchURL(var url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       persistentFooterButtons: [
-        Expanded(
+        Container(
+          height: MediaQuery.of(context).size.height * .04,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -39,10 +54,22 @@ class NonProfitDetails extends StatelessWidget {
                 color: Colors.black,
                 onPressed: () {
                   showModalBottomSheet(
+                      isDismissible: true,
+                      isScrollControlled: true,
                       context: context,
-                      builder: (_) => NpDonate(
-                            nonProfit: nonProfit,
-                            profile: profile,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(25.0)),
+                      ),
+                      builder: (_) => DraggableScrollableSheet(
+                            initialChildSize: 0.5,
+                            minChildSize: 0.2,
+                            maxChildSize: 0.7,
+                            expand: false,
+                            builder: (_, controller) => NpDonate(
+                              nonProfit: widget.nonProfit,
+                              profile: widget.profile,
+                            ),
                           ));
                 },
               ),
@@ -54,8 +81,13 @@ class NonProfitDetails extends StatelessWidget {
                         fontSize: 18)),
                 onPressed: () {
                   showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(25.0)),
+                      ),
                       context: context,
-                      builder: (context) => NPLearnMore(nonprofit: nonProfit));
+                      builder: (context) =>
+                          NPLearnMore(nonprofit: widget.nonProfit));
                 },
                 color: Colors.amber,
               )
@@ -72,7 +104,7 @@ class NonProfitDetails extends StatelessWidget {
                 Container(
                   transform: Matrix4.translationValues(0.0, -50, 0.0),
                   child: Hero(
-                    tag: nonProfit.logo,
+                    tag: widget.nonProfit.logo,
                     child: ClipShadowPath(
                       clipper: CircularClipper(),
                       shadow: Shadow(blurRadius: 20.0),
@@ -80,7 +112,7 @@ class NonProfitDetails extends StatelessWidget {
                         height: 400.0,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        image: NetworkImage(nonProfit.mainImage!),
+                        image: NetworkImage(widget.nonProfit.mainImage!),
                       ),
                     ),
                   ),
@@ -106,8 +138,8 @@ class NonProfitDetails extends StatelessWidget {
                       onPressed: () {
                         context
                             .read<ProfileBloc>()
-                            .add(AddNonProfit(nonProfit: nonProfit));
-                        print(nonProfit.name);
+                            .add(AddNonProfit(nonProfit: widget.nonProfit));
+                        print(widget.nonProfit.name);
                       },
                       icon: Icon(Icons.favorite),
                       iconSize: 30,
@@ -133,46 +165,96 @@ class NonProfitDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(bottom: 5, right: 150, child: Text('Watch Video')),
+                widget.nonProfit.owner!.username == widget.profile.username
+                    ? Positioned(
+                        bottom: 5, right: 150, child: Text('Edit Video Link'))
+                    : Positioned(
+                        bottom: 5, right: 150, child: Text('Watch Video')),
                 Positioned(
                   bottom: 115.0,
-                  left: 22.0,
-                  child: Column(children: [
-                    RawMaterialButton(
-                      elevation: 20,
-                      padding: EdgeInsets.all(10),
-                      fillColor: Colors.transparent,
-                      shape: CircleBorder(),
-                      onPressed: () {
-                        Share.share(nonProfit.atrocity!.length == 0
-                            ? 'Hey Everybody! Go check out ${nonProfit.name}, and all the good work they are currently doing '
-                            : 'Hey Everybody! Go check out ${nonProfit.name}, and all the good work they are currently doing to help ');
-                      },
-                      child: Icon(
-                        Icons.share,
-                        size: 34,
-                        color: Colors.amber,
+                  right: 12,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0, bottom: 4),
+                        child: RawMaterialButton(
+                            shape: CircleBorder(),
+                            elevation: 3,
+                            fillColor: Colors.black,
+                            child: Icon(
+                              Icons.facebook_rounded,
+                              color: Colors.amber,
+                              size: 30,
+                            ),
+                            onPressed: widget.nonProfit.facebook != null
+                                ? () => _launchURL(
+                                    'http://facebook.com/${widget.nonProfit.facebook}')
+                                : () {}),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0, right: 4),
+                        child: RawMaterialButton(
+                            shape: CircleBorder(),
+                            elevation: 3,
+                            fillColor: Colors.black.withOpacity(.70),
+                            child: Icon(
+                              Icons.social_distance,
+                              size: 30,
+                              color: Colors.amber,
+                            ),
+                            onPressed: widget.nonProfit.facebook != null
+                                ? () => _launchURL(
+                                    'http://facebook.com/${widget.nonProfit.facebook}')
+                                : () {}),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 115.0,
+                  left: 28.0,
+                  child: Container(
+                    child: GestureDetector(
+                      onTap: () {
+                        Share.share(widget.nonProfit.atrocity!.length == 0
+                            ? 'Hey Everybody! Go check out ${widget.nonProfit.name}, and all the good work they are currently doing '
+                            : 'Hey Everybody! Go check out ${widget.nonProfit.name}, and all the good work they are currently doing to help ');
+                      },
+                      child: Column(children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.black),
+                          height: 44,
+                          width: 44,
+                          child: Center(
+                            child: Icon(
+                              Icons.share,
+                              size: 30,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Container(
+                          width: 50,
+                          alignment: Alignment.center,
+                          color: Colors.black,
+                          child: Text('Share ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.amber)),
+                        ),
+                      ]),
                     ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      width: 50,
-                      alignment: Alignment.center,
-                      color: Colors.black,
-                      child: Text('Share ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.amber)),
-                    ),
-                  ]),
+                  ),
                 ),
                 Positioned(
                   bottom: .0,
                   left: 20.0,
                   child: Column(children: [
-                    Text('\$ ${nonProfit.balance}',
+                    Text('\$ ${widget.nonProfit.balance}',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -180,6 +262,32 @@ class NonProfitDetails extends StatelessWidget {
                     Text('Raised Already')
                   ]),
                 ),
+                widget.nonProfit.owner!.username == widget.profile.username
+                    ? Positioned(
+                        bottom: 90.0,
+                        right: 25.0,
+                        child: Column(children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.edit),
+                            iconSize: 40.0,
+                            color: Colors.amber,
+                          ),
+                          Container(
+                            color: Colors.black,
+                            width: 50,
+                            child: Text('Edit Image ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.amber,
+                                )),
+                          ),
+                        ]),
+                      )
+                    : SizedBox(
+                        height: 0,
+                      ),
               ],
             ),
             Padding(
@@ -192,7 +300,7 @@ class NonProfitDetails extends StatelessWidget {
                       flex: 3,
                       child: Container(
                         child: Text(
-                          nonProfit.name.toUpperCase(),
+                          widget.nonProfit.name.toUpperCase(),
                           style: TextStyle(
                               fontSize: 21, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.start,
@@ -202,15 +310,19 @@ class NonProfitDetails extends StatelessWidget {
                     Column(
                       children: [
                         Container(
-                          child: Image(
-                            image: NetworkImage(nonProfit.logo),
-                            width: 150,
-                            height: 75,
+                          child: GestureDetector(
+                            onTap: () =>
+                                _launchURL(widget.nonProfit.websiteUrl),
+                            child: Image(
+                              image: NetworkImage(widget.nonProfit.logo),
+                              width: 150,
+                              height: 75,
+                            ),
                           ),
                         ),
                         SizedBox(height: 6),
-                        Text(
-                            'Year Started:' + nonProfit.yearStarted.toString()),
+                        Text('Year Started:' +
+                            widget.nonProfit.yearStarted.toString()),
                       ],
                     )
                   ]),
@@ -223,18 +335,39 @@ class NonProfitDetails extends StatelessWidget {
                     child: SingleChildScrollView(
                         child: Column(
                       children: [
-                        Text(
-                          'Mission Statement',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.amber,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        widget.nonProfit.owner!.username ==
+                                widget.profile.username
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Mission Statement',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.amber,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.amber,
+                                      ))
+                                ],
+                              )
+                            : Text(
+                                'Mission Statement',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold),
+                              ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            nonProfit.missionStatement!,
+                            widget.nonProfit.missionStatement!,
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.black54,
@@ -245,19 +378,39 @@ class NonProfitDetails extends StatelessWidget {
                         SizedBox(
                           height: 15,
                         ),
-                        Text(
-                          'Vision Statement',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.amber,
-                          ),
-                        ),
+                        widget.nonProfit.owner!.username ==
+                                widget.profile.username
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Vision Statement',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.amber,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.amber,
+                                      ))
+                                ],
+                              )
+                            : Text(
+                                'Vision Statement',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold),
+                              ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            nonProfit.visionStatement!,
+                            widget.nonProfit.visionStatement!,
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.black54,
@@ -278,7 +431,10 @@ class NonProfitDetails extends StatelessWidget {
                   SizedBox(
                     height: 14,
                   ),
-                  NonProfitDetailTabs(nonProfit: nonProfit)
+                  NonProfitDetailTabs(
+                    nonProfit: widget.nonProfit,
+                    profile: widget.profile,
+                  )
                   // NonProfitDetails(nonProfit: nonProfit)
                   //  Expanded(
                   //    child: ListView.builder(itemCount: widget.atrocities.category.length,

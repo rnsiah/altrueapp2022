@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -340,7 +342,6 @@ class _NonProfitSignUpState extends State<NonProfitSignUp> {
   }
 
   Widget _logo() {
-    XFile picture;
     final ImagePicker _picker = ImagePicker();
     return BlocBuilder<NonprofitsignupBloc, NonprofitsignupState>(
       builder: (context, state) {
@@ -354,25 +355,21 @@ class _NonProfitSignUpState extends State<NonProfitSignUp> {
             onPressed: () async {
               final XFile? logo =
                   await _picker.pickImage(source: ImageSource.gallery);
-              picture = logo!;
+              final Image img = Image.file(File(logo!.path));
+
               context
                   .read<NonprofitsignupBloc>()
-                  .add(NonProfitLogoChangeOnForm(npLogo: picture));
+                  .add(NonProfitLogoChangeOnForm(npLogo: img));
             },
           ),
-          TextFormField(
-            style: const TextStyle(color: Colors.amber),
-            decoration: const InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.amber)),
-                labelText: 'Paste logo image address',
-                labelStyle: TextStyle(fontSize: 15, color: Colors.amber)),
-            onChanged: (value) => {
-              context
-                  .read<NonprofitsignupBloc>()
-                  .add(NonProfitLogoChangeOnForm(npLogo: value))
-            },
-          )
+          TextField(
+              style: const TextStyle(color: Colors.amber),
+              decoration: const InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.amber)),
+                  labelText: 'Paste logo image address',
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.amber)),
+              onChanged: (value) => {}),
         ]);
       },
     );
@@ -391,12 +388,13 @@ class _NonProfitSignUpState extends State<NonProfitSignUp> {
               style: TextStyle(color: Colors.amber),
             ),
             onPressed: () async {
-              final XFile? logo =
+              final XFile? mainImage =
                   await _picker.pickImage(source: ImageSource.gallery);
-              picture = logo!;
+
+              final Image img = Image.file(File(mainImage!.path));
               context
                   .read<NonprofitsignupBloc>()
-                  .add(NonProfitLogoChangeOnForm(npLogo: picture));
+                  .add(NonProfitLogoChangeOnForm(npLogo: img));
             },
           ),
           TextFormField(
@@ -406,11 +404,7 @@ class _NonProfitSignUpState extends State<NonProfitSignUp> {
                     borderSide: BorderSide(color: Colors.amber)),
                 labelText: 'Paste logo image address',
                 labelStyle: TextStyle(fontSize: 15, color: Colors.amber)),
-            onChanged: (value) => {
-              context
-                  .read<NonprofitsignupBloc>()
-                  .add(NonProfitLogoChangeOnForm(npLogo: value))
-            },
+            onChanged: (value) {},
           )
         ]);
       },

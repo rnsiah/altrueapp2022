@@ -56,11 +56,11 @@ class CompanyNonProfitMatches extends StatelessWidget {
                   child: ListTile(
                     leading: Image(
                       image: NetworkImage(company
-                          .nonprofitMatchRelationships![index].nonProfit.logo),
+                          .nonprofitMatchRelationships![index].nonProfit!.logo),
                     ),
                     title: Text(
                       company
-                          .nonprofitMatchRelationships![index].nonProfit.name,
+                          .nonprofitMatchRelationships![index].nonProfit!.name,
                       style: TextStyle(fontSize: 14),
                     ),
                     trailing: Column(

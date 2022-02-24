@@ -14,12 +14,12 @@ ForProfitCompany _$ForProfitCompanyFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['id'] as int,
-      json['logo'] as String,
+      json['logo'] as String?,
       json['mission'] as String,
       json['year_started'] as String,
       json['name'] as String,
-      json['description'] as String,
-      json['headquarters'] as String,
+      json['description'] as String?,
+      json['headquarters'] as String?,
       json['owner'] == null
           ? null
           : Profile.fromJson(json['owner'] as Map<String, dynamic>),
@@ -138,4 +138,17 @@ Map<String, dynamic> _$CompanyCompletionToJson(CompanyCompletion instance) =>
       'instagram': instance.instagram,
       'website_address': instance.wehsite,
       'year_started': instance.yearStarted,
+    };
+
+CompanyRep _$CompanyRepFromJson(Map<String, dynamic> json) => CompanyRep(
+      id: json['id'] as int,
+      logo: json['logo'] as String,
+      name: json['name'] as String,
+    );
+
+Map<String, dynamic> _$CompanyRepToJson(CompanyRep instance) =>
+    <String, dynamic>{
+      'logo': instance.logo,
+      'id': instance.id,
+      'name': instance.name,
     };

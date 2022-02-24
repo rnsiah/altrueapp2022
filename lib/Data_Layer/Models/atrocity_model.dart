@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile/Data_Layer/Models/link_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 
 import 'category_model.dart';
 import 'country_model.dart';
@@ -14,6 +15,7 @@ class Atrocity {
       {this.id,
       required this.title,
       this.region,
+      this.recentDonors,
       this.info,
       this.imageUrl,
       this.category,
@@ -42,6 +44,7 @@ class Atrocity {
   @JsonKey(name: 'np_list')
   List<NonProfit>? nonprofitList;
   List<Link>? links;
+  List<ProfileRepresentation>? recentDonors;
 
   factory Atrocity.fromJson(Map<String, dynamic> data) =>
       _$AtrocityFromJson(data);

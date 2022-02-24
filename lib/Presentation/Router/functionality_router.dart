@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Data_Layer/Blocs/cart_bloc/bloc/cart_bloc.dart';
+import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/company_model.dart';
@@ -10,19 +12,22 @@ import 'package:mobile/Presentation/Screens/atrocity_list.dart';
 import 'package:mobile/Presentation/Screens/cause_details.dart';
 import 'package:mobile/Presentation/Screens/cause_list.dart';
 import 'package:mobile/Presentation/Screens/company_dashboard.dart';
+import 'package:mobile/Presentation/Screens/company_home.dart';
 import 'package:mobile/Presentation/Screens/company_list.dart';
 import 'package:mobile/Presentation/Screens/company_match_screen.dart';
 import 'package:mobile/Presentation/Screens/company_signup.dart';
+import 'package:mobile/Presentation/Screens/create_link.dart';
+import 'package:mobile/Presentation/Screens/create_project.dart';
 import 'package:mobile/Presentation/Screens/credit_card_page.dart';
 import 'package:mobile/Presentation/Screens/find_friends_screen.dart';
 import 'package:mobile/Presentation/Screens/home_screen.dart';
+import 'package:mobile/Presentation/Screens/mynonprofit_screen.dart';
 import 'package:mobile/Presentation/Screens/non_profit_detail.dart';
 import 'package:mobile/Presentation/Screens/nonprofit_list_screen.dart';
 import 'package:mobile/Presentation/Screens/nonprofit_signup.dart';
 import 'package:mobile/Presentation/Screens/profile_page.dart';
 import 'package:mobile/Presentation/Screens/qr_screen.dart';
 import 'package:mobile/Presentation/Screens/shirt_details.dart';
-import 'package:mobile/Presentation/Screens/shirts.dart';
 import 'package:mobile/Presentation/Screens/shirts_list.dart';
 import 'package:mobile/Presentation/Screens/signup_screen.dart';
 import 'package:mobile/Presentation/Screens/supporters.dart';
@@ -30,7 +35,6 @@ import 'package:mobile/Presentation/Screens/userProfile_fillScreen.dart';
 import 'package:mobile/Presentation/Screens/user_nonprofitsList.dart';
 import 'package:mobile/Presentation/Screens/user_profile_screen.dart';
 import 'package:mobile/Presentation/Widgets/company/company_detail_page.dart';
-import 'package:selection_menu/components_configurations.dart';
 
 Widget makeRoute(
     {required BuildContext context,
@@ -46,9 +50,16 @@ Widget _buildRoute(
     required String routeName,
     Object? arguments}) {
   switch (routeName) {
+    case '/signUp':
+      return SignUpScreen();
     case '/home':
       HomeArguments homearguments = arguments as HomeArguments;
-      return HomePage(user: homearguments.user, profile: homearguments.profile);
+      return HomePage(
+        cartBloc: homearguments.cartBloc,
+        user: homearguments.user,
+        profile: homearguments.profile,
+        profileBloc: homearguments.profileBloc,
+      );
     case '/userProfile':
       Profile profile = arguments as Profile;
 
@@ -71,11 +82,15 @@ Widget _buildRoute(
       Profile profile = arguments as Profile;
       return SupporterPage(profile: profile);
     case '/shirts':
-      return ShirtList();
+      Profile profile = arguments as Profile;
+      return ShirtList(
+        profile: profile,
+      );
     case '/ShirtDetail':
-      Shirt shirt = arguments as Shirt;
+      ShirtDetailArguments argument = arguments as ShirtDetailArguments;
       return ShirtDetails(
-        shirt: shirt,
+        shirt: argument.shirt,
+        profile: argument.profile,
       );
     case '/nonprofits':
       Profile profile = arguments as Profile;
@@ -89,10 +104,14 @@ Widget _buildRoute(
         profile: argument.profile,
       );
     case '/atrocities':
-      return AtrocityList();
+      AtrocityListArguments argument = arguments as AtrocityListArguments;
+      return AtrocityList(profile: argument.profile);
     case '/atrocityView':
-      Atrocity atrocity = arguments as Atrocity;
-      return AtrocityDetails(atrocity: atrocity);
+      AtrocityDetailArguments atrocity = arguments as AtrocityDetailArguments;
+      return AtrocityDetails(
+        atrocity: atrocity.atrocity,
+        profile: atrocity.profile,
+      );
     case '/causes':
       return CauseList();
     case '/causeView':
@@ -107,9 +126,9 @@ Widget _buildRoute(
       User user = arguments as User;
       return UserProfileComplete(user: user);
     case '/findfriends':
-      User user = arguments as User;
+      Profile profile = arguments as Profile;
       return FindFriends(
-        user: user,
+        profile: profile,
       );
     case '/profilepage':
       Profile profile = arguments as Profile;
@@ -128,21 +147,43 @@ Widget _buildRoute(
     case '/companyDashboard':
       final argument = arguments as DashBoardScreenArguments;
       return MyDiaryScreen(
-        animationController: argument.animationController,
         profile: argument.profile,
       );
+    case '/mynonprofit':
+      MyNonProfitDetailArgments argument =
+          arguments as MyNonProfitDetailArgments;
+      return MyNonProfitHome(
+        profile: argument.profile,
+        nonprofit: argument.nonprofit,
+      );
+
+    case '/CompanyHome':
+      Profile profile = arguments as Profile;
+      return MyCompanyHome(profile: profile);
+
+    case '/createProject':
+      NonProfit nonProfit = arguments as NonProfit;
+      return CreateProject(nonProfit: nonProfit);
+
+    case '/createNPLink':
+      NonProfit nonprofit = arguments as NonProfit;
+      return CreateLink(nonprofit: nonprofit);
 
     default:
       throw 'Route $routeName is not defined';
   }
 }
 
+class ShirtDetailArguments {
+  Shirt shirt;
+  Profile profile;
+  ShirtDetailArguments({required this.shirt, required this.profile});
+}
+
 class DashBoardScreenArguments {
   final Profile profile;
-  final AnimationController animationController;
 
-  DashBoardScreenArguments(
-      {required this.animationController, required this.profile});
+  DashBoardScreenArguments({required this.profile});
 }
 
 class NonProfitListArguments {
@@ -158,14 +199,32 @@ class NonProfitDetailArguments {
   NonProfitDetailArguments({required this.nonProfit, required this.profile});
 }
 
-class AtrocityListArguments {}
+class MyNonProfitDetailArgments {
+  final Profile profile;
+  final NonProfit nonprofit;
+  MyNonProfitDetailArgments({required this.nonprofit, required this.profile});
+}
 
-class AtrocityDetailArguments {}
+class AtrocityListArguments {
+  final Profile profile;
+  AtrocityListArguments({required this.profile});
+}
 
-class ShirtDetailArguments {}
+class AtrocityDetailArguments {
+  final Profile profile;
+  final Atrocity atrocity;
+
+  AtrocityDetailArguments({required this.atrocity, required this.profile});
+}
 
 class HomeArguments {
+  final CartBloc cartBloc;
   final Profile profile;
+  final ProfileBloc profileBloc;
   final User user;
-  HomeArguments({required this.profile, required this.user});
+  HomeArguments(
+      {required this.profile,
+      required this.user,
+      required this.profileBloc,
+      required this.cartBloc});
 }

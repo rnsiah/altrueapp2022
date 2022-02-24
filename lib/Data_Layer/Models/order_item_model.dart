@@ -15,7 +15,8 @@ class OrderItem {
   int? id;
 
   OrderItem(
-      {required this.quantity,
+      {this.id,
+      required this.quantity,
       required this.shirt,
       required this.color,
       required this.size});
@@ -27,10 +28,12 @@ class OrderItem {
 
   Map<String, dynamic> toMap() {
     return {
+      'shirtId': id,
       'shirt': shirt.name,
       'quantity': quantity,
       'size': size.size,
-      'color': color.color
+      'color': color.color,
+      'price': shirt.price.toString()
     };
   }
 
@@ -40,9 +43,9 @@ class OrderItem {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Cart {
-  final List<OrderItem> items;
+  final List<DatabaseOrderItem> items;
 
   Cart({required this.items});
 
@@ -52,4 +55,39 @@ class Cart {
   Map<String, dynamic> toDatabaseJson() => _$CartToJson(this);
 
   int getLength() => items.length;
+}
+
+@JsonSerializable(explicitToJson: true)
+class DatabaseOrderItem {
+  final int id;
+  final int shirtId;
+  final String shirt;
+  final String color;
+  final String size;
+  final String price;
+  final int quantity;
+
+  DatabaseOrderItem(
+      {required this.color,
+      required this.shirtId,
+      required this.id,
+      required this.price,
+      required this.quantity,
+      required this.shirt,
+      required this.size});
+
+  factory DatabaseOrderItem.fromMap(Map<dynamic, dynamic> data) =>
+      DatabaseOrderItem(
+          color: data["color"].toString(),
+          shirtId: data['shirtId'],
+          id: data['id'],
+          price: data['price'].toString(),
+          quantity: data['quantity'],
+          shirt: data['shirt'].toString(),
+          size: data['size'].toString());
+
+  Map<String, dynamic> toJson() => _$DatabaseOrderItemToJson(this);
+
+  factory DatabaseOrderItem.fromJson(Map<String, dynamic> data) =>
+      _$DatabaseOrderItemFromJson(data);
 }

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
+import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Presentation/Widgets/Atrocity_Details/atrocity_nonprofit_showcase.dart';
 import 'package:mobile/Presentation/Widgets/Atrocity_Details/atrocity_shirt_showcase.dart';
 
 class AtrocityDetailTabs extends StatefulWidget {
   final Atrocity atrocity;
-  AtrocityDetailTabs({Key? key, required this.atrocity}) : super(key: key);
+  final Profile profile;
+  AtrocityDetailTabs({Key? key, required this.atrocity, required this.profile})
+      : super(key: key);
 
   @override
   _AtrocityDetailTabState createState() => _AtrocityDetailTabState();
@@ -24,8 +28,14 @@ class _AtrocityDetailTabState extends State<AtrocityDetailTabs>
       ),
     ];
     List<Widget> pages = [
-      AtrocityShirtShowcase(widget.atrocity),
-      AtrocityNonProfitShowcase(atrocity: widget.atrocity)
+      AtrocityShirtShowcase(
+        atrocity: widget.atrocity,
+        profile: widget.profile,
+      ),
+      AtrocityNonProfitShowcase(
+        atrocity: widget.atrocity,
+        profile: widget.profile,
+      )
     ];
     TabController tabController =
         TabController(length: _tabs.length, vsync: this);

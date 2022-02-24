@@ -86,7 +86,7 @@ class NonProfitDescriptionChangeOnForm extends NonprofitsignupEvent {
 }
 
 class NonProfitLogoChangeOnForm extends NonprofitsignupEvent {
-  final dynamic npLogo;
+  final Image npLogo;
 
   NonProfitLogoChangeOnForm({required this.npLogo});
 

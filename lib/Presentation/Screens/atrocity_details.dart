@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
+import 'package:mobile/Presentation/Widgets/Atrocity_Details/atroc_donate.dart';
 import 'package:mobile/Presentation/Widgets/Atrocity_Details/atrocity_details_tabs.dart';
 import 'package:mobile/Presentation/Widgets/Circular_Clipper.dart';
 import 'package:mobile/Presentation/Widgets/atrocity_learn_more/atrocity_learn_more.dart';
@@ -11,8 +13,11 @@ import 'package:share_plus/share_plus.dart';
 
 class AtrocityDetails extends StatefulWidget {
   final Atrocity atrocity;
+  final Profile profile;
 
-  const AtrocityDetails({Key? key, required this.atrocity}) : super();
+  const AtrocityDetails(
+      {Key? key, required this.atrocity, required this.profile})
+      : super();
   @override
   _AtrocityDetailsState createState() => _AtrocityDetailsState();
 }
@@ -29,20 +34,18 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
   void _modalBottomSheetMenu() {
     showModalBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(50.0)),
+        ),
         builder: (builder) {
           return new Container(
             height: 500.0,
             color: Colors.transparent, //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
             child: new Container(
-                decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadius.only(
-                        topLeft: const Radius.circular(10.0),
-                        topRight: const Radius.circular(10.0))),
                 child: new Center(
-                  child: new Text("This is a modal sheet"),
-                )),
+              child: new Text("This is a modal sheet"),
+            )),
           );
         });
   }
@@ -66,7 +69,21 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
                 ),
                 color: Colors.black,
                 onPressed: () {
-                  _modalBottomSheetMenu();
+                  showModalBottomSheet(
+                      isDismissible: true,
+                      isScrollControlled: true,
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(50.0)),
+                      ),
+                      builder: (context) => DraggableScrollableSheet(
+                          minChildSize: 0.3,
+                          maxChildSize: 0.75,
+                          expand: false,
+                          builder: (_, controller) => AtrocityDonateModal(
+                              atrocity: widget.atrocity,
+                              profile: widget.profile)));
                 },
               ),
               MaterialButton(
@@ -307,23 +324,24 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
                 ],
               ),
             ),
-            AtrocityDetailTabs(atrocity: widget.atrocity)
+            AtrocityDetailTabs(
+                atrocity: widget.atrocity, profile: widget.profile)
           ],
         ),
       ),
     );
   }
 
-  Widget _panel(ScrollController sc) {
-    return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView(controller: sc, children: [
-          Text('Support Today'),
-          SizedBox(
-            height: 20,
-          ),
-          AtrocityDetails(atrocity: widget.atrocity)
-        ]));
-  }
+  // Widget _panel(ScrollController sc) {
+  //   return MediaQuery.removePadding(
+  //       context: context,
+  //       removeTop: true,
+  //       child: ListView(controller: sc, children: [
+  //         Text('Support Today'),
+  //         SizedBox(
+  //           height: 20,
+  //         ),
+  //         AtrocityDetails(atrocity: widget.atrocity)
+  //       ]));
+  // }
 }

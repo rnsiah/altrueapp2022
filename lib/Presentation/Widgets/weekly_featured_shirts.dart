@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 class FeaturedShirts extends StatefulWidget {
   final double imageHeight;
   final List<Shirt> shirtlist;
   final double imageWidth;
   final String title;
+  final Profile profile;
 
   FeaturedShirts({
+    required this.profile,
     required this.title,
     required this.imageWidth,
     required this.shirtlist,
@@ -31,7 +35,7 @@ class _FeaturedShirtsState extends State<FeaturedShirts> {
             children: [
               Text(
                 'Altrue Collection Of The Week',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
               ),
               GestureDetector(
                 onTap: () => {},
@@ -53,7 +57,9 @@ class _FeaturedShirtsState extends State<FeaturedShirts> {
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamed('/ShirtDetail',
-                        arguments: widget.shirtlist[index]);
+                        arguments: ShirtDetailArguments(
+                            shirt: widget.shirtlist[index],
+                            profile: widget.profile));
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),

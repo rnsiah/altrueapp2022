@@ -26,7 +26,7 @@ class DatabaseProvider {
 
   createDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "User.db");
+    String path = join(documentsDirectory.path, "User5.db");
 
     var database = await openDatabase(
       path,
@@ -49,8 +49,15 @@ class DatabaseProvider {
     if (newVersion > oldVersion) {}
   }
 
+  // static const tableUser = """ CREATE TABLE IF NOT EXISTS userTable (
+  //   id INTEGER PRIMARY KEY,
+  //   key TEXT,
+  //   altid INTEGER,
+  //   hasProfile INTEGER
+  // );""";
+
   void initDB(Database database, int version) async {
-    await database.execute("CREATE TABLE $userTable ("
+    await database.execute("CREATE TABLE IF NOT EXISTS $userTable ("
         "id INTEGER PRIMARY KEY, "
         "email TEXT, "
         "key TEXT, "
@@ -58,19 +65,21 @@ class DatabaseProvider {
         "hasProfile INTEGER "
         ")");
 
-    await database.execute("CREATE TABLE $orderItems ("
+    await database.execute("CREATE TABLE IF NOT EXISTS $orderItems ("
         "id INTEGER PRIMARY KEY, "
         "shirt TEXT, "
+        "shirtId INTEGER, "
         "color TEXT, "
-        "price INTEGER, "
-        "quantity INTEGER "
+        "price TEXT, "
+        "quantity INTEGER, "
+        "size TEXT"
         ")");
 
-    await database.execute("CREATE TABLE $userExperiences ("
+    await database.execute("CREATE TABLE IF NOT EXISTS $userExperiences ("
         "id INTEGER PRIMARY KEY, "
         "doneIntro INTEGER, "
         "doneNP INTEGER, "
-        "doneCompany INTEGER, "
+        "doneCompany INTEGER "
         ")");
   }
 }

@@ -15,7 +15,8 @@ class ShirtChange extends ShirtOrderBlocEvent {
 
 class ShirtColorChange extends ShirtOrderBlocEvent {
   final ShirtColor shirtColor;
-  ShirtColorChange({required this.shirtColor});
+  final Shirt shirt;
+  ShirtColorChange({required this.shirtColor, required this.shirt});
 }
 
 class ShirtPictureChange extends ShirtOrderBlocEvent {
@@ -25,13 +26,11 @@ class ShirtPictureChange extends ShirtOrderBlocEvent {
 }
 
 class ShirtQuantityIncrement extends ShirtOrderBlocEvent {
-  final int quantity;
-  ShirtQuantityIncrement(this.quantity);
+  ShirtQuantityIncrement();
 }
 
 class ShirtQuantityDecrement extends ShirtOrderBlocEvent {
-  final int quantity;
-  ShirtQuantityDecrement(this.quantity);
+  ShirtQuantityDecrement();
 }
 
 class ShirtSizeChange extends ShirtOrderBlocEvent {
@@ -49,15 +48,23 @@ class ShirtOrderSubmitted extends ShirtOrderBlocEvent {
   final ShirtSize size;
   final int quantity;
   final ShirtColor color;
+  final int shirtId;
 
   ShirtOrderSubmitted({
     required this.color,
     required this.quantity,
+    required this.shirtId,
     required this.shirt,
     required this.size,
   });
 }
 
-class ShirtOrderCanceled extends ShirtOrderBlocEvent {}
+class ShirtOrderColorUpated extends ShirtOrderBlocEvent {
+  final ShirtColor color;
+  ShirtOrderColorUpated({required this.color});
+}
 
-class ShirtOrderStarted extends ShirtOrderBlocEvent {}
+class ShirtOrderStarted extends ShirtOrderBlocEvent {
+  final Shirt shirt;
+  ShirtOrderStarted({required this.shirt});
+}

@@ -18,12 +18,9 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository userRepository;
-  final SessionBLoc sessionBLoc;
 
-  ProfileBloc({required this.userRepository, required this.sessionBLoc})
-      : super(ProfileState(status: ProfileStatus.initial)) {
-    autoUploadProfile();
-  }
+  ProfileBloc({required this.userRepository})
+      : super(ProfileState(status: ProfileStatus.initial));
 
   autoUploadProfile() async {
     User? user = await userRepository.userDao.getCurrentUser(0);
@@ -114,7 +111,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         Profile profile =
             await userRepository.getProfileFromApi(user: state.user!);
         yield state.copyWith(
-            profile: state.profile, status: ProfileStatus.successfull);
+            profile: profile, status: ProfileStatus.successfull);
       } catch (e) {
         print(e.toString());
         yield state.copyWith(status: ProfileStatus.failure);
@@ -124,16 +121,32 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         await userRepository.manageFollowers(
           manageFollower: event.interaction,
-          user: state.user!,
         );
         Profile profile =
-            await userRepository.getProfileFromApi(user: state.user!);
-        yield state.copyWith(
-            profile: profile, status: ProfileStatus.successfull);
+            await userRepository.fetchProfile(id: state.profile!.user!);
+        ProfileState newState =
+            state.copyWith(profile: profile, status: ProfileStatus.successfull);
+        yield (newState);
       } catch (e) {
         e.toString();
         state.copyWith(status: ProfileStatus.failure);
       }
+    }
+    if (event is RemoveFollower) {
+      try {
+        await userRepository.manageFollowers(
+          manageFollower: event.interaction,
+        );
+      } catch (e) {
+        e.toString();
+        state.copyWith(status: ProfileStatus.failure);
+      }
+      Profile profile =
+          await userRepository.fetchProfile(id: state.profile!.user!);
+      ProfileState newState =
+          state.copyWith(profile: profile, status: ProfileStatus.successfull);
+
+      yield (newState);
     }
 
     // if (event is AddProfilePicture){

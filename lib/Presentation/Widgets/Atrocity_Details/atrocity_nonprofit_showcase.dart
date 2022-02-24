@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/nonProfit_repository.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 class AtrocityNonProfitShowcase extends StatelessWidget {
   final Atrocity atrocity;
+  final Profile profile;
 
-  const AtrocityNonProfitShowcase({Key? key, required this.atrocity})
+  const AtrocityNonProfitShowcase(
+      {Key? key, required this.profile, required this.atrocity})
       : super(key: key);
 
   @override
@@ -33,8 +37,9 @@ class AtrocityNonProfitShowcase extends StatelessWidget {
             onTap: () async {
               NonProfit nonprofit = await nonProfitRespository
                   .fetchNonProfit(atrocity.nonprofitList![index].id);
-              Navigator.of(context)
-                  .pushNamed('/nonProfitView', arguments: nonprofit);
+              Navigator.of(context).pushNamed('/nonProfitView',
+                  arguments: NonProfitDetailArguments(
+                      nonProfit: nonprofit, profile: profile));
             },
             child: Column(
               children: [

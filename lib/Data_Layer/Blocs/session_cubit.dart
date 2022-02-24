@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/session_event_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/session_state.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
@@ -104,7 +105,9 @@ class SessionBLoc extends Bloc<SessionEvent, SessionState> {
             user: currentUser,
             status: ProfileComplete.complete);
       } else if (currentUser != null && currentUser.hasProfile == 0) {
-        yield Authenticated(user: currentUser);
+        yield Authenticated(
+          user: currentUser,
+        );
       } else {
         yield Unauthenticated();
       }

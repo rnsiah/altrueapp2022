@@ -72,7 +72,7 @@ class _IntroductionSliderState extends State<IntroductionSlider> {
           color: Colors.green,
           size: 35,
         ),
-        onPressed: () => context.read<ValidationCubit>().showSignUp());
+        onPressed: () => Navigator.of(context).popAndPushNamed('/signUp'));
   }
 
   Widget skipBtn() {

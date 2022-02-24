@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/all_users_bloc/bloc/all_users_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/atrocity_bloc/bloc/atrocity_bloc_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/bloc/company_list_bloc.dart';
+import 'package:mobile/Data_Layer/Blocs/cart_bloc/bloc/cart_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/category_bloc/bloc/category_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/nonprofit_bloc/bloc/nonprofit_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
@@ -26,14 +27,11 @@ import 'package:mobile/Presentation/Router/app_router.dart';
 import 'package:mobile/Presentation/Router/functionality_router.dart';
 import 'dart:io';
 
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:mobile/Presentation/Screens/home_screen.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'Data_Layer/Repoositories/user_repository.dart';
-import 'Presentation/Screens/userProfile_fillScreen.dart';
 
 class SimpleBlocDelegate extends BlocObserver {
   @override
@@ -84,13 +82,24 @@ void main() {
       )));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final OrderRepository orders = OrderRepository();
+
   final AtrocityRepository atrocity = AtrocityRepository();
+
   final ShirtRepository shirt = ShirtRepository();
+
   final NonProfitRespository nonprofit = NonProfitRespository();
+
   final CategoryRepository categoryRepository = CategoryRepository();
+
   final CompanyRepository companyRepository = CompanyRepository();
+
   final AllUsersRepository allUsersRepository = AllUsersRepository();
 
   Future<void> getPath() async {
@@ -101,101 +110,78 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<CompletedUserordersBloc>(
-            create: (context) => CompletedUserordersBloc(
-                orderRepository: orders,
-                userRepository: context.read<UserRepository>())),
-        BlocProvider<AtrocityBlocBloc>(
-          create: (context) => AtrocityBlocBloc(atrocityRepository: atrocity),
-        ),
-        BlocProvider<ShirtOrderBlocBloc>(
-          create: (context) => ShirtOrderBlocBloc(),
-        ),
-        BlocProvider(
-          create: (context) =>
-              ShirtBloc(shirtRepository: context.read<ShirtRepository>()),
-        ),
-        BlocProvider<NonprofitBloc>(
-          create: (context) => NonprofitBloc(
-              nonProfitRespository: context.read<NonProfitRespository>()),
-        ),
-        BlocProvider<CategoryBloc>(
-          create: (context) =>
-              CategoryBloc(categoryRepository: categoryRepository),
-        ),
-        BlocProvider<UserProfileEditBloc>(
-          create: (context) => UserProfileEditBloc(
-              userRepository: context.read<UserRepository>(),
-              sessionBLoc: context.read<SessionBLoc>()),
-        ),
-        BlocProvider<ProfileBloc>(
-            create: (context) => ProfileBloc(
-                userRepository: context.read<UserRepository>(),
-                sessionBLoc: context.read<SessionBLoc>())),
-        BlocProvider<CompanyListBloc>(
-            create: (context) => CompanyListBloc(
-                companyRepository: context.read<CompanyRepository>())),
-        BlocProvider<AllUsersBloc>(
-            create: (context) => AllUsersBloc(
-                allUsersRepository: allUsersRepository,
-                userRepository: context.read<UserRepository>()))
-      ],
-      child: MaterialApp(
-          home: BlocConsumer<SessionBLoc, SessionState>(
-            listenWhen: (previous, current) {
-              if (previous == current) {}
-              return true;
-            },
-            listener: (context, state) {
-              if (state is AuthenticatedWithProfile) {
-                getPath();
-                // context.read<ShirtBloc>().add(fetchfeaturedShirtsOnLogin());
-                context.read<AtrocityBlocBloc>().fetchAtrocitiesonStart();
-                context.read<NonprofitBloc>().fetchNonProfitsOnLogin();
-                context.read<CategoryBloc>().add(FetchCategory());
-                Navigator.of(context).pushNamed('/home',
-                    arguments: HomeArguments(
-                        profile: state.profile, user: state.user));
-              }
-            },
-            buildWhen: (previous, current) {
-              if (previous == current) {
-                print('The state was $previous and now the state is $current');
-                return false;
-              }
-              print('the state was $previous and now the state is $current');
-              return true;
-            },
-            builder: (context, state) {
-              if (state is AuthenticatedWithProfile &&
-                  state.user.hasProfile == 1) {
-                // context.read<ShirtBloc>().fetchfeaturedShirtsOnLogin();
-                // context.read<AtrocityBlocBloc>().fetchAtrocitiesonStart();
-                // context.read<NonprofitBloc>().fetchNonProfitsOnLogin();
-                // context.read<CategoryBloc>().add(FetchCategory());
-              } else if (state is Authenticated) {
-                return UserProfileComplete(
-                  user: state.user,
-                );
-              }
-              return BlocProvider(
-                create: (context) => ValidationCubit(
-                    userProfileEditBloc: context.read<UserProfileEditBloc>(),
-                    userRepository: context.read<UserRepository>(),
-                    sessionBloc: context.read<SessionBLoc>()),
-                child: AuthNavigator(),
-              );
-            },
+        providers: [
+          BlocProvider.value(
+            value: context.read<SessionBLoc>(),
           ),
-          onGenerateRoute: (RouteSettings settings) {
-            return MaterialPageRoute(
-              builder: (BuildContext context) => makeRoute(
-                  context: context,
-                  routeName: settings.name!,
-                  arguments: settings.arguments),
-            );
-          }),
-    );
+          BlocProvider<CompletedUserordersBloc>(
+              create: (context) => CompletedUserordersBloc(
+                  orderRepository: orders,
+                  userRepository: context.read<UserRepository>())),
+          BlocProvider<AtrocityBlocBloc>(
+            create: (context) => AtrocityBlocBloc(atrocityRepository: atrocity),
+          ),
+          BlocProvider<ShirtOrderBlocBloc>(
+            create: (context) => ShirtOrderBlocBloc(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ShirtBloc(shirtRepository: context.read<ShirtRepository>()),
+          ),
+          BlocProvider<NonprofitBloc>(
+            create: (context) => NonprofitBloc(
+                nonProfitRespository: context.read<NonProfitRespository>()),
+          ),
+          BlocProvider<CategoryBloc>(
+            create: (context) =>
+                CategoryBloc(categoryRepository: categoryRepository),
+          ),
+          BlocProvider<UserProfileEditBloc>(
+            create: (context) => UserProfileEditBloc(
+                userRepository: context.read<UserRepository>(),
+                sessionBLoc: context.read<SessionBLoc>()),
+          ),
+          BlocProvider<ProfileBloc>(
+              create: (context) => ProfileBloc(
+                    userRepository: context.read<UserRepository>(),
+                  )),
+          BlocProvider<CompanyListBloc>(
+              create: (context) => CompanyListBloc(
+                  companyRepository: context.read<CompanyRepository>())),
+          BlocProvider<AllUsersBloc>(
+              create: (context) => AllUsersBloc(
+                  allUsersRepository: allUsersRepository,
+                  userRepository: context.read<UserRepository>())),
+          BlocProvider<ShirtOrderBlocBloc>(
+            create: (context) => ShirtOrderBlocBloc(),
+          ),
+          BlocProvider(create: (context) => CartBloc()),
+        ],
+        child: MaterialApp(home:
+            BlocBuilder<SessionBLoc, SessionState>(builder: (context, state) {
+          if (state is AuthenticatedWithProfile) {
+            return HomePage(
+                cartBloc: context.read<CartBloc>(),
+                user: state.user,
+                profile: state.profile,
+                profileBloc: context.read<ProfileBloc>());
+          }
+          return BlocProvider(
+            create: (context) => ValidationCubit(
+                sessionBloc: context.read<SessionBLoc>(),
+                userProfileEditBloc: context.read<UserProfileEditBloc>(),
+                userRepository: context.read<UserRepository>()),
+            child: Builder(builder: (context) {
+              return AuthNavigator();
+            }),
+          );
+        }), onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(
+            builder: (BuildContext context) => makeRoute(
+                context: context,
+                routeName: settings.name!,
+                arguments: settings.arguments),
+          );
+        }));
   }
 }

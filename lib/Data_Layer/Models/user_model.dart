@@ -77,6 +77,7 @@ class Profile {
       this.isCompanyContributor, this.isNonProfitContributor,
       [this.title,
       this.amountFollowing,
+      this.following,
       this.userdonations,
       this.dob,
       this.altruePoints,
@@ -92,6 +93,8 @@ class Profile {
       this.orders,
       this.profilePicture,
       this.shirtList,
+      this.donationTotal,
+      this.np,
       this.username]);
   int? user;
   String? username;
@@ -135,6 +138,10 @@ class Profile {
   int? altruePoints;
   @JsonKey(name: 'amount_following')
   int? amountFollowing;
+  @JsonKey(name: 'profiles_following')
+  List<ProfileRepresentation>? following;
+  NonProfitRep? np;
+  double? donationTotal;
 
   factory Profile.fromJson(Map<String, dynamic> data) =>
       _$ProfileFromJson(data);
