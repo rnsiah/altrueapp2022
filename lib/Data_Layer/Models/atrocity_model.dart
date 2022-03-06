@@ -52,6 +52,18 @@ class Atrocity {
   Map<String, dynamic> toJson() => _$AtrocityToJson(this);
 }
 
+@JsonSerializable(explicitToJson: true)
+class AtrocityRep {
+  int id;
+  String title;
+
+  AtrocityRep({required this.id, required this.title});
+
+  factory AtrocityRep.fromJson(Map<String, dynamic> data) =>
+      _$AtrocityRepFromJson(data);
+
+  Map<String, dynamic> toJson() => _$AtrocityRepToJson(this);
+}
 // class _Converter<T> implements JsonConverter<T, Object>{
 //   const _Converter();
 

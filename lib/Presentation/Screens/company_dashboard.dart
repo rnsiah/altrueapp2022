@@ -102,6 +102,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     listViews.add(
       MediterranesnDietView(
         isProfileInfo: true,
+        isCompanyInfo: false,
         profile: widget.profile,
       ),
     );

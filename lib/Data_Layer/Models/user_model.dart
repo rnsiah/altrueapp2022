@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile/Data_Layer/Models/altrue_action_model.dart';
 import 'package:mobile/Data_Layer/Models/altrue_level_model.dart';
+import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:mobile/Data_Layer/Models/donor_model.dart';
 import 'package:mobile/Data_Layer/Models/user_donation_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/user_repository.dart';
@@ -95,6 +96,7 @@ class Profile {
       this.shirtList,
       this.donationTotal,
       this.np,
+      this.comp,
       this.username]);
   int? user;
   String? username;
@@ -141,6 +143,7 @@ class Profile {
   @JsonKey(name: 'profiles_following')
   List<ProfileRepresentation>? following;
   NonProfitRep? np;
+  CompanyRep? comp;
   double? donationTotal;
 
   factory Profile.fromJson(Map<String, dynamic> data) =>

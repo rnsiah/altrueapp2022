@@ -17,11 +17,11 @@ import 'package:mobile/Presentation/Screens/company_list.dart';
 import 'package:mobile/Presentation/Screens/company_match_screen.dart';
 import 'package:mobile/Presentation/Screens/company_signup.dart';
 import 'package:mobile/Presentation/Screens/create_link.dart';
-import 'package:mobile/Presentation/Screens/create_project.dart';
 import 'package:mobile/Presentation/Screens/credit_card_page.dart';
 import 'package:mobile/Presentation/Screens/find_friends_screen.dart';
 import 'package:mobile/Presentation/Screens/home_screen.dart';
 import 'package:mobile/Presentation/Screens/mynonprofit_screen.dart';
+import 'package:mobile/Presentation/Screens/newProject.dart';
 import 'package:mobile/Presentation/Screens/non_profit_detail.dart';
 import 'package:mobile/Presentation/Screens/nonprofit_list_screen.dart';
 import 'package:mobile/Presentation/Screens/nonprofit_signup.dart';
@@ -158,12 +158,18 @@ Widget _buildRoute(
       );
 
     case '/CompanyHome':
-      Profile profile = arguments as Profile;
-      return MyCompanyHome(profile: profile);
+      CompanyHomeArguments argument = arguments as CompanyHomeArguments;
+      return MyCompanyHome(
+        profile: argument.profile,
+        company: argument.company,
+      );
 
     case '/createProject':
-      NonProfit nonProfit = arguments as NonProfit;
-      return CreateProject(nonProfit: nonProfit);
+      CreateProjectArguments argument = arguments as CreateProjectArguments;
+      return NewProject(
+        nonprofit: argument.nonprofit,
+        profile: argument.profile,
+      );
 
     case '/createNPLink':
       NonProfit nonprofit = arguments as NonProfit;
@@ -192,6 +198,13 @@ class NonProfitListArguments {
   NonProfitListArguments({required this.profile});
 }
 
+class CreateProjectArguments {
+  final Profile profile;
+  final NonProfit nonprofit;
+
+  CreateProjectArguments({required this.nonprofit, required this.profile});
+}
+
 class NonProfitDetailArguments {
   final Profile profile;
   final NonProfit nonProfit;
@@ -203,6 +216,13 @@ class MyNonProfitDetailArgments {
   final Profile profile;
   final NonProfit nonprofit;
   MyNonProfitDetailArgments({required this.nonprofit, required this.profile});
+}
+
+class CompanyHomeArguments {
+  final Profile profile;
+  final ForProfitCompany company;
+
+  CompanyHomeArguments({required this.company, required this.profile});
 }
 
 class AtrocityListArguments {

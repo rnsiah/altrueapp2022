@@ -85,7 +85,9 @@ class ApiProvider {
       case 204:
         var responseJson = true;
         return responseJson;
-
+      case 201:
+        var responseJson = true;
+        return responseJson;
       case 200:
         var responseJson = json.decode(utf8.decode(response.bodyBytes));
         print(responseJson);

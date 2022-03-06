@@ -24,7 +24,7 @@ class FetchCompanyList extends CompanyListEvent {
   FetchCompanyList({required this.user});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [];
 }
 
 class FetchCompanyListByCategory extends CompanyListEvent {

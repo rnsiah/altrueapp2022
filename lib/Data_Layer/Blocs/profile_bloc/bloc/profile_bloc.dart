@@ -149,6 +149,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield (newState);
     }
 
+    if (event is LogOut) {
+      yield (new ProfileState());
+    }
+
     // if (event is AddProfilePicture){
     //   User? user = await userRepository.userDao.getCurrentUser(0);
     //   Profile profile = await userRepository.getProfileFromApi(user: user!);

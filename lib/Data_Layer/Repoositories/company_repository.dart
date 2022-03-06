@@ -7,16 +7,17 @@ import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/Data_Layer/Repoositories/user_repository.dart';
 
 class CompanyRepository {
   ApiProvider provider = ApiProvider();
   NonAuthenticatedApiProvider nonauthprov = NonAuthenticatedApiProvider();
+  UserRepository userRepository = UserRepository();
   final String host = 'http://10.0.0.238:8000';
 
   Future<List<ForProfitCompany>> getCompanyList({required User user}) async {
     List<ForProfitCompany> companies = [];
-    final response =
-        await provider.getUserAuthenticatedData('api/companies', user.key!);
+    final response = await nonauthprov.get('api/companies/');
     for (var responses in response) {
       companies.add(ForProfitCompany.fromJson(responses));
     }
@@ -38,6 +39,13 @@ class CompanyRepository {
     final response = await nonauthprov.get('api/companies/${company.id}');
     company = ForProfitCompany.fromJson(response);
     return company;
+  }
+
+  Future<ForProfitCompany> fetchCompanyById(int id) async {
+    final User? user = await userRepository.userDao.getCurrentUser(0);
+    final response = await provider.getUserAuthenticatedData(
+        'api/companies/$id', user!.key!);
+    return ForProfitCompany.fromJson(response);
   }
 
   Future<List<ForProfitCompany>> fetchFeaturedCompanies() async {

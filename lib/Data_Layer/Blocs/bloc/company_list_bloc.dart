@@ -9,9 +9,8 @@ part 'company_list_event.dart';
 part 'company_list_state.dart';
 
 class CompanyListBloc extends Bloc<CompanyListEvent, CompanyListState> {
-  final CompanyRepository companyRepository;
-  CompanyListBloc({required this.companyRepository})
-      : super(CompanyListState());
+  final CompanyRepository companyRepository = CompanyRepository();
+  CompanyListBloc() : super(CompanyListState());
 
   @override
   Stream<CompanyListState> mapEventToState(CompanyListEvent event) async* {

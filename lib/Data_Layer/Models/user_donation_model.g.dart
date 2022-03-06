@@ -17,7 +17,10 @@ UserDonation _$UserDonationFromJson(Map<String, dynamic> json) => UserDonation(
       ..nonprofit = json['nonprofit'] == null
           ? null
           : UserDonationNonProfit.fromJson(
-              json['nonprofit'] as Map<String, dynamic>);
+              json['nonprofit'] as Map<String, dynamic>)
+      ..project = json['project'] == null
+          ? null
+          : NonProfitProject.fromJson(json['project'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$UserDonationToJson(UserDonation instance) =>
     <String, dynamic>{
@@ -25,6 +28,7 @@ Map<String, dynamic> _$UserDonationToJson(UserDonation instance) =>
       'amount': instance.amount,
       'atrocity': instance.atrocity?.toJson(),
       'nonprofit': instance.nonprofit?.toJson(),
+      'project': instance.project?.toJson(),
     };
 
 UserDonationAtrocity _$UserDonationAtrocityFromJson(

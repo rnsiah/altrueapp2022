@@ -145,9 +145,7 @@ class _MyAppState extends State<MyApp> {
               create: (context) => ProfileBloc(
                     userRepository: context.read<UserRepository>(),
                   )),
-          BlocProvider<CompanyListBloc>(
-              create: (context) => CompanyListBloc(
-                  companyRepository: context.read<CompanyRepository>())),
+          BlocProvider<CompanyListBloc>(create: (context) => CompanyListBloc()),
           BlocProvider<AllUsersBloc>(
               create: (context) => AllUsersBloc(
                   allUsersRepository: allUsersRepository,

@@ -3,19 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/session_cubit.dart';
+import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
+import 'package:mobile/Data_Layer/Repoositories/company_repository.dart';
 import 'package:mobile/Data_Layer/Repoositories/nonProfit_repository.dart';
 import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 class ProfileDrawer extends StatefulWidget {
   final Profile profile;
-  final ProfileBloc profileBloc;
+
   final NonProfitRespository nonProfitRespository = NonProfitRespository();
+  final CompanyRepository companyRepository = CompanyRepository();
 
   ProfileDrawer({
     Key? key,
-    required this.profileBloc,
     required this.profile,
   }) : super(key: key);
 
@@ -35,6 +37,12 @@ Future<dynamic> _getImage() async {
 }
 
 class _ProfileDrawerState extends State<ProfileDrawer> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -65,10 +73,10 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                       },
                       child: CircleAvatar(
                         radius: 45.0,
-                        foregroundImage:
+                        // foregroundImage:
+                        //     NetworkImage(widget.profile.profilePicture!.url),
+                        backgroundImage:
                             NetworkImage(widget.profile.profilePicture!.url),
-                        backgroundImage: NetworkImage(
-                            widget.profile.profilePicture.toString()),
                       ),
                     ),
                     Column(
@@ -177,9 +185,13 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                     : Text('Register A Company',
                         style: TextStyle(color: Colors.white, fontSize: 18)),
                 onTap: widget.profile.hasCompany!
-                    ? () {
+                    ? () async {
+                        ForProfitCompany company = await widget
+                            .companyRepository
+                            .fetchCompanyById(widget.profile.comp!.id);
                         Navigator.of(context).pushNamed('/CompanyHome',
-                            arguments: widget.profile);
+                            arguments: CompanyHomeArguments(
+                                company: company, profile: widget.profile));
                       }
                     : () {
                         Navigator.of(context).pushNamed('/companyRegister');
@@ -200,15 +212,16 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                     : Text('Register A NonProfit',
                         style: TextStyle(color: Colors.white, fontSize: 18)),
                 onTap: () async {
-                  NonProfit nonprofit = await widget.nonProfitRespository
-                      .fetchNonProfit(widget.profile.np!.id);
+                  if (widget.profile.hasNonProfit == true) {
+                    NonProfit nonprofit = await widget.nonProfitRespository
+                        .fetchNonProfit(widget.profile.np!.id);
+                    Navigator.of(context).pushNamed('/mynonprofit',
+                        arguments: MyNonProfitDetailArgments(
+                            nonprofit: nonprofit, profile: widget.profile));
+                  }
 
-                  widget.profile.hasNonProfit!
-                      ? Navigator.of(context).pushNamed('/mynonprofit',
-                          arguments: MyNonProfitDetailArgments(
-                              nonprofit: nonprofit, profile: widget.profile))
-                      : Navigator.of(context).pushNamed('/nonprofitRegister',
-                          arguments: widget.profile);
+                  Navigator.of(context).pushNamed('/nonprofitRegister',
+                      arguments: widget.profile);
                 },
               ),
             ),

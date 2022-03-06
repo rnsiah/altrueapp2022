@@ -62,6 +62,7 @@ class _CartBottomScreenState extends State<CartBottomScreen> {
                       subtitle: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Text('dbID: ' + widget.cartList[index].id.toString()),
                           Text('Qty: ' +
                               widget.cartList[index].quantity.toString()),
                           Text('Size: ' + widget.cartList[index].size.size)

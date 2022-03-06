@@ -147,25 +147,30 @@ class _NpDonateState extends State<NpDonate> {
 
                       Padding(
                         padding: EdgeInsets.all(2),
-                        child: SfSlider(
-                            min: 0,
-                            max: widget.profile.balance,
-                            value: _amount,
-                            interval: 1,
-                            showTicks: true,
-                            activeColor: Colors.black,
-                            showLabels: true,
-                            enableTooltip: true,
-                            thumbIcon: Container(
-                              child: Icon(Icons.add),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30)),
-                            ),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _amount = value;
-                              });
-                            }),
+                        child: widget.profile.balance == null ||
+                                widget.profile.balance! <= 0
+                            ? Container(
+                                child: Text('Please refill your account'),
+                              )
+                            : SfSlider(
+                                min: 0,
+                                max: widget.profile.balance,
+                                value: _amount,
+                                interval: 1,
+                                showTicks: true,
+                                activeColor: Colors.black,
+                                showLabels: true,
+                                enableTooltip: true,
+                                thumbIcon: Container(
+                                  child: Icon(Icons.add),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30)),
+                                ),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _amount = value;
+                                  });
+                                }),
                       ),
                       DonationButton(),
                     ],

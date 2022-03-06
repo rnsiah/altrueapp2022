@@ -1,4 +1,6 @@
+import 'package:mobile/Data_Layer/Local%20Storage/user_data_access_object.dart';
 import 'package:mobile/Data_Layer/Models/order_item_model.dart';
+import 'package:mobile/Data_Layer/Models/order_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_color_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_size_model.dart';
@@ -6,6 +8,7 @@ import 'package:mobile/Data_Layer/Repoositories/shirt_repository.dart';
 
 class CartRepository {
   ShirtRepository shirtRepository = ShirtRepository();
+  UserDao userDao = UserDao();
 
   Future<List<OrderItem>> ordersIntoCart(
       List<DatabaseOrderItem> theCart) async {
@@ -22,5 +25,10 @@ class CartRepository {
       cart.add(orderItem);
     }
     return cart;
+  }
+
+  Future<int> editItemInCart(OrderItem item) async {
+    int love = await userDao.editOrderItem(item);
+    return love;
   }
 }

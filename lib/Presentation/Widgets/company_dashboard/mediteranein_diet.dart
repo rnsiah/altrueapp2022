@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'dart:math' as math;
 
@@ -7,10 +8,17 @@ import 'package:mobile/Data_Layer/Models/user_model.dart';
 class MediterranesnDietView extends StatelessWidget {
   final Profile? profile;
   final NonProfit? nonprofit;
+  final ForProfitCompany? company;
+  final bool? isCompanyInfo;
   final bool? isProfileInfo;
 
   const MediterranesnDietView(
-      {Key? key, this.profile, this.nonprofit, this.isProfileInfo})
+      {Key? key,
+      this.profile,
+      this.nonprofit,
+      this.company,
+      this.isCompanyInfo,
+      this.isProfileInfo})
       : super(key: key);
 
   @override
@@ -27,9 +35,9 @@ class MediterranesnDietView extends StatelessWidget {
               topRight: Radius.circular(68.0)),
           boxShadow: <BoxShadow>[
             BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                offset: Offset(1.1, 1.1),
-                blurRadius: 10.0),
+              color: Colors.grey.withOpacity(0.6),
+              offset: Offset(1.1, 1.1),
+            ),
           ],
         ),
         child: Column(
@@ -63,9 +71,9 @@ class MediterranesnDietView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 4, bottom: 2),
-                                      child: isProfileInfo == false
+                                      child: isCompanyInfo == true
                                           ? Text(
-                                              'Amount Raised',
+                                              'Amount Given',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500,
@@ -73,15 +81,27 @@ class MediterranesnDietView extends StatelessWidget {
                                                   letterSpacing: -0.1,
                                                   color: Colors.black),
                                             )
-                                          : Text(
-                                              'Total Altrue Points',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  letterSpacing: -0.1,
-                                                  color: Colors.black),
-                                            ),
+                                          : isProfileInfo == false
+                                              ? Text(
+                                                  'Amount Raised',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16,
+                                                      letterSpacing: -0.1,
+                                                      color: Colors.black),
+                                                )
+                                              : Text(
+                                                  'Total Altrue Points',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16,
+                                                      letterSpacing: -0.1,
+                                                      color: Colors.black),
+                                                ),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -101,13 +121,13 @@ class MediterranesnDietView extends StatelessWidget {
                                                         'images/Altrue Logo White.png'))),
                                           ),
                                         ),
-                                        isProfileInfo == false
+                                        isCompanyInfo == true
                                             ? Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 4, bottom: 3),
                                                 child: Text(
                                                   '\$ ' +
-                                                      nonprofit!.balance!
+                                                      company!.totalDonated!
                                                           .toString(),
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -116,21 +136,43 @@ class MediterranesnDietView extends StatelessWidget {
                                                   ),
                                                 ),
                                               )
-                                            : Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 4, bottom: 3),
-                                                child: Text(
-                                                  '\$ ' +
-                                                      profile!.balance!
-                                                          .toString(),
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 20,
-                                                    color: Colors.black,
+                                            : isProfileInfo == false &&
+                                                    isCompanyInfo == false
+                                                ? Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4, bottom: 3),
+                                                    child: Text(
+                                                      '\$ ' +
+                                                          nonprofit!.balance!
+                                                              .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4, bottom: 3),
+                                                    child: Text(
+                                                      '\$ ' +
+                                                          profile!.balance!
+                                                              .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 20,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               left: 9, bottom: 3),
@@ -176,9 +218,9 @@ class MediterranesnDietView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 4, bottom: 2),
-                                      child: isProfileInfo == true
+                                      child: isCompanyInfo == true
                                           ? Text(
-                                              'Total Balance',
+                                              'Donation Count',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500,
@@ -186,15 +228,27 @@ class MediterranesnDietView extends StatelessWidget {
                                                   letterSpacing: -0.1,
                                                   color: Colors.black),
                                             )
-                                          : Text(
-                                              'Avg Donation',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  letterSpacing: -0.1,
-                                                  color: Colors.black),
-                                            ),
+                                          : isProfileInfo == true
+                                              ? Text(
+                                                  'Total Balance',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16,
+                                                      letterSpacing: -0.1,
+                                                      color: Colors.black),
+                                                )
+                                              : Text(
+                                                  'Avg Donation',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16,
+                                                      letterSpacing: -0.1,
+                                                      color: Colors.black),
+                                                ),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -218,15 +272,18 @@ class MediterranesnDietView extends StatelessWidget {
                                           padding: const EdgeInsets.only(
                                               left: 4, bottom: 3),
                                           child: Text(
-                                            isProfileInfo == true
-                                                ? '\$' +
-                                                    profile!.balance!
-                                                        .toDouble()
-                                                        .toString()
-                                                : '\$' +
-                                                    nonprofit!.avgDonation!
-                                                        .toDouble()
-                                                        .toString(),
+                                            isCompanyInfo == true
+                                                ? company!.totalDonationCount!
+                                                    .toString()
+                                                : isProfileInfo == true
+                                                    ? '\$' +
+                                                        profile!.balance!
+                                                            .toDouble()
+                                                            .toString()
+                                                    : '\$' +
+                                                        nonprofit!.avgDonation!
+                                                            .toDouble()
+                                                            .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -284,16 +341,19 @@ class MediterranesnDietView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(
-                                    profile!.altrueLevel!.name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 19,
-                                      letterSpacing: 0.0,
-                                      color: Colors.blueGrey,
-                                    ),
-                                  ),
+                                  isProfileInfo == true &&
+                                          isCompanyInfo == false
+                                      ? Text(
+                                          profile!.altrueLevel!.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 19,
+                                            letterSpacing: 0.0,
+                                            color: Colors.blueGrey,
+                                          ),
+                                        )
+                                      : Text(''),
                                   Text(
                                     'Altrue Level',
                                     textAlign: TextAlign.center,

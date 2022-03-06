@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/company_atrocity_matching_model.dart';
 import 'package:mobile/Data_Layer/Models/company_coupon_model.dart';
+import 'package:mobile/Data_Layer/Models/company_donation_model.dart';
 import 'package:mobile/Data_Layer/Models/company_location_model.dart';
 import 'package:mobile/Data_Layer/Models/company_nonprofit_matching_model.dart';
 import 'package:mobile/Data_Layer/Models/country_model.dart';
@@ -15,9 +16,10 @@ class ForProfitCompany {
   int id;
   String name;
   String? logo;
-  @JsonKey(name: 'year_started')
+
+  @JsonKey(name: 'year_started', disallowNullValue: false)
   String yearStarted;
-  String mission;
+  String? mission;
   @JsonKey(name: 'website_address')
   String websiteAddress;
   String slug;
@@ -29,7 +31,7 @@ class ForProfitCompany {
   String? description;
   String? headquarters;
   List<CompanyStore>? locations;
-  String image;
+  String? image;
   List<Link>? links;
   double? totalDonated;
   List<CompanyCoupon>? coupons;
@@ -38,12 +40,14 @@ class ForProfitCompany {
   @JsonKey(name: 'nonprofitRelationships')
   List<CompanyNonProfitMatchRelationship>? nonprofitMatchRelationships;
   int? totalDonationCount;
+  AllCompanyDonations? donationsMade;
   ForProfitCompany(
       this.image,
       this.totalDonationCount,
       this.links,
       this.id,
       this.logo,
+      this.donationsMade,
       this.mission,
       this.yearStarted,
       this.name,

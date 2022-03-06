@@ -72,11 +72,14 @@ class _FindFriendsState extends State<FindFriends> {
                                 },
                                 leading: CircleAvatar(
                                     radius: 45.0,
-                                    foregroundImage: NetworkImage(state
-                                        .userList[index].profilePicture!.url),
-                                    backgroundImage: NetworkImage(state
-                                        .userList[index].profilePicture!.url)),
-                                title: Text(state.userList[index].username),
+                                    // foregroundImage: NetworkImage(state
+                                    //     .userList[index].profilePicture!.url
+                                    //     .toString()),
+                                    backgroundImage: NetworkImage(
+                                      state.userList[index].profilePicture!.url,
+                                    )),
+                                title: Text(
+                                    state.userList[index].profilePicture!.url),
                                 trailing: list
                                         .contains(state.userList[index].id)
                                     ? MaterialButton(

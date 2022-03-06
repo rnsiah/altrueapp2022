@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
+import 'package:mobile/Data_Layer/Models/nonprofit_project_model.dart';
 
 part 'user_donation_model.g.dart';
 
@@ -9,6 +10,7 @@ class UserDonation {
   final String amount;
   UserDonationAtrocity? atrocity;
   UserDonationNonProfit? nonprofit;
+  NonProfitProject? project;
 
   UserDonation({required this.amount, required this.id});
 

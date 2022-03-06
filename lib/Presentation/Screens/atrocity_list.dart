@@ -169,16 +169,35 @@ class AtrocityBox extends StatelessWidget {
                     fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  atrocity.title,
-                  style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                      backgroundColor: Colors.black.withOpacity(.4)),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      transform: Matrix4.translationValues(0, -10, 0),
+                      child: IconButton(
+                        iconSize: 40,
+                        color: Colors.white,
+                        icon: Icon(Icons.arrow_circle_up_outlined),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        atrocity.title,
+                        style: TextStyle(
+                            fontSize: 21,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            backgroundColor: Colors.black.withOpacity(.4)),
+                      ),
+                    ),
+                  ),
+                ],
               )),
     );
   }

@@ -91,6 +91,9 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       json['np'] == null
           ? null
           : NonProfitRep.fromJson(json['np'] as Map<String, dynamic>),
+      json['comp'] == null
+          ? null
+          : CompanyRep.fromJson(json['comp'] as Map<String, dynamic>),
       json['username'] as String?,
     )
       ..requirementsForNextLevel =
@@ -143,6 +146,7 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) {
   val['profiles_following'] =
       instance.following?.map((e) => e.toJson()).toList();
   val['np'] = instance.np?.toJson();
+  val['comp'] = instance.comp?.toJson();
   val['donationTotal'] = instance.donationTotal;
   return val;
 }

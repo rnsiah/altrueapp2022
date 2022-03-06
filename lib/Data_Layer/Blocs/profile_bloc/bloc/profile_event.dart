@@ -72,3 +72,5 @@ class RemoveFollower extends ProfileEvent {
   final ManageFollower interaction;
   RemoveFollower({required this.interaction});
 }
+
+class LogOut extends ProfileEvent {}

@@ -22,7 +22,7 @@ class _CompanyDetailsBackgroundState extends State<CompanyDetailsBackground> {
       child: ClipPath(
         clipper: ImageClipper(),
         child: Image.network(
-          widget.company.image,
+          widget.company.image!,
           fit: BoxFit.cover,
           width: screenWidth,
           color: Color(0x99000000),

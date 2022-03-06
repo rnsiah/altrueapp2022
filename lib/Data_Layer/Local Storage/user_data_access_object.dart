@@ -56,6 +56,8 @@ class UserDao {
     }
   }
 
+// Cart Actions in Local DB Below //
+
   Future<int> addToCart(OrderItem item) async {
     final db = await dbProvider.database;
     var result = await db!.insert(orderItems, item.toMap());
@@ -87,6 +89,13 @@ class UserDao {
       return cart;
     }
     return cart;
+  }
+
+  Future<int> editOrderItem(OrderItem item) async {
+    final db = await dbProvider.database;
+    var result = await db!
+        .update(orderItems, item.toMap(), where: "id=?", whereArgs: [item.id]);
+    return result;
   }
 
   Future<int> checkIfProfileComplete(int altid) async {

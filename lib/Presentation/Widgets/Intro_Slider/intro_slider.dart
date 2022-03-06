@@ -28,7 +28,7 @@ class _IntroductionSliderState extends State<IntroductionSlider> {
         maxLineTitle: 2,
         styleTitle: TextStyle(
             color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
-        backgroundColor: Colors.black));
+        backgroundColor: Colors.white));
     slides.add(new Slide(
         title: 'Learn',
         maxLineTitle: 2,

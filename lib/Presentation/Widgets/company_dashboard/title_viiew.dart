@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 
 class TitleView extends StatelessWidget {
   final String titleTxt;
   final NonProfitRep? nonProfit;
   final String subTxt;
+  final ForProfitCompany? company;
 
   final GestureTapCallback? ontap;
 
   const TitleView({
     Key? key,
     this.nonProfit,
+    this.company,
     this.titleTxt: "",
     this.ontap,
     this.subTxt: "",
@@ -32,10 +35,21 @@ class TitleView extends StatelessWidget {
                             fit: BoxFit.contain,
                             image: NetworkImage(nonProfit!.logo))),
                   )
-                : Container(
-                    height: 0,
-                  ),
-                  SizedBox(width: 7,),
+                : company != null
+                    ? Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: NetworkImage(company!.logo!))),
+                      )
+                    : Container(
+                        height: 0,
+                      ),
+            SizedBox(
+              width: 7,
+            ),
             Expanded(
               child: Text(
                 titleTxt,

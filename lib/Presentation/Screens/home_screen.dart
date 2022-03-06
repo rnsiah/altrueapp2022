@@ -190,14 +190,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       child: Scaffold(
         onDrawerChanged: (isOpened) {},
         backgroundColor: Colors.white,
-        drawer: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            return ProfileDrawer(
-              profileBloc: widget.profileBloc,
-              profile: widget.profileBloc.state.profile!,
-            );
-          },
-        ),
+        drawer: ProfileDrawer(profile: widget.profile),
         appBar: AppBar(
           leading: IconButton(onPressed: () {}, icon: Icon(Icons.home)),
           automaticallyImplyLeading: false,
@@ -416,28 +409,43 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            MaterialButton(
-              child: Text(
-                'Find Friends',
-                style: TextStyle(color: Colors.white),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              child: MaterialButton(
+                child: Text(
+                  'Find Friends',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.black,
+                onPressed: () {
+                  context.read<AllUsersBloc>().add(FetchFindUserList());
+                  Navigator.of(context)
+                      .pushNamed('/findfriends', arguments: widget.profile);
+                },
               ),
-              color: Colors.black,
-              onPressed: () {
-                context.read<AllUsersBloc>().add(FetchFindUserList());
-                Navigator.of(context)
-                    .pushNamed('/findfriends', arguments: widget.profile);
-              },
             ),
-            MaterialButton(
-                child: Text('company match'),
-                onPressed: () => Navigator.of(context).pushNamed(
-                    '/companyDashboard',
-                    arguments:
-                        DashBoardScreenArguments(profile: widget.profile))),
-            MaterialButton(
-                child: Text('CreditCard'),
-                onPressed: () =>
-                    Navigator.of(context).pushNamed('/creditCardDetails')),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              child: MaterialButton(
+                  color: Colors.black,
+                  child: Text('User DashBoard',
+                      style: TextStyle(color: Colors.white)),
+                  onPressed: () => Navigator.of(context).pushNamed(
+                      '/companyDashboard',
+                      arguments:
+                          DashBoardScreenArguments(profile: widget.profile))),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              child: MaterialButton(
+                  color: Colors.black,
+                  child: Text(
+                    'Payment Details',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed('/creditCardDetails')),
+            ),
           ],
         ),
       ),

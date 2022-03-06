@@ -4,6 +4,7 @@ import 'package:mobile/Data_Layer/Models/company_nonprofit_matching_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/nonProfit_repository.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 import 'package:mobile/Presentation/Screens/shirts_list.dart';
 import 'package:mobile/Presentation/Widgets/company_dashboard/meals_list.dart';
 import 'package:mobile/Presentation/Widgets/company_dashboard/mediteranein_diet.dart';
@@ -46,6 +47,7 @@ class _MyNonProfitHomeState extends State<MyNonProfitHome> {
             ),
           ),
           MediterranesnDietView(
+            isCompanyInfo: false,
             profile: widget.profile,
             isProfileInfo: false,
             nonprofit: widget.nonprofit,
@@ -57,7 +59,9 @@ class _MyNonProfitHomeState extends State<MyNonProfitHome> {
               NonProfit np = await widget.nonProfitRepository
                   .fetchNonProfit(widget.profile.np!.id);
 
-              Navigator.of(context).pushNamed('/createProject', arguments: np);
+              Navigator.of(context).pushNamed('/createProject',
+                  arguments: CreateProjectArguments(
+                      nonprofit: np, profile: widget.profile));
             },
           ),
           MealsListView(

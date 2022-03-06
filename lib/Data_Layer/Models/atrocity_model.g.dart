@@ -52,3 +52,14 @@ Map<String, dynamic> _$AtrocityToJson(Atrocity instance) => <String, dynamic>{
       'links': instance.links?.map((e) => e.toJson()).toList(),
       'recentDonors': instance.recentDonors?.map((e) => e.toJson()).toList(),
     };
+
+AtrocityRep _$AtrocityRepFromJson(Map<String, dynamic> json) => AtrocityRep(
+      id: json['id'] as int,
+      title: json['title'] as String,
+    );
+
+Map<String, dynamic> _$AtrocityRepToJson(AtrocityRep instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+    };

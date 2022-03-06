@@ -153,7 +153,7 @@ class _CompanyDetailsContentState extends State<CompanyDetailsContent> {
             ),
             Padding(
               padding: EdgeInsets.all(12),
-              child: Text(widget.company.mission),
+              child: Text(widget.company.mission!),
             ),
             ComapnyDetailTabs(company: widget.company)
           ],

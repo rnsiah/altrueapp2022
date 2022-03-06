@@ -8,14 +8,18 @@ part of 'company_model.dart';
 
 ForProfitCompany _$ForProfitCompanyFromJson(Map<String, dynamic> json) =>
     ForProfitCompany(
-      json['image'] as String,
+      json['image'] as String?,
       json['totalDonationCount'] as int?,
       (json['links'] as List<dynamic>?)
           ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['id'] as int,
       json['logo'] as String?,
-      json['mission'] as String,
+      json['donationsMade'] == null
+          ? null
+          : AllCompanyDonations.fromJson(
+              json['donationsMade'] as Map<String, dynamic>),
+      json['mission'] as String?,
       json['year_started'] as String,
       json['name'] as String,
       json['description'] as String?,
@@ -80,6 +84,7 @@ Map<String, dynamic> _$ForProfitCompanyToJson(ForProfitCompany instance) =>
       'nonprofitRelationships':
           instance.nonprofitMatchRelationships?.map((e) => e.toJson()).toList(),
       'totalDonationCount': instance.totalDonationCount,
+      'donationsMade': instance.donationsMade?.toJson(),
     };
 
 CompanyAtrocity _$CompanyAtrocityFromJson(Map<String, dynamic> json) =>

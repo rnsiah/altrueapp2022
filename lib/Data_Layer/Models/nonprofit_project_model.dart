@@ -7,21 +7,65 @@ part 'nonprofit_project_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class NonProfitProject {
-  int id;
-  String information;
-  String title;
-  List<ProfileRepresentation>? supporters;
-  List<ProfileRepresentation>? followers;
-  NonProfit? nonprofit;
-  Category? cause;
-  Atrocity? atrocity;
+  final int? id;
+  final String information;
+  final String title;
+  final List<ProfileRepresentation>? supporters;
+  final List<ProfileRepresentation>? followers;
+  final NonProfit? nonprofit;
+  final Category? cause;
+  final Atrocity? atrocity;
+  final double? currentFunds;
   @JsonKey(name: 'fundraising_goal')
   String fundraisingGoal;
 
-  NonProfitProject(this.id, this.information, this.fundraisingGoal, this.title);
+  NonProfitProject(
+      {required this.id,
+      required this.currentFunds,
+      required this.information,
+      required this.atrocity,
+      required this.cause,
+      required this.followers,
+      required this.fundraisingGoal,
+      required this.nonprofit,
+      required this.supporters,
+      required this.title});
 
   factory NonProfitProject.fromJson(Map<String, dynamic> data) =>
       _$NonProfitProjectFromJson(data);
 
   Map<String, dynamic> toJson() => _$NonProfitProjectToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NonProfitProjectCreation {
+  final String title;
+  final String information;
+  final int? atrocity;
+  final int? category;
+  final int fundraisingGoal;
+  final int nonprofit;
+
+  NonProfitProjectCreation(
+      {required this.atrocity,
+      required this.category,
+      required this.fundraisingGoal,
+      required this.information,
+      required this.nonprofit,
+      required this.title});
+
+  Map<String, dynamic> toJson() => _$NonProfitProjectCreationToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NonProfitProjectRep {
+  int id;
+  String title;
+
+  NonProfitProjectRep({required this.id, required this.title});
+
+  factory NonProfitProjectRep.fromJson(Map<String, dynamic> data) =>
+      _$NonProfitProjectRepFromJson(data);
+
+  Map<String, dynamic> toJson() => _$NonProfitProjectRepToJson(this);
 }
