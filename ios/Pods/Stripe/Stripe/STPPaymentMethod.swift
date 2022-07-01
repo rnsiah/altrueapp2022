@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+@_spi(STP) import StripeCore
+
 /// PaymentMethod objects represent your customer's payment instruments. They can be used with PaymentIntents to collect payments.
 /// - seealso: https://stripe.com/docs/api/payment_methods
 public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOption {
@@ -67,6 +69,10 @@ public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOpti
     @objc private(set) var weChatPay: STPPaymentMethodWeChatPay?
     /// If this is an Boleto PaymentMethod (i.e. `self.type == STPPaymentMethodTypeBoleto`), this contains additional details.
     @objc private(set) public var boleto: STPPaymentMethodBoleto?
+    /// If this is a Link PaymentMethod (i.e. `self.type == STPPaymentMethodTypeLink`), this contains additional details.
+    @objc private(set) public var link: STPPaymentMethodLink?
+    /// If this is an Boleto PaymentMethod (i.e. `self.type == STPPaymentMethodTypeKlarna`), this contains additional details.
+    @objc private(set) public var klarna: STPPaymentMethodKlarna?
     /// The ID of the Customer to which this PaymentMethod is saved. Nil when the PaymentMethod has not been saved to a Customer.
     @objc private(set) public var customerId: String?
     // MARK: - Deprecated
@@ -117,6 +123,8 @@ public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOpti
             "blik = \(String(describing: blik))",
             "weChatPay = \(String(describing: weChatPay))",
             "boleto = \(String(describing: boleto))",
+            "link = \(String(describing: link))",
+            "klarna = \(String(describing: klarna))",
             "liveMode = \(liveMode ? "YES" : "NO")",
             "type = \(allResponseFields["type"] as? String ?? "")",
         ]
@@ -146,8 +154,10 @@ public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOpti
             "paypal": NSNumber(value: STPPaymentMethodType.payPal.rawValue),
             "afterpay_clearpay": NSNumber(value: STPPaymentMethodType.afterpayClearpay.rawValue),
             "blik": NSNumber(value: STPPaymentMethodType.blik.rawValue),
+            "link": NSNumber(value: STPPaymentMethodType.link.rawValue),
             "wechat_pay": NSNumber(value: STPPaymentMethodType.weChatPay.rawValue),
             "boleto": NSNumber(value: STPPaymentMethodType.boleto.rawValue),
+            "klarna": NSNumber(value: STPPaymentMethodType.klarna.rawValue),
         ]
     }
 
@@ -261,6 +271,10 @@ public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOpti
             fromAPIResponse: dict.stp_dictionary(forKey: "wechat_pay"))
         paymentMethod.boleto = STPPaymentMethodBoleto.decodedObject(
             fromAPIResponse: dict.stp_dictionary(forKey: "boleto"))
+        paymentMethod.link = STPPaymentMethodLink.decodedObject(
+                fromAPIResponse: dict.stp_dictionary(forKey: "link"))
+        paymentMethod.klarna = STPPaymentMethodKlarna.decodedObject(
+            fromAPIResponse: dict.stp_dictionary(forKey: "klarna"))
 
         paymentMethod.accessibilityLabel = {
             switch paymentMethod.type {
@@ -271,10 +285,7 @@ public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOpti
                 let brand = STPCardBrandUtilities.stringFrom(card.brand) ?? ""
                 let last4 = card.last4 ?? ""
                 let last4Spaced = last4.map{ String($0) }.joined(separator: " ")
-                let localized = STPLocalizedString(
-                    "%1$@ ending in %2$@",
-                    "Details of a saved card. '{card brand} ending in {last 4}' e.g. 'VISA ending in 4242'"
-                )
+                let localized = String.Localized.card_brand_ending_in_last_4
                 return String(format: localized, brand, last4Spaced)
             default:
                 return nil
@@ -323,13 +334,13 @@ public class STPPaymentMethod: NSObject, STPAPIResponseDecodable, STPPaymentOpti
 
     @objc public var isReusable: Bool {
         switch type {
-        case .card:
+        case .card, .link:
             return true
         case .alipay /* Careful! Revisit this if/when we support recurring Alipay */, .AUBECSDebit,
             .bacsDebit, .SEPADebit, .iDEAL, .FPX, .cardPresent, .giropay, .EPS, .payPal,
             .przelewy24, .bancontact,
             .OXXO, .sofort, .grabPay, .netBanking, .UPI, .afterpayClearpay, .blik,
-            .weChatPay, .boleto, // fall through
+            .weChatPay, .boleto, .klarna, .linkInstantDebit, // fall through
             .unknown:
             return false
         @unknown default:

@@ -2,12 +2,14 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/Data_Layer/Blocs/profile_bloc/bloc/profile_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/user_profile_edit_bloc.dart/user_profile_edit_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/user_profile_edit_bloc.dart/user_profile_edit_event.dart';
 import 'package:mobile/Data_Layer/Blocs/user_profile_edit_bloc.dart/user_profile_edit_state.dart';
 import 'package:mobile/Data_Layer/Local%20Storage/user_data_access_object.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Presentation/Widgets/UserProfile_Transaction_Details/userprofile_details_tabs.dart';
+import 'package:mobile/Presentation/Widgets/company_dashboard/mediteranein_diet.dart';
 
 class ProfileScreen extends StatelessWidget {
   final Profile profile;
@@ -38,11 +40,11 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 15),
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
                       radius: 60.0,
@@ -51,25 +53,28 @@ class ProfileScreen extends StatelessWidget {
                       backgroundImage:
                           NetworkImage(profile.profilePicture!.url),
                     ),
+                    SizedBox(width: 22),
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             profile.username.toString(),
                             textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.white, fontSize: 22),
+                            style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                           Text('Username',
                               style:
                                   TextStyle(color: Colors.amber, fontSize: 12)),
                           SizedBox(
-                            height: 25,
+                            height: 12,
                           ),
                           MaterialButton(
-                            color: Colors.amber,
+                            minWidth: 10,
+                            color: Colors.transparent,
                             child: Text(
                               'Edit Profile',
-                              style: TextStyle(color: Colors.black),
+                              style:
+                                  TextStyle(color: Colors.amber, fontSize: 10),
                             ),
                             onPressed: () async {
                               UserDao userdb = UserDao();
@@ -79,18 +84,196 @@ class ProfileScreen extends StatelessWidget {
                             },
                           )
                         ]),
+                    Text(
+                      'My\nProfile',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18, color: Colors.amber),
+                    ),
                   ],
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                  'My\nProfile',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 35, color: Colors.amber),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    return MediterranesnDietView(
+                      isProfileInfo: true,
+                      textColor: Colors.white,
+                      isCompanyInfo: false,
+                      profile: profile,
+                      color: Colors.black87,
+                    );
+                  },
                 ),
+                profile.userdonations!.length > 0
+                    ? Container(
+                        width: double.infinity,
+                        height: 400,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: profile.userdonations!.length,
+                            itemBuilder: (context, index) {
+                              if (profile.userdonations![index].nonprofit !=
+                                  null) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: NetworkImage(profile
+                                                  .userdonations![index]
+                                                  .nonprofit!
+                                                  .logo)),
+                                          shape: BoxShape.circle,
+                                        ))
+                                  ],
+                                );
+                              } else if (profile
+                                      .userdonations![index].atrocity !=
+                                  null) {
+                                return Column(
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 6.0, right: 6),
+                                        child: Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              color: Colors.red,
+                                            ),
+                                            child: Center(
+                                                child: Text(profile
+                                                    .userdonations![index]
+                                                    .atrocity!
+                                                    .title))))
+                                  ],
+                                );
+                              } else if (profile
+                                      .userdonations![index].project !=
+                                  null) {
+                                return Column(
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 6.0, right: 6),
+                                        child: Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              color: Colors.red,
+                                            ),
+                                            child: Center(
+                                                child: Text(profile
+                                                    .userdonations![index]
+                                                    .project!
+                                                    .id
+                                                    .toString()))))
+                                  ],
+                                );
+                              }
+                              return Container(
+                                child: Text(
+                                  profile.userdonations![index].id.toString(),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            }),
+
+                        // Column(
+                        //       children: [
+                        //         profile.userdonations![index].nonprofit !=
+                        //                 null
+                        //  Container(
+                        //     height: 100,
+                        //     width: 100,
+                        //     decoration: BoxDecoration(
+                        //       image: DecorationImage(
+                        //           image: NetworkImage(profile
+                        //               .userdonations![index]
+                        //               .nonprofit!
+                        //               .logo)),
+                        //       shape: BoxShape.circle,
+                        //     ))
+                        //             :profile.userdonations![index].atrocity!=null?
+
+                        //             Padding(
+                        //                 padding: const EdgeInsets.only(
+                        //                     left: 6.0, right: 6),
+                        //                 child: Container(
+                        //                   height: 100,
+                        //                   width: 100,
+                        //                   decoration: BoxDecoration(
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(14),
+                        //                     color: Colors.red,
+                        //                   ),
+                        //                   child: Center(
+                        //                       child: profile
+                        //                                   .userdonations![
+                        //                                       index]
+                        //                                   .atrocity !=
+                        //                               null
+                        //                           ? Text(
+                        //                               profile
+                        //                                   .userdonations![
+                        //                                       index]
+                        //                                   .atrocity!
+                        //                                   .title,
+                        //                               softWrap: true,
+                        //                             )
+                        //                           : Text(profile
+                        //                               .userdonations![index]
+                        //                               .project!
+                        //                               .title)),
+                        //                 ),
+                        //               ),
+                        //         profile.userdonations![index].nonprofit !=
+                        //                 null
+                        //             ? Text(profile.userdonations![index]
+                        //                 .nonprofit!.name)
+                        //             : Text('The Atrocity')
+                        //       ],
+                        //     )),
+                        // itemBuilder: (context, index) => Column(
+                        //       children: [
+                        //         Container(
+                        //             decoration:
+                        //                 profile.userdonations![index].nonprofit !=
+                        //                         null
+                        //                     ? BoxDecoration(
+                        //                         image: DecorationImage(
+                        //                             image: NetworkImage(profile
+                        //                                 .userdonations![index]
+                        //                                 .nonprofit!
+                        //                                 .logo)),
+                        //                         shape: BoxShape.circle)
+                        //                     : BoxDecoration(color: Colors.black),
+                        //             child:
+                        //                 profile.userdonations![index].nonprofit !=
+                        //                         null
+                        //                     ? null
+                        //                     : Text('Altrue Cause')),
+                        //         profile.userdonations![index].nonprofit != null
+                        //             ? Text(profile
+                        //                 .userdonations![index].nonprofit!.name)
+                        //             : Text(profile
+                        //                 .userdonations![index].atrocity!.title)
+                        //       ],
+                        //     )),
+                      )
+                    : Container(
+                        child: Text(
+                            "You have not made any donations to any organizations."),
+                      ),
                 Container(
-                  height: height * 0.43,
+                  height: height * 0.33,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       double innerHeight = constraints.maxHeight;
@@ -112,7 +295,7 @@ class ProfileScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: 80,
+                                    height: 12,
                                   ),
                                   Text(
                                     profile.username!,
@@ -367,58 +550,58 @@ Widget _profilePicturePicker() {
   );
 }
 
-  // Widget _genderPicker() {
-  //   Gender? _gender = Gender.He;
-  //   return BlocBuilder<UserProfileEditBloc, UserProfileEditState>(
-  //     builder: (context, state) {
-  //       return Column(
-  //         children: [
-  //           RadioListTile(
-  //               activeColor: Colors.amber,
-  //               title: Text(
-  //                 'He',
-  //                 style: TextStyle(color: Colors.amber),
-  //               ),
-  //               value: Gender.He,
-  //               groupValue: _gender,
-  //               onChanged: (Gender? value) {
-  //                 _gender = value!;
-  //                 print(_gender.toString().split('.').last);
-  //                 context.read<UserProfileEditBloc>().add(
-  //                     UserProfileTitleChange(
-  //                         title: _gender.toString().split('.').last));
-  //               }),
-  //           RadioListTile(
-  //               activeColor: Colors.amber,
-  //               tileColor: Colors.black38,
-  //               title: Text(
-  //                 'She',
-  //                 style: TextStyle(color: Colors.amber),
-  //               ),
-  //               value: Gender.She,
-  //               groupValue: _gender,
-  //               onChanged: (Gender? value) {
-  //                 _gender = value;
-  //                 print(_gender.toString().split('.').last);
-  //                 context.read<UserProfileEditBloc>().add(
-  //                     UserProfileTitleChange(
-  //                         title: _gender.toString().split('.').last));
-  //               }),
-  //           RadioListTile(
-  //               activeColor: Colors.amber,
-  //               selectedTileColor: Colors.black12,
-  //               value: Gender.They,
-  //               title: Text('They', style: TextStyle(color: Colors.amber)),
-  //               groupValue: _gender,
-  //               onChanged: (Gender? value) {
-  //                 print(value.toString().split('.').last);
-  //                 _gender = value;
-  //                 context.read<UserProfileEditBloc>().add(
-  //                     UserProfileTitleChange(
-  //                         title: _gender.toString().split('.').last));
-  //               }),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }}
+// Widget _genderPicker() {
+//   Gender? _gender = Gender.He;
+//   return BlocBuilder<UserProfileEditBloc, UserProfileEditState>(
+//     builder: (context, state) {
+//       return Column(
+//         children: [
+//           RadioListTile(
+//               activeColor: Colors.amber,
+//               title: Text(
+//                 'He',
+//                 style: TextStyle(color: Colors.amber),
+//               ),
+//               value: Gender.He,
+//               groupValue: _gender,
+//               onChanged: (Gender? value) {
+//                 _gender = value!;
+//                 print(_gender.toString().split('.').last);
+//                 context.read<UserProfileEditBloc>().add(
+//                     UserProfileTitleChange(
+//                         title: _gender.toString().split('.').last));
+//               }),
+//           RadioListTile(
+//               activeColor: Colors.amber,
+//               tileColor: Colors.black38,
+//               title: Text(
+//                 'She',
+//                 style: TextStyle(color: Colors.amber),
+//               ),
+//               value: Gender.She,
+//               groupValue: _gender,
+//               onChanged: (Gender? value) {
+//                 _gender = value;
+//                 print(_gender.toString().split('.').last);
+//                 context.read<UserProfileEditBloc>().add(
+//                     UserProfileTitleChange(
+//                         title: _gender.toString().split('.').last));
+//               }),
+//           RadioListTile(
+//               activeColor: Colors.amber,
+//               selectedTileColor: Colors.black12,
+//               value: Gender.They,
+//               title: Text('They', style: TextStyle(color: Colors.amber)),
+//               groupValue: _gender,
+//               onChanged: (Gender? value) {
+//                 print(value.toString().split('.').last);
+//                 _gender = value;
+//                 context.read<UserProfileEditBloc>().add(
+//                     UserProfileTitleChange(
+//                         title: _gender.toString().split('.').last));
+//               }),
+//         ],
+//       );
+//     },
+//   );
+// }}

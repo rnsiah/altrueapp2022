@@ -19,6 +19,15 @@ extension PaymentOption {
             return paymentMethod.makeIcon()
         case .new(let confirmParams):
             return confirmParams.paymentMethodParams.makeIcon()
+        case .link(_, let confirmOption):
+            switch confirmOption {
+            case .forNewAccount(_, let paymentMethodParams):
+                return paymentMethodParams.makeIcon()
+            case .withPaymentDetails(let paymentDetails):
+                return paymentDetails.makeIcon()
+            case .withPaymentMethodParams(let paymentMethodParams):
+                return paymentMethodParams.makeIcon()
+            }
         }
     }
 
@@ -31,6 +40,9 @@ extension PaymentOption {
             return paymentMethod.makeCarouselImage()
         case .new(let confirmParams):
             return confirmParams.paymentMethodParams.makeCarouselImage()
+        case .link:
+            assertionFailure("Link is not offered in PaymentSheet carousel")
+            return UIImage()
         }
     }
 }
@@ -85,6 +97,18 @@ extension STPPaymentMethodParams {
     }
 }
 
+extension ConsumerPaymentDetails {
+    func makeIcon() -> UIImage {
+        switch details {
+            
+        case .card(let card):
+            return STPImageLibrary.cardBrandImage(for: card.brand)
+        case .bankAccount(let bankAccount):
+            return STPImageLibrary.bankIcon(for: bankAccount.iconCode)
+        }
+    }
+}
+
 extension STPPaymentMethodType {
     func makeImage() -> UIImage {
         guard let image: Image = {
@@ -95,8 +119,6 @@ extension STPPaymentMethodType {
                 return .pm_type_ideal
             case .bancontact:
                 return .pm_type_bancontact
-            case .sofort:
-                return .pm_type_sofort
             case .SEPADebit:
                 return .pm_type_sepa
             case .EPS:
@@ -107,6 +129,12 @@ extension STPPaymentMethodType {
                 return .pm_type_p24
             case .afterpayClearpay:
                 return .pm_type_afterpay
+            case .sofort, .klarna:
+                return .pm_type_klarna
+            case .payPal:
+                return .pm_type_paypal
+            case .linkInstantDebit:
+                return .pm_type_link_instant_debit
             default:
                 return nil
             }

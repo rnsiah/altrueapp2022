@@ -12,12 +12,16 @@ import Foundation
 @_spi(STP) public enum STPAnalyticEvent: String {
     // MARK: - Payment Creation
     case tokenCreation = "stripeios.token_creation"
+    
+    // This was "stripeios.source_creation" in earlier SDKs, but we need to support both the old and new values forever.
     case sourceCreation = "stripeios.source_creationn"
+    
     case paymentMethodCreation = "stripeios.payment_method_creation"
     case paymentMethodIntentCreation = "stripeios.payment_intent_confirmation"
     case setupIntentConfirmationAttempt = "stripeios.setup_intent_confirmation"
 
     // MARK: - Payment Confirmation
+    case _3DS2AuthenticationRequestParamsFailed = "stripeios.3ds2_authentication_request_params_failed"
     case _3DS2AuthenticationAttempt = "stripeios.3ds2_authenticate"
     case _3DS2FrictionlessFlow = "stripeios.3ds2_frictionless_flow"
     case urlRedirectNextAction = "stripeios.url_redirect_next_action"
@@ -55,32 +59,40 @@ import Foundation
     case mcShowCustomNewPM = "mc_custom_sheet_newpm_show"
     case mcShowCustomSavedPM = "mc_custom_sheet_savedpm_show"
     case mcShowCustomApplePay = "mc_custom_sheet_applepay_show"
+    case mcShowCustomLink = "mc_custom_sheet_link_show"
     case mcShowCompleteNewPM = "mc_complete_sheet_newpm_show"
     case mcShowCompleteSavedPM = "mc_complete_sheet_savedpm_show"
     case mcShowCompleteApplePay = "mc_complete_sheet_applepay_show"
+    case mcShowCompleteLink = "mc_complete_sheet_link_show"
     
     // MARK: - PaymentSheet Payment
     case mcPaymentCustomNewPMSuccess = "mc_custom_payment_newpm_success"
     case mcPaymentCustomSavedPMSuccess = "mc_custom_payment_savedpm_success"
     case mcPaymentCustomApplePaySuccess = "mc_custom_payment_applepay_success"
+    case mcPaymentCustomLinkSuccess = "mc_custom_payment_link_success"
     
     case mcPaymentCompleteNewPMSuccess = "mc_complete_payment_newpm_success"
     case mcPaymentCompleteSavedPMSuccess = "mc_complete_payment_savedpm_success"
     case mcPaymentCompleteApplePaySuccess = "mc_complete_payment_applepay_success"
+    case mcPaymentCompleteLinkSuccess = "mc_complete_payment_link_success"
     
     case mcPaymentCustomNewPMFailure = "mc_custom_payment_newpm_failure"
     case mcPaymentCustomSavedPMFailure = "mc_custom_payment_savedpm_failure"
     case mcPaymentCustomApplePayFailure = "mc_custom_payment_applepay_failure"
+    case mcPaymentCustomLinkFailure = "mc_custom_payment_link_failure"
     
     case mcPaymentCompleteNewPMFailure = "mc_complete_payment_newpm_failure"
     case mcPaymentCompleteSavedPMFailure = "mc_complete_payment_savedpm_failure"
     case mcPaymentCompleteApplePayFailure = "mc_complete_payment_applepay_failure"
+    case mcPaymentCompleteLinkFailure = "mc_complete_payment_link_failure"
     
     // MARK: - PaymentSheet Option Selected
     case mcOptionSelectCustomNewPM = "mc_custom_paymentoption_newpm_select"
     case mcOptionSelectCustomSavedPM = "mc_custom_paymentoption_savedpm_select"
     case mcOptionSelectCustomApplePay = "mc_custom_paymentoption_applepay_select"
+    case mcOptionSelectCustomLink = "mc_custom_paymentoption_link_select"
     case mcOptionSelectCompleteNewPM = "mc_complete_paymentoption_newpm_select"
     case mcOptionSelectCompleteSavedPM = "mc_complete_paymentoption_savedpm_select"
     case mcOptionSelectCompleteApplePay = "mc_complete_paymentoption_applepay_select"
+    case mcOptionSelectCompleteLink = "mc_complete_paymentoption_link_select"
 }

@@ -83,7 +83,7 @@ class _CategorySelectorState extends State<CategorySelector> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.categoryList[index].name,
+                  widget.categoryList[index].name!,
                   style: TextStyle(
                       fontSize: 22,
                       color:

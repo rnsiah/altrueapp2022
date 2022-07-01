@@ -7,15 +7,15 @@ class ApiProvider {
   // ignore: unused_field
 
   final String _mobileBaseUrl =
-      'http://dd05-2601-2c6-47e-4690-e9bb-3d97-d2ca-570a.ngrok.io';
-  final String _baseUrl = "http://10.0.0.238:8000/";
+      'http://51e6-2601-2c0-102-428-94eb-738f-e936-b4d3.ngrok.io/';
+  final String _baseUrl = "http://10.0.0.239:8000/";
 
   Future<dynamic> getUserAuthenticatedData(String url, String key) async {
     var responseJson;
 
     try {
       final response = await http.get(
-        Uri.parse(_baseUrl + url),
+        Uri.parse(_mobileBaseUrl + url),
         headers: {
           'Accept': 'application/json; charset=utf-8',
           "Authorization": "Token $key",
@@ -109,13 +109,14 @@ class ApiProvider {
 
 class NonAuthenticatedApiProvider {
   final String _mobileBaseUrl =
-      'http://dd05-2601-2c6-47e-4690-e9bb-3d97-d2ca-570a.ngrok.io';
-  final String _baseUrl = "http://10.0.0.238:8000/";
+      'http://51e6-2601-2c0-102-428-94eb-738f-e936-b4d3.ngrok.io/';
+  final String _baseUrl = "http://10.0.0.239:8000/";
 
   Future<dynamic> get(String url) async {
     var responseJson;
     try {
-      final response = await http.get(Uri.parse(_baseUrl + url), headers: {
+      final response =
+          await http.get(Uri.parse(_mobileBaseUrl + url), headers: {
         'Content-Type': 'application/json; charset=utf-8',
       });
       responseJson = _response(response);

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:mobile/Data_Layer/Data_Providers/user_profile_api.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
@@ -10,12 +9,13 @@ import 'package:http/http.dart' as http;
 class NonProfitRespository {
   NonAuthenticatedApiProvider _provider = NonAuthenticatedApiProvider();
   ApiProvider authProvider = ApiProvider();
-  final String host = 'http://10.0.0.238:8000';
+  final String host =
+      'http://51e6-2601-2c0-102-428-94eb-738f-e936-b4d3.ngrok.io';
 
   Future<List<NonProfit>> fetchNonProfits() async {
     List<NonProfit> nonProfitList = [];
 
-    final response = await _provider.get('api/nonprofits');
+    final response = await _provider.get('api/nonprofits/');
     for (var nonprofits in response) {
       nonProfitList.add(NonProfit.fromJson(nonprofits));
     }
@@ -23,7 +23,7 @@ class NonProfitRespository {
   }
 
   Future<NonProfit> fetchNonProfit(int id) async {
-    final response = await _provider.get('api/nonprofits/$id');
+    final response = await _provider.get('api/nonprofits/$id/');
     return NonProfit.fromJson(response);
   }
 

@@ -19,7 +19,8 @@ class UserRepository {
   final userDao = UserDao();
   final _apiProvider = ApiProvider();
 
-  final String host = 'http://10.0.0.238:8000';
+  final String host =
+      'http://51e6-2601-2c0-102-428-94eb-738f-e936-b4d3.ngrok.io/';
 
   Future introDone() async {
     await userDao.introDone();
@@ -326,14 +327,14 @@ class UserRepository {
   Future<Profile> fetchProfile({required int id}) async {
     User? user = await userDao.getCurrentUser(0);
     dynamic response = await _apiProvider.getUserAuthenticatedData(
-        'api/userprofile/$id', user!.key!);
+        'api/userprofile/$id/', user!.key!);
     Profile profile = Profile.fromJson(response);
     return profile;
   }
 
   Future<Profile> getProfileFromApi({required User user}) async {
     int id = user.altid!;
-    String endpoint = 'api/userprofile/$id';
+    String endpoint = 'api/userprofile/$id/';
 
     dynamic response =
         await _apiProvider.getUserAuthenticatedData(endpoint, user.key!);

@@ -212,13 +212,20 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
+
 @interface NSError (SWIFT_EXTENSION(StripeCore))
 + (NSError * _Nonnull)stp_genericConnectionError SWIFT_WARN_UNUSED_RESULT;
 + (NSError * _Nonnull)stp_genericFailedToParseResponseError SWIFT_WARN_UNUSED_RESULT;
 + (NSError * _Nonnull)stp_ephemeralKeyDecodingError SWIFT_WARN_UNUSED_RESULT;
 + (NSError * _Nonnull)stp_clientSecretError SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardErrorInvalidNumberUserMessage SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardInvalidCVCUserMessage SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardErrorInvalidExpMonthUserMessage SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardErrorInvalidExpYearUserMessage SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardErrorExpiredCardUserMessage SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardErrorDeclinedUserMessage SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nonnull)stp_cardErrorProcessingErrorUserMessage SWIFT_WARN_UNUSED_RESULT;
 @end
-
 
 
 
@@ -232,6 +239,12 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) STPAnalytics
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+
+
+SWIFT_CLASS("_TtC10StripeCore25STPNumericStringValidator")
+@interface STPNumericStringValidator : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
 
 @protocol STPURLCallbackListener;
 
@@ -249,6 +262,8 @@ SWIFT_PROTOCOL("_TtP10StripeCore22STPURLCallbackListener_")
 @protocol STPURLCallbackListener <NSObject>
 - (BOOL)handleURLCallback:(NSURL * _Nonnull)url SWIFT_WARN_UNUSED_RESULT;
 @end
+
+
 
 
 

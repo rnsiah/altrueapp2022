@@ -5,13 +5,14 @@ import 'package:mobile/Data_Layer/Models/authentication_models/userLogin_model.d
 import 'package:mobile/Data_Layer/Repoositories/user_repository.dart';
 
 final _mobileBaseUrl =
-    'http://dd05-2601-2c6-47e-4690-e9bb-3d97-d2ca-570a.ngrok.io';
-final _base = "http://10.0.0.238:8000";
+    "http://51e6-2601-2c0-102-428-94eb-738f-e936-b4d3.ngrok.io";
+final _base = "http://10.0.0.239:8000";
 final _loginKeyEndpoint = "/auth/login/";
-final _registerKeyEndpoint = '/auth/registration/';
+final _registerKeyEndpoint = "/auth/registration/";
 
-final Uri _signinKeyURL = Uri.parse(_base + _loginKeyEndpoint);
-final Uri _registrationKeyURL = Uri.parse(_base + _registerKeyEndpoint);
+final Uri _signinKeyURL = Uri.parse(_mobileBaseUrl + _loginKeyEndpoint);
+final Uri _registrationKeyURL =
+    Uri.parse(_mobileBaseUrl + _registerKeyEndpoint);
 
 Future<Token> getKey(UserLogin userLogin) async {
   print(_signinKeyURL);

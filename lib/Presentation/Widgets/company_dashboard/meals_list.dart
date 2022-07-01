@@ -154,10 +154,11 @@ class MealsView extends StatelessWidget {
                             Text(
                               donor != null
                                   ? '\$' + donor!.amountDonated.toString()
-                                  : '',
+                                  : 'Amount Raised: ' +
+                                      project!.currentFunds.toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14,
+                                fontSize: 8,
                                 letterSpacing: 0.2,
                                 color: Colors.amber,
                               ),

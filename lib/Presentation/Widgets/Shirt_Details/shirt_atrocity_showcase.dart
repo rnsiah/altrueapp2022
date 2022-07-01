@@ -18,16 +18,36 @@ class ShirtAtrocityShowcase extends StatelessWidget {
     return ListView.builder(
       itemCount: shirt.atrocity!.length,
       itemBuilder: (context, int index) {
-        return GestureDetector(
-          onTap: () async {
-            Atrocity atrocity = await atrocityRepository
-                .getAtrocity(shirt.atrocity![index].id!);
-            Navigator.of(context).pushNamed('/atrocityView',
-                arguments: AtrocityDetailArguments(
-                    atrocity: atrocity, profile: profile));
-          },
-          child: Stack(
-            children: [Positioned(child: Text(shirt.atrocity![index].title))],
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: () async {
+              Atrocity atrocity = await atrocityRepository
+                  .getAtrocity(shirt.atrocity![index].id!);
+              Navigator.of(context).pushNamed('/atrocityView',
+                  arguments: AtrocityDetailArguments(
+                      atrocity: atrocity, profile: profile));
+            },
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(shirt.atrocity![index].imageUrl!))),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Positioned(
+                        width: 100,
+                        child: Text(
+                          shirt.atrocity![index].title,
+                          style: TextStyle(),
+                        )),
+                  )
+                ],
+              ),
+            ),
           ),
         );
       },

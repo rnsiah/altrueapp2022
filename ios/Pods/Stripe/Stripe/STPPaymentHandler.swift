@@ -10,6 +10,7 @@ import Foundation
 import PassKit
 import SafariServices
 @_spi(STP) import StripeCore
+@_spi(STP) import StripeApplePay
 
 #if canImport(Stripe3DS2)
     import Stripe3DS2
@@ -34,7 +35,7 @@ import SafariServices
     /// Indicates that the action requires an authentication app, but either the app is not installed or the request to switch to the app was denied.
     @objc(STPPaymentHandlerRequiredAppNotAvailableErrorCode)
     case requiredAppNotAvailable
-    
+
     /// Attach a payment method to the PaymentIntent or SetupIntent before using `STPPaymentHandler`.
     @objc(STPPaymentHandlerRequiresPaymentMethodErrorCode)
     case requiresPaymentMethodErrorCode
@@ -95,7 +96,8 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
 
     private var currentAction: STPPaymentHandlerActionParams?
     /// YES from when a public method is first called until its associated completion handler is called.
-    private var inProgress = false
+    /// This property guards against simultaneous usage of this class; only one "next action" can be handled at a time.
+    private static var inProgress = false
     private var safariViewController: SFSafariViewController?
     
     /// Set this to true if you want a specific test to run the _canPresent code
@@ -111,10 +113,12 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
         return STPPaymentHandler.sharedHandler
     }
 
-    /// `STPPaymentHandler` should not be directly initialized.
-    private override init() {
-        self.apiClient = STPAPIClient.shared
-        self.threeDSCustomizationSettings = STPThreeDSCustomizationSettings()
+    init(
+        apiClient: STPAPIClient = .shared,
+        threeDSCustomizationSettings: STPThreeDSCustomizationSettings = STPThreeDSCustomizationSettings()
+    ) {
+        self.apiClient = apiClient
+        self.threeDSCustomizationSettings = threeDSCustomizationSettings
         super.init()
     }
 
@@ -134,7 +138,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
     
     /// Customizable settings to use when performing 3DS2 authentication.
     /// Note: Configure this before calling any methods.
-    /// Defaults to `STPThreeDSCustomizationSettings.defaultSettings()`.
+    /// Defaults to `STPThreeDSCustomizationSettings()`.
     @objc public var threeDSCustomizationSettings: STPThreeDSCustomizationSettings
 
     internal var _simulateAppToAppRedirect: Bool = false
@@ -169,14 +173,14 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
         with authenticationContext: STPAuthenticationContext,
         completion: @escaping STPPaymentHandlerActionPaymentIntentCompletionBlock
     ) {
-        if inProgress {
+        if Self.inProgress {
             completion(.failed, nil, _error(for: .noConcurrentActionsErrorCode, userInfo: nil))
             return
         } else if !STPPaymentIntentParams.isClientSecretValid(paymentParams.clientSecret) {
             completion(.failed, nil, _error(for: .invalidClientSecret, userInfo: nil))
             return
         }
-        inProgress = true
+        Self.inProgress = true
         weak var weakSelf = self
         // wrappedCompletion ensures we perform some final logic before calling the completion block.
         let wrappedCompletion: STPPaymentHandlerActionPaymentIntentCompletionBlock = {
@@ -185,7 +189,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
                 return
             }
             // Reset our internal state
-            strongSelf.inProgress = false
+            Self.inProgress = false
             // Ensure the .succeeded case returns a PaymentIntent in the expected state.
             if let paymentIntent = paymentIntent, status == .succeeded {
                 let successIntentState =
@@ -268,7 +272,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
         returnURL: String?,
         completion: @escaping STPPaymentHandlerActionPaymentIntentCompletionBlock
     ) {
-        if inProgress {
+        if Self.inProgress {
             assert(false, "Should not handle multiple payments at once.")
             completion(.failed, nil, _error(for: .noConcurrentActionsErrorCode, userInfo: nil))
             return
@@ -277,7 +281,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
             return
         }
 
-        inProgress = true
+        Self.inProgress = true
         weak var weakSelf = self
         // wrappedCompletion ensures we perform some final logic before calling the completion block.
         let wrappedCompletion: STPPaymentHandlerActionPaymentIntentCompletionBlock = {
@@ -286,7 +290,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
                 return
             }
             // Reset our internal state
-            strongSelf.inProgress = false
+            Self.inProgress = false
             // Ensure the .succeeded case returns a PaymentIntent in the expected state.
             if let paymentIntent = paymentIntent,
                 status == .succeeded
@@ -358,7 +362,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
         with authenticationContext: STPAuthenticationContext,
         completion: @escaping STPPaymentHandlerActionSetupIntentCompletionBlock
     ) {
-        if inProgress {
+        if Self.inProgress {
             assert(false, "Should not handle multiple payments at once.")
             completion(.failed, nil, _error(for: .noConcurrentActionsErrorCode, userInfo: nil))
             return
@@ -369,7 +373,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
             return
         }
 
-        inProgress = true
+        Self.inProgress = true
         weak var weakSelf = self
         // wrappedCompletion ensures we perform some final logic before calling the completion block.
         let wrappedCompletion: STPPaymentHandlerActionSetupIntentCompletionBlock = {
@@ -378,7 +382,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
                 return
             }
             // Reset our internal state
-            strongSelf.inProgress = false
+            Self.inProgress = false
 
             if status == .succeeded {
                 // Ensure the .succeeded case returns a PaymentIntent in the expected state.
@@ -452,7 +456,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
         returnURL: String?,
         completion: @escaping STPPaymentHandlerActionSetupIntentCompletionBlock
     ) {
-        if inProgress {
+        if Self.inProgress {
             assert(false, "Should not handle multiple payments at once.")
             completion(.failed, nil, _error(for: .noConcurrentActionsErrorCode, userInfo: nil))
             return
@@ -461,7 +465,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
             return
         }
 
-        inProgress = true
+        Self.inProgress = true
         weak var weakSelf = self
         // wrappedCompletion ensures we perform some final logic before calling the completion block.
         let wrappedCompletion: STPPaymentHandlerActionSetupIntentCompletionBlock = {
@@ -470,7 +474,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
                 return
             }
             // Reset our internal state
-            strongSelf.inProgress = false
+            Self.inProgress = false
 
             if status == .succeeded {
                 // Ensure the .succeeded case returns a PaymentIntent in the expected state.
@@ -559,7 +563,10 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
             .afterpayClearpay,
             .blik,
             .weChatPay,
-            .boleto:
+            .boleto,
+            .link,
+            .klarna,
+            .linkInstantDebit:
             return false
 
         case .unknown:
@@ -863,6 +870,56 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
                             "STPIntentAction": authenticationAction.description
                         ]))
             }
+            
+        case .linkAuthenticateAccount:
+            if let paymentSheet = currentAction.authenticationContext as? PaymentSheetAuthenticationContext,
+               let (linkAccount, paymentDetails) = paymentSheet.linkPaymentDetails {
+                
+                // PaymentIntent
+                if let paymentIntentActionParams = currentAction as? STPPaymentHandlerPaymentIntentActionParams,
+                   let paymentIntent = paymentIntentActionParams.paymentIntent {
+                    linkAccount.completeLinkPayment(for: paymentIntent,
+                                                       with: paymentDetails) { paymentIntent, error in
+                        if paymentIntent != nil {
+                            paymentIntentActionParams.paymentIntent = paymentIntent
+                            currentAction.complete(with: .succeeded, error: nil)
+                        } else {
+                            currentAction.complete(with: .failed, error: self._error(for: .notAuthenticatedErrorCode,
+                                                                                        userInfo: ["error": error?.localizedDescription ?? "Error completing Link Payment."]))
+                        }
+                    }
+                // SetupIntent
+                } else if let setupIntentActionParams = currentAction as? STPPaymentHandlerSetupIntentActionParams,
+                          let setupIntent = setupIntentActionParams.setupIntent {
+                    linkAccount.completeLinkSetup(for: setupIntent, with: paymentDetails) { setupIntent, error in
+                        if setupIntent != nil {
+                            setupIntentActionParams.setupIntent = setupIntent
+                            currentAction.complete(with: .succeeded, error: nil)
+                        } else {
+                            currentAction.complete(with: .failed, error: self._error(for: .notAuthenticatedErrorCode,
+                                                                                        userInfo: ["error": error?.localizedDescription ?? "Error completing Link Setup."]))
+                        }
+                    }
+                } else {
+                    assertionFailure("Missing PaymentIntent/SetupIntent")
+                    currentAction.complete(
+                        with: STPPaymentHandlerActionStatus.failed,
+                        error: _error(
+                            for: .unsupportedAuthenticationErrorCode,
+                            userInfo: [
+                                "STPIntentAction": authenticationAction.description
+                            ]))
+                }
+            } else {
+                assertionFailure("linkAuthenticateAccount must be handled in Payment Sheet.")
+                currentAction.complete(
+                    with: STPPaymentHandlerActionStatus.failed,
+                    error: _error(
+                        for: .unsupportedAuthenticationErrorCode,
+                        userInfo: [
+                            "STPIntentAction": authenticationAction.description
+                        ]))
+            }
 
         case .boletoDisplayDetails:
             if let hostedVoucherURL = authenticationAction.boletoDisplayDetails?.hostedVoucherURL {
@@ -913,9 +970,19 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
                                 withProtocolVersion: "2.1.0")
 
                             authRequestParams = transaction?.createAuthenticationRequestParameters()
-
+                            
                         },
                         catch: { exception in
+                            
+                            STPAnalyticsClient.sharedClient.log3DS2AuthenticationRequestParamsFailed(
+                                with: currentAction.apiClient.configuration,
+                                intentID: currentAction.intentStripeID ?? "",
+                                error: self._error(
+                                    for: .stripe3DS2ErrorCode,
+                                    userInfo: [
+                                        "exception": exception.description
+                                    ]))
+                            
                             currentAction.complete(
                                 with: STPPaymentHandlerActionStatus.failed,
                                 error: self._error(
@@ -971,7 +1038,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
 
                                                         if let paymentSheet =
                                                             presentingViewController
-                                                            as? BottomSheetViewController
+                                                            as? PaymentSheetAuthenticationContext
                                                         {
                                                             transaction.doChallenge(
                                                                 with: challengeParameters,
@@ -1400,7 +1467,7 @@ public class STPPaymentHandler: NSObject, SFSafariViewControllerDelegate {
         case .useStripeSDK:
             threeDSSourceID = nextAction.useStripeSDK?.threeDSSourceID
         case .OXXODisplayDetails, .alipayHandleRedirect, .unknown, .BLIKAuthorize,
-             .weChatPayRedirectToApp, .boletoDisplayDetails:
+            .weChatPayRedirectToApp, .boletoDisplayDetails, .linkAuthenticateAccount:
             break
         @unknown default:
             fatalError()
@@ -1781,7 +1848,7 @@ extension STPPaymentHandler {
             return
         }
         if let paymentSheet = currentAction.authenticationContext
-            .authenticationPresentingViewController() as? BottomSheetViewController
+            .authenticationPresentingViewController() as? PaymentSheetAuthenticationContext
         {
             paymentSheet.dismiss(challengeViewController)
         } else {

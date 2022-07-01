@@ -23,6 +23,6 @@ class _FeaturedAtrocitiesState extends State<FeaturedAtrocities> {
         itemBuilder: (context, index) => CardWidget(
             image: theList![index].imageUrl.toString(),
             name: theList![index].title,
-            category: theList![index].category!.first.name));
+            category: theList![index].category!.first.name!));
   }
 }

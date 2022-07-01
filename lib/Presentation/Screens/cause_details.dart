@@ -37,10 +37,10 @@ class CauseDetails extends StatelessWidget {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   fit: BoxFit.contain,
-                                  image: NetworkImage(cause.image))),
+                                  image: NetworkImage(cause.image!))),
                         ),
                         Text(
-                          cause.name,
+                          cause.name!,
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.w900,

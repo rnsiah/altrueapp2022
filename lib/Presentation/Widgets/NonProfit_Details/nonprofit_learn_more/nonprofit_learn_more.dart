@@ -74,7 +74,7 @@ class _NPLearnMoreState extends State<NPLearnMore> {
                               ),
                               subtitle: Text('Fundraising Goal: \$' +
                                   widget.nonprofit.projects![index]
-                                      .fundraisingGoal),
+                                      .fundraisingGoal!),
                             ),
                           ))
                   : Center(

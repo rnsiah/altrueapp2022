@@ -10,7 +10,7 @@ class ShirtRepository {
   Future<List<Shirt>> fetchShirtList() async {
     List<Shirt> shirts = [];
 
-    final response = await _provider.get('api/shirts');
+    final response = await _provider.get('api/shirts/');
     for (var responses in response) {
       shirts.add(Shirt.fromJson(responses));
     }
@@ -28,7 +28,7 @@ class ShirtRepository {
   Future<List<Shirt>> fetchRefugeeShirts() async {
     List<Shirt> shirts = [];
 
-    final response = await _provider.get('api/refugeeshirts');
+    final response = await _provider.get('api/refugeeshirts/');
     for (var responses in response) {
       shirts.add(Shirt.fromJson(responses));
     }
@@ -36,7 +36,7 @@ class ShirtRepository {
   }
 
   Future<Shirt> fetchShirt(int id) async {
-    final response = await _provider.get('api/shirts/$id');
+    final response = await _provider.get('api/shirts/$id/');
     return Shirt.fromJson(response);
   }
 
@@ -56,7 +56,7 @@ class ShirtRepository {
       return shirts;
     }
     final shirtList = await _provider
-        .get('api/${category.name.replaceAll(' ', '').toLowerCase()}shirts');
+        .get('api/${category.name!.replaceAll(' ', '').toLowerCase()}shirts');
 
     for (var shirt in shirtList) {
       shirts.add(Shirt.fromJson(shirt));

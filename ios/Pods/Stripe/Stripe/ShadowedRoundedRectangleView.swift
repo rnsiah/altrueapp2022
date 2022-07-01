@@ -12,7 +12,9 @@ import UIKit
 private let shadowOpacity: Float = 0.2
 private let shadowRadius: CGFloat = 1.5
 
-// The shadowed rounded rectangle that our cells use to display content
+/// The shadowed rounded rectangle that our cells use to display content
+/// For internal SDK use only
+@objc(STP_Internal_ShadowedRoundedRectangle)
 class ShadowedRoundedRectangle: UIView {
     let roundedRectangle: UIView
     let underShadowOpacity: Float = 0.5
@@ -39,7 +41,7 @@ class ShadowedRoundedRectangle: UIView {
                 light: CompatibleColor.systemBackground,
                 dark: UIColor(red: 43.0 / 255.0, green: 43.0 / 255.0, blue: 47.0 / 255.0, alpha: 1))
         } else {
-            roundedRectangle.backgroundColor = STPInputFormColors.disabledBackgroundColor
+            roundedRectangle.backgroundColor = InputFormColors.disabledBackgroundColor
         }
     }
 

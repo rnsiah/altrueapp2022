@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
-import 'package:mobile/Presentation/Widgets/company_dashboard/body_measurement.dart';
+import 'package:mobile/Presentation/Widgets/company_dashboard/altrue_action_card.dart';
 import 'package:mobile/Presentation/Widgets/company_dashboard/glass_view.dart';
 import 'package:mobile/Presentation/Widgets/company_dashboard/meals_list.dart';
 import 'package:mobile/Presentation/Widgets/company_dashboard/mediteranein_diet.dart';
@@ -129,9 +129,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
       subTxt: 'Today',
     ));
 
-    listViews.add(
-      BodyMeasurementView(),
-    );
+    // listViews.add(
+    //   ActionCardList(profile: widget.profile),
+    // );
     listViews.add(
       TitleView(
         titleTxt: 'Water',
@@ -161,6 +161,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       color: Colors.white,
       child: Scaffold(
         backgroundColor: Colors.transparent,

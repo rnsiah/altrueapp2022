@@ -34,6 +34,12 @@ class NonprofitAtrocityShowcase extends StatelessWidget {
                     height: 120,
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              offset: Offset(1.1, 1.1),
+                              blurRadius: 10.0),
+                        ],
                         borderRadius: BorderRadius.circular(15),
                         image: DecorationImage(
                             fit: BoxFit.fill,

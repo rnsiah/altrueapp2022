@@ -29,20 +29,30 @@ class _FeaturedShirtsState extends State<FeaturedShirts> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.only(left: 15, bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Altrue Collection Of The Week',
-                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                textAlign: TextAlign.left,
               ),
-              GestureDetector(
-                onTap: () => {},
-                child: Icon(
-                  Icons.arrow_forward,
-                  color: Colors.black54,
-                  size: 28,
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: GestureDetector(
+                  onTap: () => {},
+                  child: Text(
+                    'See More',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.amber,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               )
             ],
@@ -54,30 +64,35 @@ class _FeaturedShirtsState extends State<FeaturedShirts> {
               scrollDirection: Axis.horizontal,
               itemCount: widget.shirtlist.length,
               itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/ShirtDetail',
-                        arguments: ShirtDetailArguments(
-                            shirt: widget.shirtlist[index],
-                            profile: widget.profile));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    width: widget.imageWidth,
-                    decoration: BoxDecoration(
+                return Padding(
+                  padding: const EdgeInsets.only(left: 4.0, right: 4),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/ShirtDetail',
+                          arguments: ShirtDetailArguments(
+                              shirt: widget.shirtlist[index],
+                              profile: widget.profile));
+                    },
+                    child: Container(
+                      width: widget.imageWidth,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.white,
-                              offset: Offset(0, 4),
-                              blurRadius: 6),
-                        ]),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image(
-                        image:
-                            NetworkImage(widget.shirtlist[index].shirtImage!),
-                        fit: BoxFit.cover,
+                        // boxShadow: <BoxShadow>[
+                        //   BoxShadow(
+                        //       color: Colors.grey.withOpacity(0.2),
+                        //       offset: Offset(1.1, 1.1),
+                        //       blurRadius: 10.0),
+                        // ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image(
+                          image:
+                              NetworkImage(widget.shirtlist[index].shirtImage!),
+                          fit: BoxFit.fitHeight,
+                        ),
                       ),
                     ),
                   ),

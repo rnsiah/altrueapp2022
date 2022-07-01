@@ -177,12 +177,13 @@ Map<String, dynamic> _$ProfileCompletionToJson(ProfileCompletion instance) =>
 ProfileRepresentation _$ProfileRepresentationFromJson(
         Map<String, dynamic> json) =>
     ProfileRepresentation(
-      username: json['username'],
+      username: json['username'] as String,
       id: json['id'] as int,
-    )..profilePicture = json['profile_picture'] == null
-        ? null
-        : ProfilePicture.fromJson(
-            json['profile_picture'] as Map<String, dynamic>);
+      profilePicture: json['profile_picture'] == null
+          ? null
+          : ProfilePicture.fromJson(
+              json['profile_picture'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ProfileRepresentationToJson(
         ProfileRepresentation instance) =>

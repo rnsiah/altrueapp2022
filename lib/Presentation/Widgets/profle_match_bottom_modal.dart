@@ -21,39 +21,119 @@ class _ProfileMatchBottomSheetState extends State<ProfileMatchBottomSheet> {
               itemCount: widget.profile.userdonations!.length,
               itemBuilder: (context, int) {
                 if (widget.profile.userdonations![int].nonprofit != null)
-                  return ListTile(
-                    title: Text(
-                        widget.profile.userdonations![int].nonprofit!.name),
-                    subtitle: Text(widget.profile.userdonations![int].amount),
-                    trailing: MaterialButton(
-                      child: Text(
-                        'NonProfit \n Match',
-                        textAlign: TextAlign.center,
+                  return GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              insetPadding: EdgeInsets.symmetric(
+                                  vertical: 100, horizontal: 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              elevation: 12,
+                              child: Container(
+                                height: 400,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    Text('Is Active'),
+                                    Text('Match Percentage')
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                            widget.profile.userdonations![int].nonprofit!.name),
+                        subtitle:
+                            Text(widget.profile.userdonations![int].amount),
+                        trailing: MaterialButton(
+                          child: Text(
+                            'NonProfit \n Match',
+                            textAlign: TextAlign.center,
+                          ),
+                          onPressed: () {},
+                        ),
                       ),
-                      onPressed: () {},
                     ),
                   );
                 else if (widget.profile.userdonations![int].atrocity != null) {
-                  return ListTile(
-                    title: Text(
-                        widget.profile.userdonations![int].atrocity!.title),
-                    subtitle: Text(widget.profile.userdonations![int].amount),
-                    trailing: MaterialButton(
-                      child: Text(
-                        'Atrocity \n Match',
-                        textAlign: TextAlign.center,
+                  return GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              elevation: 12,
+                              child: Container(
+                                child: ListView(
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    Text('Is Active'),
+                                    Text('Match Percentage')
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                            widget.profile.userdonations![int].atrocity!.title),
+                        subtitle:
+                            Text(widget.profile.userdonations![int].amount),
+                        trailing: MaterialButton(
+                          child: Text(
+                            'Atrocity \n Match',
+                            textAlign: TextAlign.center,
+                          ),
+                          onPressed: () {},
+                        ),
                       ),
-                      onPressed: () {},
                     ),
                   );
                 }
-                return ListTile(
-                  trailing: MaterialButton(
-                    child: Text('General \nMatch', textAlign: TextAlign.center),
-                    onPressed: () {},
+                return GestureDetector(
+                  onLongPress: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            elevation: 12,
+                            child: Container(
+                              height: 350,
+                              child: ListView(
+                                scrollDirection: Axis.vertical,
+                                children: [
+                                  Text('Is Active'),
+                                  Text('Match Percentage')
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  child: Card(
+                    child: ListTile(
+                      trailing: MaterialButton(
+                        child: Text('General \nMatch',
+                            textAlign: TextAlign.center),
+                        onPressed: () {},
+                      ),
+                      title: Text('General Altrue Donation'),
+                      subtitle: Text(widget.profile.userdonations![int].amount),
+                    ),
                   ),
-                  title: Text('General Altrue Donation'),
-                  subtitle: Text(widget.profile.userdonations![int].amount),
                 );
               })
           : Center(

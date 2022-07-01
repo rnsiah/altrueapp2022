@@ -19,6 +19,8 @@ protocol BottomSheetContentViewController: UIViewController {
 }
 
 /// A VC containing a content view controller and manages the layout of its SheetNavigationBar.
+/// For internal SDK use only
+@objc(STP_Internal_BottomSheetViewController)
 class BottomSheetViewController: UIViewController, PanModalPresentable {
     // MARK: - Views
     private lazy var scrollView: UIScrollView = {
@@ -85,6 +87,8 @@ class BottomSheetViewController: UIViewController, PanModalPresentable {
         }
     }
 
+    var linkPaymentDetails: (PaymentSheetLinkAccount, ConsumerPaymentDetails)? = nil
+    
     required init(contentViewController: BottomSheetContentViewController, isTestMode: Bool) {
         self.contentViewController = contentViewController
         self.isTestMode = isTestMode
@@ -223,8 +227,9 @@ extension BottomSheetViewController: UIScrollViewDelegate {
     }
 }
 
-// MARK: - STPAuthenticationContext
-extension BottomSheetViewController: STPAuthenticationContext {
+// MARK: - PaymentSheetAuthenticationContext
+extension BottomSheetViewController: PaymentSheetAuthenticationContext {
+    
     func authenticationPresentingViewController() -> UIViewController {
         return self
     }

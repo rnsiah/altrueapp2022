@@ -60,55 +60,10 @@ class _FindFriendsState extends State<FindFriends> {
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: state.userList.length,
-                          itemBuilder: (context, index) => ListTile(
-                                onTap: () async {
-                                  Profile profile =
-                                      await userRepository.fetchProfile(
-                                    id: state.userList[index].id,
-                                  );
-                                  Navigator.of(context).pushNamed(
-                                      '/profilepage',
-                                      arguments: profile);
-                                },
-                                leading: CircleAvatar(
-                                    radius: 45.0,
-                                    // foregroundImage: NetworkImage(state
-                                    //     .userList[index].profilePicture!.url
-                                    //     .toString()),
-                                    backgroundImage: NetworkImage(
-                                      state.userList[index].profilePicture!.url,
-                                    )),
-                                title: Text(
-                                    state.userList[index].profilePicture!.url),
-                                trailing: list
-                                        .contains(state.userList[index].id)
-                                    ? MaterialButton(
-                                        color: Colors.black,
-                                        onPressed: () {
-                                          ManageFollower follow =
-                                              ManageFollower(
-                                                  follow: 'unfollow',
-                                                  id: state.userList[index].id);
-                                          context.read<ProfileBloc>().add(
-                                              RemoveFollower(
-                                                  interaction: follow));
-                                        },
-                                        child: Text('Following',
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )
-                                    : MaterialButton(
-                                        onPressed: () {
-                                          ManageFollower follow =
-                                              ManageFollower(
-                                                  follow: 'follow',
-                                                  id: state.userList[index].id);
-                                          context.read<ProfileBloc>().add(
-                                              AddFollower(interaction: follow));
-                                        },
-                                        color: Colors.amber,
-                                        child: Text('Follow')),
-                              ));
+                          itemBuilder: (context, index) => FriendTile(
+                              pro: widget.profile,
+                              userRepository: userRepository,
+                              prof: state.userList[index]));
                     } else if (state.status == ProfileListStatus.failure) {
                       Center(
                         child: Text(
@@ -125,6 +80,62 @@ class _FindFriendsState extends State<FindFriends> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FriendTile extends StatelessWidget {
+  const FriendTile({
+    Key? key,
+    required this.userRepository,
+    required this.pro,
+    required this.prof,
+  }) : super(key: key);
+
+  final UserRepository userRepository;
+  final ProfileRepresentation prof;
+  final Profile pro;
+  @override
+  Widget build(BuildContext context) {
+    List<int> list = pro.following!.map((e) => e.id).toList();
+    return ListTile(
+      onTap: () async {
+        Profile profile = await userRepository.fetchProfile(
+          id: prof.id,
+        );
+        Navigator.of(context).pushNamed('/profilepage', arguments: profile);
+      },
+      leading: CircleAvatar(
+          radius: 45.0,
+          // foregroundImage: NetworkImage(state
+          //     .userList[index].profilePicture!.url
+          //     .toString()),
+          backgroundImage: NetworkImage(
+            prof.profilePicture!.url,
+          )),
+      title: Text(prof.username),
+      trailing: list.contains(prof.id)
+          ? MaterialButton(
+              color: Colors.black,
+              onPressed: () {
+                ManageFollower follow =
+                    ManageFollower(follow: 'unfollow', id: prof.id);
+                context
+                    .read<ProfileBloc>()
+                    .add(RemoveFollower(interaction: follow));
+              },
+              child: Text('Following', style: TextStyle(color: Colors.white)),
+            )
+          : MaterialButton(
+              onPressed: () {
+                ManageFollower follow =
+                    ManageFollower(follow: 'follow', id: prof.id);
+                context
+                    .read<ProfileBloc>()
+                    .add(AddFollower(interaction: follow));
+              },
+              color: Colors.amber,
+              child: Text('Follow')),
     );
   }
 }

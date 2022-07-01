@@ -9,9 +9,12 @@ class AltrueLevel {
   int minimumPoints;
   @JsonKey(name: 'maximum_points')
   int maximumPoints;
+  @JsonKey(name: 'level_number')
+  int levelNumber;
 
   AltrueLevel(
       {required this.name,
+      required this.levelNumber,
       required this.maximumPoints,
       required this.minimumPoints});
 

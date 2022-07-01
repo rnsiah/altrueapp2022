@@ -4,9 +4,10 @@ import 'package:selection_menu/components_configurations.dart';
 import 'package:selection_menu/selection_menu.dart';
 
 class CompanyMatchScreen extends StatefulWidget {
-  const CompanyMatchScreen({
-    Key? key,
-  }) : super(key: key);
+  final ForProfitCompany company;
+  CompanyMatchScreen({
+    required this.company,
+  });
 
   @override
   _CompanyMatchScreenState createState() => _CompanyMatchScreenState();

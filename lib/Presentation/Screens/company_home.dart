@@ -62,7 +62,10 @@ class _MyCompanyHomeState extends State<MyCompanyHome> {
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/companymatch',
+                              arguments: widget.company);
+                        },
                         child: Text(
                           'Get Started Now',
                           style: TextStyle(

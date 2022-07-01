@@ -8,7 +8,7 @@ part 'nonprofit_project_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class NonProfitProject {
   final int? id;
-  final String information;
+  final String? information;
   final String title;
   final List<ProfileRepresentation>? supporters;
   final List<ProfileRepresentation>? followers;
@@ -16,19 +16,22 @@ class NonProfitProject {
   final Category? cause;
   final Atrocity? atrocity;
   final double? currentFunds;
+  @JsonKey(name: 'is_active')
+  final bool? isActive;
   @JsonKey(name: 'fundraising_goal')
-  String fundraisingGoal;
+  String? fundraisingGoal;
 
   NonProfitProject(
-      {required this.id,
-      required this.currentFunds,
-      required this.information,
-      required this.atrocity,
-      required this.cause,
-      required this.followers,
-      required this.fundraisingGoal,
-      required this.nonprofit,
-      required this.supporters,
+      {this.id,
+      this.currentFunds,
+      this.isActive,
+      this.information,
+      this.atrocity,
+      this.cause,
+      this.followers,
+      this.fundraisingGoal,
+      this.nonprofit,
+      this.supporters,
       required this.title});
 
   factory NonProfitProject.fromJson(Map<String, dynamic> data) =>

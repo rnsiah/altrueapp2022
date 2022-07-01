@@ -8,6 +8,15 @@ class CauseList extends StatefulWidget {
 }
 
 class _CauseListState extends State<CauseList> {
+  String getfewWords(String words) {
+    List<String> splitWords = words.split(" ");
+    List<String> newWords = splitWords.sublist(0, 10);
+    if (newWords.length >= 8) {
+      return newWords.join(' ');
+    }
+    return words;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +35,11 @@ class _CauseListState extends State<CauseList> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(32),
+              padding: EdgeInsets.only(left: 18, bottom: 20),
               child: Text(
                 'Altrue Causes',
                 style: TextStyle(
-                    fontSize: 44,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.left,
@@ -48,7 +57,7 @@ class _CauseListState extends State<CauseList> {
             //   )),
             // ], onChanged: (value) {  },),
             Container(
-              height: 500,
+              height: 600,
               padding: EdgeInsets.only(left: 32),
               child: BlocBuilder<CategoryBloc, CategoryState>(
                 builder: (context, state) {
@@ -60,76 +69,144 @@ class _CauseListState extends State<CauseList> {
                               onTap: () => Navigator.of(context).pushNamed(
                                   '/causeView',
                                   arguments: state.categoryList[index]),
-                              child: Stack(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Container(
+                                  height: 400,
+                                  width: MediaQuery.of(context).size.width * .8,
+                                  child: Stack(
                                     children: [
-                                      SizedBox(height: 100),
-                                      Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          elevation: 0,
-                                          color: Colors.transparent,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(32),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(height: 100),
-                                                Text(
-                                                    state.categoryList[index]
-                                                        .name,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 32,
-                                                        color: Colors.black),
-                                                    textAlign: TextAlign.left),
-                                                Text(
-                                                  'Altrue Cause',
-                                                  style: TextStyle(
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.w300),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                                SizedBox(height: 30),
-                                                Row(
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 110),
+                                          Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              elevation: 10,
+                                              color: Colors.black,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(32),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text('Learn More',
-                                                        textAlign:
-                                                            TextAlign.right,
+                                                    Text(
+                                                      'A',
+                                                      style: TextStyle(
+                                                          shadows: [
+                                                            Shadow(
+                                                                offset: Offset(
+                                                                    1.4, 1.4),
+                                                                blurRadius:
+                                                                    10.0,
+                                                                color: Colors
+                                                                    .white)
+                                                          ],
+                                                          color: Colors.white,
+                                                          fontSize: 60,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline),
+                                                    ),
+                                                    SizedBox(height: 40),
+                                                    Text(
+                                                        state
+                                                            .categoryList[index]
+                                                            .name!,
                                                         style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 32,
                                                             color:
-                                                                Colors.amber)),
-                                                    Icon(Icons.arrow_forward,
-                                                        color: Colors.amber)
+                                                                Colors.white),
+                                                        textAlign:
+                                                            TextAlign.left),
+                                                    Text(
+                                                      'Altrue Cause',
+                                                      style: TextStyle(
+                                                          fontSize: 22,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w300),
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                    SizedBox(height: 30),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Container(
+                                                        width: 165,
+                                                        child: Text(
+                                                          state
+                                                                  .categoryList[
+                                                                      index]
+                                                                  .nonprofitCount
+                                                                  .toString() +
+                                                              ' organizations fighting to end this cause',
+                                                          softWrap: true,
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.amber),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      state.categoryList[index]
+                                                                  .name !=
+                                                              'All Causes'
+                                                          ? getfewWords(state
+                                                                  .categoryList[
+                                                                      index]
+                                                                  .information!) +
+                                                              '...'
+                                                          : '',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text('Learn More',
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .amber)),
+                                                        Icon(
+                                                            Icons.arrow_forward,
+                                                            color: Colors.amber)
+                                                      ],
+                                                    ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
-                                          )),
+                                              )),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        top: -17,
+                                        right: -30,
+                                        width: 250,
+                                        height: 250,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                fit: BoxFit.contain,
+                                                image: NetworkImage(state
+                                                    .categoryList[index]
+                                                    .image!)),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  Positioned(
-                                    top: -17,
-                                    width: 250,
-                                    height: 250,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            fit: BoxFit.contain,
-                                            image: NetworkImage(state
-                                                .categoryList[index].image)),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
                             )),
                   );

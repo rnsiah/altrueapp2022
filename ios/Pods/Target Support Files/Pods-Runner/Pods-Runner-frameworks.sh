@@ -178,6 +178,7 @@ code_sign_if_enabled() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/StripeApplePay/StripeApplePay.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/StripeCore/StripeCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/StripeUICore/StripeUICore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/flutter_email_sender/flutter_email_sender.framework"
@@ -193,6 +194,7 @@ fi
 if [[ "$CONFIGURATION" == "Profile" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/StripeApplePay/StripeApplePay.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/StripeCore/StripeCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/StripeUICore/StripeUICore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/flutter_email_sender/flutter_email_sender.framework"
@@ -208,6 +210,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/StripeApplePay/StripeApplePay.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/StripeCore/StripeCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/StripeUICore/StripeUICore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/flutter_email_sender/flutter_email_sender.framework"

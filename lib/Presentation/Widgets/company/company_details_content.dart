@@ -22,7 +22,7 @@ class _CompanyDetailsContentState extends State<CompanyDetailsContent> {
           child: GestureDetector(
             onTap: () {},
             child: Chip(
-              label: Text(category.name),
+              label: Text(category.name!),
               backgroundColor: Colors.amber,
             ),
           ),
@@ -36,7 +36,7 @@ class _CompanyDetailsContentState extends State<CompanyDetailsContent> {
           child: GestureDetector(
             onTap: () {},
             child: Chip(
-              label: Text(category.name),
+              label: Text(category.name!),
               backgroundColor: Colors.amber,
             ),
           ),

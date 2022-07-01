@@ -64,7 +64,7 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.network(
-                  widget.atrocity.category![0].image,
+                  widget.atrocity.category![0].image!,
                   height: 70,
                 ),
                 SizedBox(
@@ -104,25 +104,41 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
                       ),
                       Padding(
                         padding: EdgeInsets.all(2),
-                        child: SfSlider(
-                            min: 0,
-                            max: widget.profile.balance,
-                            value: _amount,
-                            interval: 1,
-                            showTicks: true,
-                            activeColor: Colors.black,
-                            showLabels: true,
-                            enableTooltip: true,
-                            thumbIcon: Container(
-                              child: Icon(Icons.add),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(90)),
-                            ),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _amount = value;
-                              });
-                            }),
+                        child: widget.profile.balance! >= 0
+                            ? Container(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        'Please raise funds to donate to this atrocity'),
+                                    MaterialButton(
+                                        color: Colors.black.withOpacity(.7),
+                                        child: Text(
+                                          'Learn How',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        onPressed: () {})
+                                  ],
+                                ),
+                              )
+                            : SfSlider(
+                                min: 0,
+                                max: widget.profile.balance,
+                                value: _amount,
+                                interval: 1,
+                                showTicks: true,
+                                activeColor: Colors.black,
+                                showLabels: true,
+                                enableTooltip: true,
+                                thumbIcon: Container(
+                                  child: Icon(Icons.add),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(90)),
+                                ),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _amount = value;
+                                  });
+                                }),
                       ),
                       DonationButton(),
                     ],
@@ -172,7 +188,7 @@ class AtrocityInfo extends StatelessWidget {
               ),
               Flexible(
                 child: Attribute(
-                  value: atrocity.category![0].name,
+                  value: atrocity.category![0].name!,
                   name: 'Causes',
                   textColor: Colors.black87,
                 ),

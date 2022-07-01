@@ -5,9 +5,8 @@ part 'profile_picture_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class ProfilePicture {
   final String url;
-  final String? image;
 
-  ProfilePicture({required this.url, this.image});
+  ProfilePicture({required this.url});
 
   factory ProfilePicture.fromJson(Map<String, dynamic> data) =>
       _$ProfilePictureFromJson(data);

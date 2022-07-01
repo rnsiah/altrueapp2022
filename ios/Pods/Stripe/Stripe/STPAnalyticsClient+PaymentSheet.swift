@@ -8,6 +8,7 @@
 
 import Foundation
 @_spi(STP) import StripeCore
+@_spi(STP) import StripeApplePay
 
 extension STPAnalyticsClient {
     // MARK: - Log events
@@ -65,6 +66,7 @@ extension STPAnalyticsClient {
         case newPM = "newpm"
         case savedPM = "savedpm"
         case applePay = "applepay"
+        case link = "link"
     }
     
     func paymentSheetInitEventValue(isCustom: Bool, configuration: PaymentSheet.Configuration)
@@ -114,6 +116,8 @@ extension STPAnalyticsClient {
                 return .mcShowCustomSavedPM
             case .applePay:
                 return .mcShowCustomApplePay
+            case .link:
+                return .mcShowCustomLink
             }
         } else {
             switch paymentMethod {
@@ -123,6 +127,8 @@ extension STPAnalyticsClient {
                 return .mcShowCompleteSavedPM
             case .applePay:
                 return .mcShowCompleteApplePay
+            case .link:
+                return .mcShowCompleteLink
             }
         }
     }
@@ -141,6 +147,8 @@ extension STPAnalyticsClient {
                 return success ? .mcPaymentCustomSavedPMSuccess : .mcPaymentCustomSavedPMFailure
             case .applePay:
                 return success ? .mcPaymentCustomApplePaySuccess : .mcPaymentCustomApplePayFailure
+            case .link:
+                return success ? .mcPaymentCustomLinkSuccess : .mcPaymentCustomLinkFailure
             }
         } else {
             switch paymentMethod {
@@ -150,6 +158,8 @@ extension STPAnalyticsClient {
                 return success ? .mcPaymentCompleteSavedPMSuccess : .mcPaymentCompleteSavedPMFailure
             case .applePay:
                 return success ? .mcPaymentCompleteApplePaySuccess : .mcPaymentCompleteApplePayFailure
+            case .link:
+                return success ? .mcPaymentCompleteLinkSuccess : .mcPaymentCompleteLinkFailure
             }
         }
     }
@@ -167,6 +177,8 @@ extension STPAnalyticsClient {
                 return .mcOptionSelectCustomSavedPM
             case .applePay:
                 return .mcOptionSelectCustomApplePay
+            case .link:
+                return .mcOptionSelectCustomLink
             }
         } else {
             switch paymentMethod {
@@ -176,6 +188,8 @@ extension STPAnalyticsClient {
                 return .mcOptionSelectCompleteSavedPM
             case .applePay:
                 return .mcOptionSelectCompleteApplePay
+            case .link:
+                return .mcOptionSelectCompleteLink
             }
         }
     }
@@ -249,6 +263,8 @@ extension PaymentSheet.PaymentOption {
             return .newPM
         case .saved:
             return .savedPM
+        case .link:
+            return .link
         }
     }
 }

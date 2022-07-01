@@ -46,6 +46,7 @@ class UserNonProfits extends StatelessWidget {
             height: 800,
             width: double.infinity,
             child: ListView.builder(
+                itemExtent: 100,
                 itemCount: profile.nonProfitList!.length,
                 itemBuilder: (context, int index) {
                   return GestureDetector(
@@ -109,23 +110,44 @@ class UserNonProfits extends StatelessWidget {
                             image: NetworkImage(
                                 profile.nonProfitList![index].logo),
                           ),
-                          title: Column(children: [
-                            Text(
-                              'Altrue Organization',
-                              style: TextStyle(fontSize: 7),
-                            ),
-                            Text(
-                              profile.nonProfitList![index].name,
-                              style: TextStyle(
-                                  color: Colors.amber,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14),
-                            ),
-                          ]),
+                          title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8.0, bottom: 5),
+                                  child: Text(
+                                    'Altrue Organization',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Text(
+                                  profile.nonProfitList![index].name,
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ]),
                           trailing: Column(children: [
-                            Text('Amount Donated'),
-                            Text(profile.nonProfitList![index].balance
-                                .toString())
+                            Text(
+                              'Amount Donated',
+                              style: TextStyle(
+                                  fontSize: 8,
+                                  height: 1,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            profile.nonProfitList![index].balance != null
+                                ? Text(profile.nonProfitList![index].balance
+                                    .toString())
+                                : MaterialButton(
+                                    height: 25,
+                                    color: Colors.amber,
+                                    onPressed: () {},
+                                    child: Text('Donate'))
                           ]),
                         ),
                       ));

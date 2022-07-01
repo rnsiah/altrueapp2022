@@ -145,7 +145,7 @@ class NonProfitInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Attribute(
-              value: nonProfit.category![0].name,
+              value: nonProfit.category![0].name!,
               name: 'Causes',
               textColor: Colors.black87,
             ),

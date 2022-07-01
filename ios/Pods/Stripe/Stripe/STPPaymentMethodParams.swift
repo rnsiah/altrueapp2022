@@ -78,6 +78,10 @@ public class STPPaymentMethodParams: NSObject, STPFormEncodable, STPPaymentOptio
     @objc var weChatPay: STPPaymentMethodWeChatPayParams?
     /// If this is an Boleto PaymentMethod, this contains additional details.
     @objc public var boleto: STPPaymentMethodBoletoParams?
+    /// If this is a Link PaymentMethod, this contains additional details
+    @objc public var link: STPPaymentMethodLinkParams?
+    /// If this is an Klarna PaymentMethod, this contains additional details.
+    @objc public var klarna: STPPaymentMethodKlarnaParams?
 
     /// Set of key-value pairs that you can attach to the PaymentMethod. This can be useful for storing additional information about the PaymentMethod in a structured format.
     @objc public var metadata: [String: String]?
@@ -450,6 +454,24 @@ public class STPPaymentMethodParams: NSObject, STPFormEncodable, STPPaymentOptio
         self.boleto = boleto
         self.billingDetails = billingDetails
     }
+    
+    /// Creates params for an Klarna PaymentMethod. :nodoc:
+    /// - Parameters:
+    ///   - klarna:   An object containing additional Klarna details.
+    ///   - billingDetails:      An object containing the user's billing details.
+    ///   - metadata:            Additional information to attach to the PaymentMethod.
+    @objc
+    public convenience init(
+        klarna: STPPaymentMethodKlarnaParams,
+        billingDetails: STPPaymentMethodBillingDetails?,
+        metadata: [String: String]?
+    ) {
+        self.init()
+        self.type = .klarna
+        self.klarna = klarna
+        self.billingDetails = billingDetails
+        self.metadata = metadata
+    }
 
     /// Creates params from a single-use PaymentMethod. This is useful for recreating a new payment method
     /// with similar settings. It will return nil if used with a reusable PaymentMethod.
@@ -527,6 +549,10 @@ public class STPPaymentMethodParams: NSObject, STPFormEncodable, STPPaymentOptio
             let boleto = STPPaymentMethodBoletoParams()
             self.boleto = boleto
             self.billingDetails = paymentMethod.billingDetails
+        case .klarna:
+            self.type = .klarna
+            self.klarna = STPPaymentMethodKlarnaParams()
+            self.billingDetails = paymentMethod.billingDetails
         // All reusable PaymentMethods go below:
         case .SEPADebit, .bacsDebit, .card, .cardPresent, .AUBECSDebit,  // fall through
             .unknown:
@@ -565,6 +591,7 @@ public class STPPaymentMethodParams: NSObject, STPFormEncodable, STPPaymentOptio
             NSStringFromSelector(#selector(getter:afterpayClearpay)): "afterpayClearpay",
             NSStringFromSelector(#selector(getter:weChatPay)): "wechat_pay",
             NSStringFromSelector(#selector(getter:boleto)): "boleto",
+            NSStringFromSelector(#selector(getter:klarna)): "klarna",
             NSStringFromSelector(#selector(getter:metadata)): "metadata",
         ]
     }
@@ -644,6 +671,12 @@ public class STPPaymentMethodParams: NSObject, STPFormEncodable, STPPaymentOptio
             return "WeChat Pay"
         case .boleto:
             return "Boleto"
+        case .link:
+            return "Link"
+        case .klarna:
+            return "Klarna"
+        case .linkInstantDebit:
+            return "Bank"
         case .cardPresent, .unknown:
             return STPLocalizedString("Unknown", "Default missing source type label")
         @unknown default:
@@ -653,11 +686,11 @@ public class STPPaymentMethodParams: NSObject, STPFormEncodable, STPPaymentOptio
 
     @objc public var isReusable: Bool {
         switch type {
-        case .card:
+        case .card, .link:
             return true
         case .alipay, .AUBECSDebit, .bacsDebit, .SEPADebit, .iDEAL, .FPX, .cardPresent, .giropay,
             .grabPay, .EPS, .przelewy24, .bancontact, .netBanking, .OXXO, .payPal, .sofort, .UPI,
-            .afterpayClearpay, .blik, .weChatPay, .boleto, // fall through
+            .afterpayClearpay, .blik, .weChatPay, .boleto, .klarna, .linkInstantDebit, // fall through
             .unknown:
             return false
         @unknown default:
@@ -963,6 +996,21 @@ extension STPPaymentMethodParams {
         return STPPaymentMethodParams(
             weChatPay: weChatPay, billingDetails: billingDetails, metadata: metadata)
     }
+    
+    /// Creates params for an Klarna PaymentMethod.
+    /// - Parameters:
+    ///   - klarna:   An object containing additional Klarna details.
+    ///   - billingDetails:      An object containing the user's billing details.
+    ///   - metadata:            Additional information to attach to the PaymentMethod.
+    @objc(paramsWithKlarna:billingDetails:metadata:)
+    public class func paramsWith(
+        klarna: STPPaymentMethodKlarnaParams,
+        billingDetails: STPPaymentMethodBillingDetails?,
+        metadata: [String: String]?
+    ) -> STPPaymentMethodParams {
+        return STPPaymentMethodParams(
+            klarna: klarna, billingDetails: billingDetails, metadata: metadata)
+    }
 }
 
 extension STPPaymentMethodParams {
@@ -1014,6 +1062,12 @@ extension STPPaymentMethodParams {
             weChatPay = STPPaymentMethodWeChatPayParams()
         case .boleto:
             boleto = STPPaymentMethodBoletoParams()
+        case .link:
+            link = STPPaymentMethodLinkParams()
+        case .klarna:
+            klarna = STPPaymentMethodKlarnaParams()
+        case .linkInstantDebit:
+            break
         case .unknown:
             break
         }

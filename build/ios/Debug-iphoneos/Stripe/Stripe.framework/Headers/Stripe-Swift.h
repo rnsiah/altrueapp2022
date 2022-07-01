@@ -193,6 +193,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import ObjectiveC;
 @import PassKit;
 @import SafariServices;
+@import StripeApplePay;
 @import StripeCore;
 @import UIKit;
 #endif
@@ -215,6 +216,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
+
 @interface NSError (SWIFT_EXTENSION(Stripe))
 /// Creates an NSError object from a given Stripe API json response.
 /// \param jsonDictionary The root dictionary from the JSON response.
@@ -225,7 +227,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 /// or nil if there was no error information included in the JSON dictionary.
 + (NSError * _Nullable)stp_errorFromStripeResponse:(NSDictionary * _Nullable)jsonDictionary SWIFT_WARN_UNUSED_RESULT;
 @end
-
 
 
 
@@ -767,92 +768,15 @@ SWIFT_PROTOCOL("_TtP6Stripe16STPFormEncodable_")
 
 
 
-@class PKPaymentRequest;
-@protocol STPApplePayContextDelegate;
-@class UIWindow;
-@class PKPaymentAuthorizationController;
+
+@class _stpinternal_APContextSwift;
 @class PKPayment;
-@class PKPaymentAuthorizationResult;
-@class PKPaymentRequestShippingMethodUpdate;
-@class PKPaymentRequestShippingContactUpdate;
-
-/// A helper class that implements Apple Pay.
-/// Usage looks like this:
-/// <ol>
-///   <li>
-///     Initialize this class with a PKPaymentRequest describing the payment request (amount, line items, required shipping info, etc)
-///   </li>
-///   <li>
-///     Call presentApplePayOnViewController:completion: to present the Apple Pay sheet and begin the payment process
-///     3 (optional): If you need to respond to the user changing their shipping information/shipping method, implement the optional delegate methods
-///   </li>
-///   <li>
-///     When the user taps ‘Buy’, this class uses the PaymentIntent that you supply in the applePayContext:didCreatePaymentMethod:completion: delegate method to complete the payment
-///   </li>
-///   <li>
-///     After payment completes/errors and the sheet is dismissed, this class informs you in the applePayContext:didCompleteWithStatus: delegate method
-///   </li>
-/// </ol>
-/// seealso:
-/// https://stripe.com/docs/apple-pay#native for a full guide
-/// seealso:
-/// ApplePayExampleViewController for an example
-SWIFT_CLASS("_TtC6Stripe18STPApplePayContext") SWIFT_AVAILABILITY(maccatalyst_app_extension,unavailable) SWIFT_AVAILABILITY(ios_app_extension,unavailable)
-@interface STPApplePayContext : NSObject <PKPaymentAuthorizationControllerDelegate>
-/// Initializes this class.
-/// @note This may return nil if the request is invalid e.g. the user is restricted by parental controls, or can’t make payments on any of the request’s supported networks
-/// \param paymentRequest The payment request to use with Apple Pay.
-///
-/// \param delegate The delegate.
-///
-- (nullable instancetype)initWithPaymentRequest:(PKPaymentRequest * _Nonnull)paymentRequest delegate:(id <STPApplePayContextDelegate> _Nullable)delegate OBJC_DESIGNATED_INITIALIZER;
-/// Presents the Apple Pay sheet from the specified view controller, starting the payment process.
-/// @note This method should only be called once; create a new instance of STPApplePayContext every time you present Apple Pay.
-/// @deprecated A presenting UIViewController is no longer needed. Use presentApplePay(completion:) instead.
-/// \param viewController The UIViewController instance to present the Apple Pay sheet on
-///
-/// \param completion Called after the Apple Pay sheet is presented
-///
-- (void)presentApplePayOnViewController:(UIViewController * _Nonnull)viewController completion:(void (^ _Nullable)(void))completion SWIFT_DEPRECATED_MSG("Use `presentApplePay(completion:)` instead.", "presentApplePayWithCompletion:");
-/// Presents the Apple Pay sheet from the key window, starting the payment process.
-/// @note This method should only be called once; create a new instance of STPApplePayContext every time you present Apple Pay.
-/// \param completion Called after the Apple Pay sheet is presented
-///
-- (void)presentApplePayWithCompletion:(void (^ _Nullable)(void))completion SWIFT_AVAILABILITY(maccatalyst_app_extension,unavailable,message="Use `presentApplePay(from:completion:)` in App Extensions.") SWIFT_AVAILABILITY(ios_app_extension,unavailable,message="Use `presentApplePay(from:completion:)` in App Extensions.");
-/// Presents the Apple Pay sheet from the specified window, starting the payment process.
-/// @note This method should only be called once; create a new instance of STPApplePayContext every time you present Apple Pay.
-/// \param window The UIWindow to host the Apple Pay sheet
-///
-/// \param completion Called after the Apple Pay sheet is presented
-///
-- (void)presentApplePayFromWindow:(UIWindow * _Nullable)window withCompletion:(void (^ _Nullable)(void))completion;
-/// The STPAPIClient instance to use to make API requests to Stripe.
-/// Defaults to <code>STPAPIClient.shared</code>.
-@property (nonatomic, strong) STPAPIClient * _Nonnull apiClient;
-/// :nodoc:
-- (BOOL)respondsToSelector:(SEL _Null_unspecified)aSelector SWIFT_WARN_UNUSED_RESULT;
-/// :nodoc:
-- (void)paymentAuthorizationController:(PKPaymentAuthorizationController * _Nonnull)controller didAuthorizePayment:(PKPayment * _Nonnull)payment handler:(void (^ _Nonnull)(PKPaymentAuthorizationResult * _Nonnull))completion;
-/// :nodoc:
-- (void)paymentAuthorizationController:(PKPaymentAuthorizationController * _Nonnull)controller didSelectShippingMethod:(PKShippingMethod * _Nonnull)shippingMethod handler:(void (^ _Nonnull)(PKPaymentRequestShippingMethodUpdate * _Nonnull))completion;
-/// :nodoc:
-- (void)paymentAuthorizationController:(PKPaymentAuthorizationController * _Nonnull)controller didSelectShippingContact:(PKContact * _Nonnull)contact handler:(void (^ _Nonnull)(PKPaymentRequestShippingContactUpdate * _Nonnull))completion;
-/// :nodoc:
-- (void)paymentAuthorizationControllerDidFinish:(PKPaymentAuthorizationController * _Nonnull)controller;
-/// :nodoc:
-- (UIWindow * _Nullable)presentationWindowForPaymentAuthorizationController:(PKPaymentAuthorizationController * _Nonnull)controller SWIFT_WARN_UNUSED_RESULT;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-
-
 enum STPPaymentStatus : NSInteger;
 
 /// Implement the required methods of this delegate to supply a PaymentIntent to STPApplePayContext and be notified of the completion of the Apple Pay payment.
 /// You may also implement the optional delegate methods to handle shipping methods and shipping address changes e.g. to verify you can ship to the address, or update the payment amount.
-SWIFT_PROTOCOL("_TtP6Stripe26STPApplePayContextDelegate_") SWIFT_AVAILABILITY(maccatalyst_app_extension,unavailable) SWIFT_AVAILABILITY(ios_app_extension,unavailable)
-@protocol STPApplePayContextDelegate <NSObject>
+SWIFT_PROTOCOL_NAMED("STPApplePayContextDelegate")
+@protocol _stpinternal_apContextDelegate <_stpinternal_STPApplePayContextDelegateBase>
 /// Called after the customer has authorized Apple Pay.  Implement this method to call the completion block with the client secret of a PaymentIntent or SetupIntent.
 /// \param paymentMethod The PaymentMethod that represents the customer’s Apple Pay payment method.
 /// If you create the PaymentIntent with confirmation_method=manual, pass <code>paymentMethod.stripeId</code> as the payment_method and confirm=true. Otherwise, you can ignore this parameter.
@@ -862,26 +786,14 @@ SWIFT_PROTOCOL("_TtP6Stripe26STPApplePayContextDelegate_") SWIFT_AVAILABILITY(ma
 ///
 /// \param completion Call this with the PaymentIntent or SetupIntent client secret, or the error that occurred creating the PaymentIntent or SetupIntent.
 ///
-- (void)applePayContext:(STPApplePayContext * _Nonnull)context didCreatePaymentMethod:(STPPaymentMethod * _Nonnull)paymentMethod paymentInformation:(PKPayment * _Nonnull)paymentInformation completion:(void (^ _Nonnull)(NSString * _Nullable, NSError * _Nullable))completion;
+- (void)applePayContext:(_stpinternal_APContextSwift * _Nonnull)context didCreatePaymentMethod:(STPPaymentMethod * _Nonnull)paymentMethod paymentInformation:(PKPayment * _Nonnull)paymentInformation completion:(void (^ _Nonnull)(NSString * _Nullable, NSError * _Nullable))completion;
 /// Called after the Apple Pay sheet is dismissed with the result of the payment.
 /// Your implementation could stop a spinner and display a receipt view or error to the customer, for example.
 /// \param status The status of the payment
 ///
 /// \param error The error that occurred, if any.
 ///
-- (void)applePayContext:(STPApplePayContext * _Nonnull)context didCompleteWithStatus:(enum STPPaymentStatus)status error:(NSError * _Nullable)error;
-@optional
-/// Called when the user selects a new shipping method.  The delegate should determine
-/// shipping costs based on the shipping method and either the shipping address supplied in the original
-/// PKPaymentRequest or the address fragment provided by the last call to paymentAuthorizationController:
-/// didSelectShippingContact:completion:.
-/// You must invoke the completion block with an updated array of PKPaymentSummaryItem objects.
-- (void)applePayContext:(STPApplePayContext * _Nonnull)context didSelectShippingMethod:(PKShippingMethod * _Nonnull)shippingMethod handler:(void (^ _Nonnull)(PKPaymentRequestShippingMethodUpdate * _Nonnull))handler;
-/// Called when the user has selected a new shipping address.  You should inspect the
-/// address and must invoke the completion block with an updated array of PKPaymentSummaryItem objects.
-/// @note To maintain privacy, the shipping information is anonymized. For example, in the United States it only includes the city, state, and zip code. This provides enough information to calculate shipping costs, without revealing sensitive information until the user actually approves the purchase.
-/// Receive full shipping information in the paymentInformation passed to <code>applePayContext:didCreatePaymentMethod:paymentInformation:completion:</code>
-- (void)applePayContext:(STPApplePayContext * _Nonnull)context didSelectShippingContact:(PKContact * _Nonnull)contact handler:(void (^ _Nonnull)(PKPaymentRequestShippingContactUpdate * _Nonnull))handler;
+- (void)applePayContext:(_stpinternal_APContextSwift * _Nonnull)context didCompleteWithStatus:(enum STPPaymentStatus)status error:(NSError * _Nullable)error;
 @end
 
 @class UIImage;
@@ -1457,6 +1369,7 @@ SWIFT_CLASS("_TtC6Stripe15STPCardFormView")
 
 
 
+
 SWIFT_AVAILABILITY(maccatalyst_app_extension,unavailable) SWIFT_AVAILABILITY(ios_app_extension,unavailable) SWIFT_AVAILABILITY(ios,introduced=13.0)
 @interface STPCardFormView (SWIFT_EXTENSION(Stripe))
 @end
@@ -1504,6 +1417,8 @@ typedef SWIFT_ENUM(NSInteger, STPCardFundingType, closed) {
 SWIFT_CLASS("_TtC6Stripe13STPCardParams")
 @interface STPCardParams : NSObject <NSCopying, STPFormEncodable>
 @property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
+/// A convenience initializer for creating a card params from a card payment method params.
+- (nonnull instancetype)initWithPaymentMethodParams:(STPPaymentMethodParams * _Nonnull)paymentMethodParams;
 /// The card’s number.
 @property (nonatomic, copy) NSString * _Nullable number;
 /// The last 4 digits of the card’s number, if it’s been set, otherwise nil.
@@ -1805,6 +1720,7 @@ SWIFT_CLASS("_TtC6Stripe30STPConfirmPaymentMethodOptions")
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+
 
 
 @interface STPConfirmPaymentMethodOptions (SWIFT_EXTENSION(Stripe)) <STPFormEncodable>
@@ -2128,6 +2044,8 @@ SWIFT_CLASS("_TtC6Stripe11STPCustomer")
 @property (nonatomic, readonly, strong) id <STPSourceProtocol> _Nullable defaultSource;
 /// The available payment sources the customer has (this may be an empty array).
 @property (nonatomic, readonly, copy) NSArray<id <STPSourceProtocol>> * _Nonnull sources;
+/// The customer’s email address.
+@property (nonatomic, readonly, copy) NSString * _Nullable email;
 /// The customer’s shipping address.
 @property (nonatomic, strong) STPAddress * _Nullable shippingAddress;
 @property (nonatomic, readonly, copy) NSDictionary * _Nonnull allResponseFields;
@@ -2661,8 +2579,10 @@ typedef SWIFT_ENUM(NSInteger, STPIntentActionType, closed) {
   STPIntentActionTypeBLIKAuthorize = 5,
 /// Contains instructions for authenticating a payment by redirecting your customer to the WeChat Pay App.
   STPIntentActionTypeWeChatPayRedirectToApp = 6,
+/// The payment intent requires authorization with Payment Sheet.
+  STPIntentActionTypeLinkAuthenticateAccount = 7,
 /// The action type is Boleto payment. We provide <code>STPPaymentHandler</code> to display the Boleto voucher.
-  STPIntentActionTypeBoletoDisplayDetails = 7,
+  STPIntentActionTypeBoletoDisplayDetails = 8,
 };
 
 
@@ -2878,6 +2798,7 @@ SWIFT_CLASS("_TtC6Stripe31STPPaymentActivityIndicatorView")
 @end
 
 @class STPPaymentMethodCardParams;
+@class UITraitCollection;
 
 /// STPPaymentCardTextField is a text field with similar properties to UITextField,
 /// but specialized for credit/debit card information. It manages
@@ -3053,6 +2974,7 @@ SWIFT_CLASS("_TtC6Stripe23STPPaymentCardTextField")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 /// :nodoc:
 - (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (void)traitCollectionDidChange:(UITraitCollection * _Nullable)previousTraitCollection;
 /// :nodoc:
 @property (nonatomic, strong) UIColor * _Nullable backgroundColor;
 /// :nodoc:
@@ -3266,7 +3188,7 @@ SWIFT_PROTOCOL("_TtP6Stripe39STPPaymentOptionsViewControllerDelegate_")
 /// An <code>STPPaymentContext</code> keeps track of all of the state around a payment. It will manage fetching a user’s saved payment methods, tracking any information they select, and prompting them for required additional information before completing their purchase. It can be used to power your application’s “payment confirmation” page with just a few lines of code.
 /// <code>STPPaymentContext</code> also provides a unified interface to multiple payment methods - for example, you can write a single integration to accept both credit card payments and Apple Pay.
 /// <code>STPPaymentContext</code> saves information about a user’s payment methods to a Stripe customer object, and requires an <code>STPCustomerContext</code> to manage retrieving and modifying the customer.
-SWIFT_CLASS("_TtC6Stripe17STPPaymentContext")
+SWIFT_CLASS_NAMED("STPPaymentContext")
 @interface STPPaymentContext : NSObject <STPAuthenticationContext, STPPaymentOptionsViewControllerDelegate, STPShippingAddressViewControllerDelegate>
 /// This is a convenience initializer; it is equivalent to calling
 /// <code>init(customerContext:customerContext configuration:STPPaymentConfiguration.shared theme:STPTheme.defaultTheme</code>.
@@ -3583,13 +3505,11 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) STPPaymentHa
 + (STPPaymentHandler * _Nonnull)sharedHandler SWIFT_WARN_UNUSED_RESULT;
 /// The globally shared instance of <code>STPPaymentHandler</code>.
 + (STPPaymentHandler * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 /// By default <code>sharedHandler</code> initializes with STPAPIClient.shared.
 @property (nonatomic, strong) STPAPIClient * _Nonnull apiClient;
 /// Customizable settings to use when performing 3DS2 authentication.
 /// Note: Configure this before calling any methods.
-/// Defaults to <code>STPThreeDSCustomizationSettings.defaultSettings()</code>.
+/// Defaults to <code>STPThreeDSCustomizationSettings()</code>.
 @property (nonatomic, strong) STPThreeDSCustomizationSettings * _Nonnull threeDSCustomizationSettings;
 /// When this flag is enabled, STPPaymentHandler will confirm certain PaymentMethods using
 /// Safari instead of SFSafariViewController. If you’d like to use this in your own
@@ -3643,6 +3563,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) STPPaymentHa
 - (void)handleNextActionForSetupIntent:(NSString * _Nonnull)setupIntentClientSecret withAuthenticationContext:(id <STPAuthenticationContext> _Nonnull)authenticationContext returnURL:(NSString * _Nullable)returnURL completion:(void (^ _Nonnull)(enum STPPaymentHandlerActionStatus, STPSetupIntent * _Nullable, NSError * _Nullable))completion;
 /// :nodoc:
 - (void)safariViewControllerDidFinish:(SFSafariViewController * _Nonnull)controller;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
 
@@ -4230,6 +4152,8 @@ enum STPPaymentMethodType : NSInteger;
 @class STPPaymentMethodAfterpayClearpay;
 @class STPPaymentMethodBLIK;
 @class STPPaymentMethodBoleto;
+@class STPPaymentMethodLink;
+@class STPPaymentMethodKlarna;
 
 /// PaymentMethod objects represent your customer’s payment instruments. They can be used with PaymentIntents to collect payments.
 /// seealso:
@@ -4289,6 +4213,10 @@ SWIFT_CLASS("_TtC6Stripe16STPPaymentMethod")
 @property (nonatomic, readonly, strong) STPPaymentMethodBLIK * _Nullable blik;
 /// If this is an Boleto PaymentMethod (i.e. <code>self.type == STPPaymentMethodTypeBoleto</code>), this contains additional details.
 @property (nonatomic, readonly, strong) STPPaymentMethodBoleto * _Nullable boleto;
+/// If this is a Link PaymentMethod (i.e. <code>self.type == STPPaymentMethodTypeLink</code>), this contains additional details.
+@property (nonatomic, readonly, strong) STPPaymentMethodLink * _Nullable link;
+/// If this is an Boleto PaymentMethod (i.e. <code>self.type == STPPaymentMethodTypeKlarna</code>), this contains additional details.
+@property (nonatomic, readonly, strong) STPPaymentMethodKlarna * _Nullable klarna;
 /// The ID of the Customer to which this PaymentMethod is saved. Nil when the PaymentMethod has not been saved to a Customer.
 @property (nonatomic, readonly, copy) NSString * _Nullable customerId;
 /// Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -4376,6 +4304,7 @@ SWIFT_CLASS("_TtC6Stripe23STPPaymentMethodAddress")
 + (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
 + (nullable instancetype)decodedObjectFromAPIResponse:(NSDictionary * _Nullable)response SWIFT_WARN_UNUSED_RESULT;
 @end
+
 
 
 /// An AfterpayClearpay Payment Method.
@@ -4543,6 +4472,7 @@ SWIFT_CLASS("_TtC6Stripe30STPPaymentMethodBillingDetails")
 + (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
 + (nullable instancetype)decodedObjectFromAPIResponse:(NSDictionary * _Nullable)response SWIFT_WARN_UNUSED_RESULT;
 @end
+
 
 
 
@@ -4921,6 +4851,53 @@ SWIFT_CLASS("_TtC6Stripe29STPPaymentMethodGrabPayParams")
 @end
 
 
+/// The Klarna Payment Method.
+/// seealso:
+/// https://stripe.com/docs/payments/klarna
+SWIFT_CLASS("_TtC6Stripe22STPPaymentMethodKlarna")
+@interface STPPaymentMethodKlarna : NSObject
+/// :nodoc:
+@property (nonatomic, readonly, copy) NSDictionary * _Nonnull allResponseFields;
+/// :nodoc:
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
++ (nullable instancetype)decodedObjectFromAPIResponse:(NSDictionary * _Nullable)response SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+/// An object representing parameters used to create an Klarna Payment Method
+SWIFT_CLASS("_TtC6Stripe28STPPaymentMethodKlarnaParams")
+@interface STPPaymentMethodKlarnaParams : NSObject <STPFormEncodable>
+@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
++ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
++ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// A Link Payment Method.
+SWIFT_CLASS("_TtC6Stripe20STPPaymentMethodLink")
+@interface STPPaymentMethodLink : NSObject <STPAPIResponseDecodable>
+@property (nonatomic, readonly, copy) NSDictionary * _Nonnull allResponseFields;
+/// :nodoc:
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
++ (nullable instancetype)decodedObjectFromAPIResponse:(NSDictionary * _Nullable)response SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+/// An object representing parameters used to create an Link Payment Method
+SWIFT_CLASS("_TtC6Stripe26STPPaymentMethodLinkParams")
+@interface STPPaymentMethodLinkParams : NSObject <STPFormEncodable>
+@property (nonatomic, copy) NSDictionary * _Nonnull additionalAPIParameters;
++ (NSString * _Nullable)rootObjectName SWIFT_WARN_UNUSED_RESULT;
++ (NSDictionary<NSString *, NSString *> * _Nonnull)propertyNamesToFormFieldNamesMapping SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 /// A NetBanking Payment Method.
 /// seealso:
 /// https://stripe.com/docs/api/payment_methods/object#payment_method_object-netbanking
@@ -5037,6 +5014,10 @@ SWIFT_CLASS("_TtC6Stripe22STPPaymentMethodParams")
 @property (nonatomic, strong) STPPaymentMethodBLIKParams * _Nullable blik;
 /// If this is an Boleto PaymentMethod, this contains additional details.
 @property (nonatomic, strong) STPPaymentMethodBoletoParams * _Nullable boleto;
+/// If this is a Link PaymentMethod, this contains additional details
+@property (nonatomic, strong) STPPaymentMethodLinkParams * _Nullable link;
+/// If this is an Klarna PaymentMethod, this contains additional details.
+@property (nonatomic, strong) STPPaymentMethodKlarnaParams * _Nullable klarna;
 /// Set of key-value pairs that you can attach to the PaymentMethod. This can be useful for storing additional information about the PaymentMethod in a structured format.
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nullable metadata;
 /// Creates params for a card PaymentMethod.
@@ -5199,6 +5180,14 @@ SWIFT_CLASS("_TtC6Stripe22STPPaymentMethodParams")
 /// \param metadata Additional information to attach to the PaymentMethod.
 ///
 - (nonnull instancetype)initWithBoleto:(STPPaymentMethodBoletoParams * _Nonnull)boleto billingDetails:(STPPaymentMethodBillingDetails * _Nullable)billingDetails metadata:(NSDictionary<NSString *, NSString *> * _Nullable)metadata;
+/// Creates params for an Klarna PaymentMethod. :nodoc:
+/// \param klarna An object containing additional Klarna details.
+///
+/// \param billingDetails An object containing the user’s billing details.
+///
+/// \param metadata Additional information to attach to the PaymentMethod.
+///
+- (nonnull instancetype)initWithKlarna:(STPPaymentMethodKlarnaParams * _Nonnull)klarna billingDetails:(STPPaymentMethodBillingDetails * _Nullable)billingDetails metadata:(NSDictionary<NSString *, NSString *> * _Nullable)metadata;
 /// Creates params from a single-use PaymentMethod. This is useful for recreating a new payment method
 /// with similar settings. It will return nil if used with a reusable PaymentMethod.
 /// \param paymentMethod An object containing the original single-use PaymentMethod.
@@ -5370,6 +5359,14 @@ SWIFT_CLASS("_TtC6Stripe22STPPaymentMethodParams")
 /// \param metadata Additional information to attach to the PaymentMethod.
 ///
 + (STPPaymentMethodParams * _Nonnull)paramsWithBLIK:(STPPaymentMethodBLIKParams * _Nonnull)blik billingDetails:(STPPaymentMethodBillingDetails * _Nullable)billingDetails metadata:(NSDictionary<NSString *, NSString *> * _Nullable)metadata SWIFT_WARN_UNUSED_RESULT;
+/// Creates params for an Klarna PaymentMethod.
+/// \param klarna An object containing additional Klarna details.
+///
+/// \param billingDetails An object containing the user’s billing details.
+///
+/// \param metadata Additional information to attach to the PaymentMethod.
+///
++ (STPPaymentMethodParams * _Nonnull)paramsWithKlarna:(STPPaymentMethodKlarnaParams * _Nonnull)klarna billingDetails:(STPPaymentMethodBillingDetails * _Nullable)billingDetails metadata:(NSDictionary<NSString *, NSString *> * _Nullable)metadata SWIFT_WARN_UNUSED_RESULT;
 @end
 
 
@@ -5546,8 +5543,14 @@ typedef SWIFT_ENUM(NSInteger, STPPaymentMethodType, closed) {
   STPPaymentMethodTypeWeChatPay = 20,
 /// A Boleto payment method.
   STPPaymentMethodTypeBoleto = 21,
+/// A Link payment method
+  STPPaymentMethodTypeLink = 22,
+/// A Klarna payment method.
+  STPPaymentMethodTypeKlarna = 23,
+/// A Link Instant Debit payment method
+  STPPaymentMethodTypeLinkInstantDebit = 24,
 /// An unknown type.
-  STPPaymentMethodTypeUnknown = 22,
+  STPPaymentMethodTypeUnknown = 25,
 };
 
 
@@ -7385,6 +7388,8 @@ SWIFT_CLASS("_TtC6Stripe18STPUserInformation")
 
 
 
+
+
 @interface UINavigationBar (SWIFT_EXTENSION(Stripe))
 /// Sets the navigation bar’s appearance to the desired theme. This will affect the
 /// bar’s <code>tintColor</code> and <code>barTintColor</code> properties, as well as the color of the
@@ -7417,6 +7422,89 @@ SWIFT_CLASS("_TtC6Stripe18STPUserInformation")
 
 
 
+
+
+@class PKPaymentRequest;
+@protocol STPApplePayContextDelegate;
+@class UIWindow;
+
+/// An Objective-C bridge for STPApplePayContext.
+/// :nodoc:
+SWIFT_CLASS_NAMED("_stpobjc_APContext")
+@interface STPApplePayContext : NSObject
+/// Initializes this class.
+/// @note This may return nil if the request is invalid e.g. the user is restricted by parental controls, or can’t make payments on any of the request’s supported networks
+/// \param paymentRequest The payment request to use with Apple Pay.
+///
+/// \param delegate The delegate.
+///
+- (nullable instancetype)initWithPaymentRequest:(PKPaymentRequest * _Nonnull)paymentRequest delegate:(id <STPApplePayContextDelegate> _Nullable)delegate OBJC_DESIGNATED_INITIALIZER;
+/// Presents the Apple Pay sheet from the specified view controller, starting the payment process.
+/// @note This method should only be called once; create a new instance of STPApplePayContext every time you present Apple Pay.
+/// @deprecated A presenting UIViewController is no longer needed. Use presentApplePay(completion:) instead.
+/// \param viewController The UIViewController instance to present the Apple Pay sheet on
+///
+/// \param completion Called after the Apple Pay sheet is presented
+///
+- (void)presentApplePayOnViewController:(UIViewController * _Nonnull)viewController completion:(void (^ _Nullable)(void))completion SWIFT_DEPRECATED_MSG("Use `presentApplePay(completion:)` instead.", "presentApplePayWithCompletion:");
+/// Presents the Apple Pay sheet from the key window, starting the payment process.
+/// @note This method should only be called once; create a new instance of STPApplePayContext every time you present Apple Pay.
+/// \param completion Called after the Apple Pay sheet is presented
+///
+- (void)presentApplePayWithCompletion:(void (^ _Nullable)(void))completion SWIFT_AVAILABILITY(maccatalyst_app_extension,unavailable,message="Use `presentApplePay(from:completion:)` in App Extensions.") SWIFT_AVAILABILITY(ios_app_extension,unavailable,message="Use `presentApplePay(from:completion:)` in App Extensions.");
+/// Presents the Apple Pay sheet from the specified window, starting the payment process.
+/// @note This method should only be called once; create a new instance of STPApplePayContext every time you present Apple Pay.
+/// \param window The UIWindow to host the Apple Pay sheet
+///
+/// \param completion Called after the Apple Pay sheet is presented
+///
+- (void)presentApplePayFromWindow:(UIWindow * _Nullable)window withCompletion:(void (^ _Nullable)(void))completion;
+/// The STPAPIClient instance to use to make API requests to Stripe.
+/// Defaults to <code>STPAPIClient.shared</code>.
+@property (nonatomic, strong) STPAPIClient * _Nonnull apiClient;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@class PKPaymentRequestShippingMethodUpdate;
+@class PKPaymentRequestShippingContactUpdate;
+
+/// Implement the required methods of this delegate to supply a PaymentIntent to STPApplePayContext and be notified of the completion of the Apple Pay payment.
+/// You may also implement the optional delegate methods to handle shipping methods and shipping address changes e.g. to verify you can ship to the address, or update the payment amount.
+/// :nodoc:
+SWIFT_PROTOCOL_NAMED("_stpobjc_APContextDelegate")
+@protocol STPApplePayContextDelegate <NSObject>
+/// Called after the customer has authorized Apple Pay.  Implement this method to call the completion block with the client secret of a PaymentIntent or SetupIntent.
+/// \param paymentMethod The PaymentMethod that represents the customer’s Apple Pay payment method.
+/// If you create the PaymentIntent with confirmation_method=manual, pass <code>paymentMethod.stripeId</code> as the payment_method and confirm=true. Otherwise, you can ignore this parameter.
+///
+/// \param paymentInformation The underlying PKPayment created by Apple Pay.
+/// If you create the PaymentIntent with confirmation_method=manual, you can collect shipping information using its <code>shippingContact</code> and <code>shippingMethod</code> properties.
+///
+/// \param completion Call this with the PaymentIntent or SetupIntent client secret, or the error that occurred creating the PaymentIntent or SetupIntent.
+///
+- (void)applePayContext:(STPApplePayContext * _Nonnull)context didCreatePaymentMethod:(STPPaymentMethod * _Nonnull)paymentMethod paymentInformation:(PKPayment * _Nonnull)paymentInformation completion:(void (^ _Nonnull)(NSString * _Nullable, NSError * _Nullable))completion;
+/// Called after the Apple Pay sheet is dismissed with the result of the payment.
+/// Your implementation could stop a spinner and display a receipt view or error to the customer, for example.
+/// \param status The status of the payment
+///
+/// \param error The error that occurred, if any.
+///
+- (void)applePayContext:(STPApplePayContext * _Nonnull)context didCompleteWithStatus:(enum STPPaymentStatus)status error:(NSError * _Nullable)error;
+@optional
+/// Called when the user selects a new shipping method.  The delegate should determine
+/// shipping costs based on the shipping method and either the shipping address supplied in the original
+/// PKPaymentRequest or the address fragment provided by the last call to paymentAuthorizationController:
+/// didSelectShippingContact:completion:.
+/// You must invoke the completion block with an updated array of PKPaymentSummaryItem objects.
+- (void)applePayContext:(STPApplePayContext * _Nonnull)context didSelectShippingMethod:(PKShippingMethod * _Nonnull)shippingMethod handler:(void (^ _Nonnull)(PKPaymentRequestShippingMethodUpdate * _Nonnull))handler;
+/// Called when the user has selected a new shipping address.  You should inspect the
+/// address and must invoke the completion block with an updated array of PKPaymentSummaryItem objects.
+/// @note To maintain privacy, the shipping information is anonymized. For example, in the United States it only includes the city, state, and zip code. This provides enough information to calculate shipping costs, without revealing sensitive information until the user actually approves the purchase.
+/// Receive full shipping information in the paymentInformation passed to <code>applePayContext:didCreatePaymentMethod:paymentInformation:completion:</code>
+- (void)applePayContext:(STPApplePayContext * _Nonnull)context didSelectShippingContact:(PKContact * _Nonnull)contact handler:(void (^ _Nonnull)(PKPaymentRequestShippingContactUpdate * _Nonnull))handler;
+@end
 
 @class STPAppInfo;
 
@@ -7696,6 +7784,7 @@ SWIFT_CLASS_NAMED("_stpobjc_STPAppInfo")
 @end
 
 
+/// :nodoc:
 /// Top-level class for Stripe error constants.
 SWIFT_CLASS_NAMED("_stpobjc_STPError")
 @interface STPError : NSObject
@@ -7769,12 +7858,15 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+/// :nodoc:
 /// Possible error code values for NSErrors with the <code>StripeDomain</code> domain
 typedef SWIFT_ENUM_NAMED(NSInteger, STPErrorCode, "_stpobjc_STPErrorCode", closed) {
 /// Trouble connecting to Stripe.
   STPConnectionError SWIFT_COMPILE_NAME("connectionError") = 40,
 /// Your request had invalid parameters.
   STPInvalidRequestError SWIFT_COMPILE_NAME("invalidRequestError") = 50,
+/// No valid publishable API key provided.
+  STPAuthenticationError SWIFT_COMPILE_NAME("authenticationError") = 51,
 /// General-purpose API error.
   STPAPIError SWIFT_COMPILE_NAME("apiError") = 60,
 /// Something was wrong with the given card details.

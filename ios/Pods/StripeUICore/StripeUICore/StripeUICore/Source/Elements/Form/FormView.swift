@@ -11,15 +11,31 @@ import UIKit
 
 /**
  A simple container view that displays its subviews in a vertical stack.
+ 
+ For internal SDK use only
  */
-class FormView: UIView {
-    init(viewModel: FormElement.ViewModel) {
+@objc(STP_Internal_FormView)
+@_spi(STP) public class FormView: UIView {
+    
+    public init(viewModel: FormElement.ViewModel) {
         super.init(frame: .zero)
         
-        let stack = UIStackView(arrangedSubviews: viewModel.elements)
-        stack.axis = .vertical
-        stack.spacing = 16
-        addAndPinSubview(stack)
+        if viewModel.bordered {
+            let stack = StackViewWithSeparator(arrangedSubviews: viewModel.elements)
+            stack.drawBorder = true
+            stack.separatorColor = InputFormColors.outlineColor
+            stack.borderCornerRadius = 8
+            stack.axis = .vertical
+            stack.spacing = 1
+            stack.distribution = .equalSpacing
+            addAndPinSubview(stack)
+        } else {
+            let stack = UIStackView(arrangedSubviews: viewModel.elements)
+            stack.axis = .vertical
+            stack.spacing = 12
+            stack.distribution = .equalSpacing
+            addAndPinSubview(stack)
+        }
     }
 
     required init?(coder: NSCoder) {

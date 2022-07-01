@@ -10,7 +10,8 @@ NonProfitProject _$NonProfitProjectFromJson(Map<String, dynamic> json) =>
     NonProfitProject(
       id: json['id'] as int?,
       currentFunds: (json['currentFunds'] as num?)?.toDouble(),
-      information: json['information'] as String,
+      isActive: json['is_active'] as bool?,
+      information: json['information'] as String?,
       atrocity: json['atrocity'] == null
           ? null
           : Atrocity.fromJson(json['atrocity'] as Map<String, dynamic>),
@@ -21,7 +22,7 @@ NonProfitProject _$NonProfitProjectFromJson(Map<String, dynamic> json) =>
           ?.map(
               (e) => ProfileRepresentation.fromJson(e as Map<String, dynamic>))
           .toList(),
-      fundraisingGoal: json['fundraising_goal'] as String,
+      fundraisingGoal: json['fundraising_goal'] as String?,
       nonprofit: json['nonprofit'] == null
           ? null
           : NonProfit.fromJson(json['nonprofit'] as Map<String, dynamic>),
@@ -43,6 +44,7 @@ Map<String, dynamic> _$NonProfitProjectToJson(NonProfitProject instance) =>
       'cause': instance.cause?.toJson(),
       'atrocity': instance.atrocity?.toJson(),
       'currentFunds': instance.currentFunds,
+      'is_active': instance.isActive,
       'fundraising_goal': instance.fundraisingGoal,
     };
 

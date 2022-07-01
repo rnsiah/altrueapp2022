@@ -57,7 +57,7 @@ class NonProfitShirtCase extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(nonProfit.shirtList![index].category!.name)
+              Text(nonProfit.shirtList![index].category!.name!)
             ],
           ),
         );

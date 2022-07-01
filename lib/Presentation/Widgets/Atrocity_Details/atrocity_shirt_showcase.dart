@@ -53,7 +53,7 @@ class AtrocityShirtShowcase extends StatelessWidget {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              Text(atrocity.shirtList![index].category!.name)
+              Text(atrocity.shirtList![index].category!.name!)
             ],
           ),
         );

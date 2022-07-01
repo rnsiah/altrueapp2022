@@ -24,24 +24,41 @@ class _IntroductionSliderState extends State<IntroductionSlider> {
   void initState() {
     super.initState();
     slides.add(new Slide(
-        title: 'Welcome',
-        maxLineTitle: 2,
-        styleTitle: TextStyle(
-            color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
-        backgroundColor: Colors.white));
+      pathImage: 'images/Altrue Logo White.png',
+      centerWidget: Text(
+        'With Altrue, Give in a new Way',
+        style: TextStyle(color: Colors.amber),
+      ),
+      title: 'Welcome',
+      description: 'With Atrue, Give in a new Way',
+      styleDescription: TextStyle(color: Colors.amber, fontSize: 16),
+      maxLineTitle: 2,
+      backgroundColor: Color(0xfff5a623),
+      styleTitle: TextStyle(
+          color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+    ));
     slides.add(new Slide(
+        pathImage: 'images/Altrue Logo White.png',
+        description: 'With Atrue, Give in a new Way',
+        styleDescription: TextStyle(color: Colors.amber, fontSize: 16),
         title: 'Learn',
         maxLineTitle: 2,
         styleTitle: TextStyle(
             color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
         backgroundColor: Colors.black));
     slides.add(new Slide(
+        pathImage: 'images/Altrue Logo White.png',
         title: 'Do Something',
+        description: 'With Atrue, Give in a new Way',
+        styleDescription: TextStyle(color: Colors.amber, fontSize: 16),
         maxLineTitle: 2,
         styleTitle: TextStyle(
             color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
         backgroundColor: Colors.black));
     slides.add(new Slide(
+        pathImage: 'images/Altrue Logo White.png',
+        description: 'With Atrue, Give in a new Way',
+        styleDescription: TextStyle(color: Colors.amber, fontSize: 16),
         title: 'Get Rewarded',
         maxLineTitle: 2,
         styleTitle: TextStyle(
@@ -99,17 +116,17 @@ class _IntroductionSliderState extends State<IntroductionSlider> {
         width: double.infinity,
         height: double.infinity,
         child: Container(
-          margin: EdgeInsets.only(bottom: 60, top: 60),
+          margin: EdgeInsets.only(bottom: 160, top: 60),
           child: ListView(
             children: [
-              // GestureDetector(
-              //   child: Image.asset(
-              //     current.pathImage!,
-              //     width: 200,
-              //     height: 200,
-              //     fit: BoxFit.contain,
-              //   ),
-              // ),
+              GestureDetector(
+                child: Image.asset(
+                  current.pathImage!,
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.contain,
+                ),
+              ),
               Container(
                 child: Text(
                   current.title!,
@@ -118,15 +135,15 @@ class _IntroductionSliderState extends State<IntroductionSlider> {
                 ),
                 margin: EdgeInsets.only(top: 20),
               ),
-              // Container(
-              //   child: Text(
-              //     current.description!,
-              //     style: current.styleDescription,
-              //     textAlign: TextAlign.center,
-              //     maxLines: 5,
-              //     overflow: TextOverflow.ellipsis,
-              //   ),
-              // )
+              Container(
+                child: Text(
+                  current.description!,
+                  style: current.styleDescription,
+                  textAlign: TextAlign.center,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
             ],
           ),
         ),
@@ -148,7 +165,6 @@ class _IntroductionSliderState extends State<IntroductionSlider> {
       sizeDot: 16,
       typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
       listCustomTabs: this.renderTabList(),
-      backgroundColorAllSlides: Colors.black,
       refFuncGoToTab: (refFunc) {
         this.goToTab = refFunc;
       },

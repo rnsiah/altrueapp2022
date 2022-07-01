@@ -209,16 +209,48 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 @class NSCoder;
+@class UITraitCollection;
+@class UIWindow;
 
-SWIFT_CLASS("_TtC12StripeUICore17DoneButtonToolbar")
-@interface DoneButtonToolbar : UIToolbar
+SWIFT_CLASS_NAMED("ActivityIndicator")
+@interface STP_Internal_ActivityIndicator : UIView
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+- (nonnull instancetype)init;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+- (void)tintColorDidChange;
+- (void)traitCollectionDidChange:(UITraitCollection * _Nullable)previousTraitCollection;
+- (void)layoutSubviews;
+- (void)willMoveToWindow:(UIWindow * _Nullable)newWindow;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+@end
+
+
+
+@class UIEvent;
+
+SWIFT_CLASS_NAMED("Button")
+@interface STP_Internal_Button : UIControl
+@property (nonatomic, readonly) UIControlState state;
+@property (nonatomic, getter=isEnabled) BOOL enabled;
+@property (nonatomic, getter=isHighlighted) BOOL highlighted;
+- (nonnull instancetype)init;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
+- (void)tintColorDidChange;
+- (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+@end
+
+
+
+SWIFT_CLASS_NAMED("DoneButtonToolbar")
+@interface STP_Internal_DoneButtonToolbar : UIToolbar
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
 
 
-SWIFT_CLASS("_TtC12StripeUICore20DropdownFieldElement")
-@interface DropdownFieldElement : NSObject
+SWIFT_CLASS_NAMED("DropdownFieldElement")
+@interface STP_Internal_DropdownFieldElement : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -227,21 +259,28 @@ SWIFT_CLASS("_TtC12StripeUICore20DropdownFieldElement")
 
 @class UIPickerView;
 
-@interface DropdownFieldElement (SWIFT_EXTENSION(StripeUICore)) <UIPickerViewDelegate>
+@interface STP_Internal_DropdownFieldElement (SWIFT_EXTENSION(StripeUICore)) <UIPickerViewDelegate>
 - (NSString * _Nullable)pickerView:(UIPickerView * _Nonnull)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component SWIFT_WARN_UNUSED_RESULT;
 - (void)pickerView:(UIPickerView * _Nonnull)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component;
 @end
 
 
-@interface DropdownFieldElement (SWIFT_EXTENSION(StripeUICore)) <UIPickerViewDataSource>
+@interface STP_Internal_DropdownFieldElement (SWIFT_EXTENSION(StripeUICore)) <UIPickerViewDataSource>
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView * _Nonnull)pickerView SWIFT_WARN_UNUSED_RESULT;
 - (NSInteger)pickerView:(UIPickerView * _Nonnull)pickerView numberOfRowsInComponent:(NSInteger)component SWIFT_WARN_UNUSED_RESULT;
 @end
 
 
 
-SWIFT_CLASS("_TtC12StripeUICore26DynamicHeightContainerView")
-@interface DynamicHeightContainerView : UIView
+SWIFT_CLASS_NAMED("DynamicHeightContainerView")
+@interface STP_Internal_DynamicHeightContainerView : UIView
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS_NAMED("FormView")
+@interface STP_Internal_FormView : UIView
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
@@ -251,6 +290,19 @@ SWIFT_CLASS("_TtC12StripeUICore24STPEmailAddressValidator")
 @interface STPEmailAddressValidator : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+
+
+SWIFT_CLASS_NAMED("StackViewWithSeparator")
+@interface STP_Internal_StackViewWithSeparator : UIStackView
+@property (nonatomic) CGFloat spacing;
+@property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+- (void)layoutSubviews;
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
 
 
 

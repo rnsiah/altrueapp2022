@@ -9,15 +9,26 @@
 import Foundation
 
 extension String {
+    /// Returns a substring up to the specified index.
+    ///
+    /// This method clamps out-of-bound indexes and always returns a valid (non-nil) string.
+    ///
+    /// - Parameter index: Index of last character to include in the substring.
+    /// - Returns: Substring.
     func stp_safeSubstring(to index: Int) -> String {
-        return String(prefix(min(index, count)))
+        let maxLength = max(min(index, count), 0)
+        return String(prefix(maxLength))
     }
 
+    /// Returns the substring starting from the specified index.
+    ///
+    /// This method clamps out-of-bound indexes and always returns a valid (non-nil) string.
+    ///
+    /// - Parameter index: Index of starting point of substring.
+    /// - Returns: Substring.
     func stp_safeSubstring(from index: Int) -> String {
-        if index > count {
-            return ""
-        }
-        return String(suffix(count - index))
+        let maxLength = max(min(count - index, count), 0)
+        return String(suffix(maxLength))
     }
 
     func stp_string(byRemovingSuffix suffix: String?) -> String {
@@ -44,4 +55,21 @@ extension String {
         let failsafeString = "\(formatter.currencySymbol ?? "")\(decimalizedAmount)"
         return formatter.string(from: decimalizedAmount) ?? failsafeString
     }
+
+    /**
+     Function to determine if this string is the country code of the United State
+    @param caseSensitive - Whether this string should only be considered the US country code if it matches the expected capitalization
+     */
+    func isUSCountryCode(_ caseSensitive: Bool = false) -> Bool {
+        return caseSensitive ? self == "US" : self.caseInsensitiveCompare("US") == .orderedSame
+    }
+    
+    var sha256: String? {
+        guard let stringData = self.data(using: .utf8) else {
+            return nil
+        }
+
+        return stringData.sha256
+    }
+
 }

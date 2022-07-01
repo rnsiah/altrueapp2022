@@ -47,6 +47,9 @@ class UserFromAPI {
   Map<String, dynamic> toJson() => _$UserFromAPIToJson(this);
 }
 
+// http://10.0.0.238:8000/media/profiles/IMG_1851.jpg
+// http://10.0.0.238:8000/media/qr_codes/qr-rnsiah_3ddguw0.png
+
 @JsonSerializable(explicitToJson: true)
 class User extends UUser {
   int id;
@@ -182,13 +185,14 @@ class ProfileCompletion {
 @JsonSerializable(explicitToJson: true)
 class ProfileRepresentation {
   int id;
-  dynamic username;
+  String username;
   @JsonKey(name: 'profile_picture')
   ProfilePicture? profilePicture;
 
   ProfileRepresentation({
     required this.username,
     required this.id,
+    this.profilePicture,
   });
 
   factory ProfileRepresentation.fromJson(Map<String, dynamic> data) =>

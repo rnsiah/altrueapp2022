@@ -75,7 +75,8 @@ class _ShirtDetailsState extends State<ShirtDetails>
                   widget.shirt.requiredLevel != null &&
                   widget.profile.altruePoints! >
                       widget.shirt.requiredLevel!.minimumPoints
-              ? FloatingActionButton(
+              ? FloatingActionButton.extended(
+                  label: Text('Get Now'),
                   elevation: 12,
                   onPressed: () {
                     context
@@ -93,13 +94,6 @@ class _ShirtDetailsState extends State<ShirtDetails>
                         });
                   },
                   backgroundColor: Colors.amber,
-                  child: Text(
-                    'Get Now',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
                 )
               : FloatingActionButton(
                   elevation: 12,

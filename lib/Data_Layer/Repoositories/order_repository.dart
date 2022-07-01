@@ -7,7 +7,8 @@ import 'package:mobile/Data_Layer/Models/order_model.dart';
 import 'package:mobile/Data_Layer/Models/user_model.dart';
 
 class OrderRepository {
-  final String host = 'http://10.0.0.238:8000';
+  final String host =
+      'http://51e6-2601-2c0-102-428-94eb-738f-e936-b4d3.ngrok.io';
   ApiProvider _apiProvider = ApiProvider();
   // ignore: unused_field
   NonAuthenticatedApiProvider _nonauthapi = NonAuthenticatedApiProvider();
@@ -36,7 +37,7 @@ class OrderRepository {
   Future<List<Order>> getUserCompletedOrders(user) async {
     List<Order> completedOrders = [];
     final response =
-        await http.get(Uri.parse('$host/api/allusercompletedorders'),
+        await http.get(Uri.parse('$host/api/allusercompletedorders/'),
             // Send authorization headers to the backend.
             headers: {
           HttpHeaders.authorizationHeader: 'Token ${user.key}',

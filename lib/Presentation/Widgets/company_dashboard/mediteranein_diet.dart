@@ -11,11 +11,15 @@ class MediterranesnDietView extends StatelessWidget {
   final ForProfitCompany? company;
   final bool? isCompanyInfo;
   final bool? isProfileInfo;
+  final Color? color;
+  final Color? textColor;
 
   const MediterranesnDietView(
       {Key? key,
       this.profile,
       this.nonprofit,
+      this.textColor,
+      this.color,
       this.company,
       this.isCompanyInfo,
       this.isProfileInfo})
@@ -24,10 +28,10 @@ class MediterranesnDietView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
+      padding: const EdgeInsets.only(left: 14, right: 14, top: 16, bottom: 18),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: color ?? Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(8.0),
               bottomLeft: Radius.circular(8.0),
@@ -79,7 +83,8 @@ class MediterranesnDietView extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 16,
                                                   letterSpacing: -0.1,
-                                                  color: Colors.black),
+                                                  color: textColor ??
+                                                      Colors.black),
                                             )
                                           : isProfileInfo == false
                                               ? Text(
@@ -90,7 +95,8 @@ class MediterranesnDietView extends StatelessWidget {
                                                           FontWeight.w500,
                                                       fontSize: 16,
                                                       letterSpacing: -0.1,
-                                                      color: Colors.black),
+                                                      color: textColor ??
+                                                          Colors.black),
                                                 )
                                               : Text(
                                                   'Total Altrue Points',
@@ -98,9 +104,10 @@ class MediterranesnDietView extends StatelessWidget {
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      fontSize: 16,
+                                                      fontSize: 15,
                                                       letterSpacing: -0.1,
-                                                      color: Colors.black),
+                                                      color: textColor ??
+                                                          Colors.black),
                                                 ),
                                     ),
                                     Row(
@@ -132,7 +139,8 @@ class MediterranesnDietView extends StatelessWidget {
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.black,
+                                                    color: textColor ??
+                                                        Colors.black,
                                                   ),
                                                 ),
                                               )
@@ -151,25 +159,28 @@ class MediterranesnDietView extends StatelessWidget {
                                                       style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        color: Colors.black,
+                                                        color: textColor ??
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   )
                                                 : Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 4, bottom: 3),
+                                                            left: 10,
+                                                            top: 10,
+                                                            bottom: 3),
                                                     child: Text(
-                                                      '\$ ' +
-                                                          profile!.balance!
-                                                              .toString(),
+                                                      profile!.altruePoints!
+                                                          .toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 20,
-                                                        color: Colors.black,
+                                                        color: textColor ??
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   ),
@@ -177,13 +188,13 @@ class MediterranesnDietView extends StatelessWidget {
                                           padding: const EdgeInsets.only(
                                               left: 9, bottom: 3),
                                           child: Text(
-                                            'Kcal',
+                                            'points',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 12,
                                               letterSpacing: -0.2,
-                                              color:
+                                              color: textColor ??
                                                   Colors.grey.withOpacity(0.5),
                                             ),
                                           ),
@@ -196,7 +207,7 @@ class MediterranesnDietView extends StatelessWidget {
                             ],
                           ),
                           SizedBox(
-                            height: 8,
+                            height: 3,
                           ),
                           Row(
                             children: <Widget>[
@@ -226,7 +237,8 @@ class MediterranesnDietView extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 16,
                                                   letterSpacing: -0.1,
-                                                  color: Colors.black),
+                                                  color: textColor ??
+                                                      Colors.black),
                                             )
                                           : isProfileInfo == true
                                               ? Text(
@@ -237,7 +249,8 @@ class MediterranesnDietView extends StatelessWidget {
                                                           FontWeight.w500,
                                                       fontSize: 16,
                                                       letterSpacing: -0.1,
-                                                      color: Colors.black),
+                                                      color: textColor ??
+                                                          Colors.black),
                                                 )
                                               : Text(
                                                   'Avg Donation',
@@ -247,7 +260,8 @@ class MediterranesnDietView extends StatelessWidget {
                                                           FontWeight.w500,
                                                       fontSize: 16,
                                                       letterSpacing: -0.1,
-                                                      color: Colors.black),
+                                                      color: textColor ??
+                                                          Colors.black),
                                                 ),
                                     ),
                                     Row(
@@ -287,7 +301,7 @@ class MediterranesnDietView extends StatelessWidget {
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.black,
+                                              color: textColor ?? Colors.black,
                                             ),
                                           ),
                                         ),
@@ -301,7 +315,7 @@ class MediterranesnDietView extends StatelessWidget {
                                               fontWeight: FontWeight.w600,
                                               fontSize: 12,
                                               letterSpacing: -0.2,
-                                              color:
+                                              color: textColor ??
                                                   Colors.grey.withOpacity(0.5),
                                             ),
                                           ),
@@ -329,7 +343,7 @@ class MediterranesnDietView extends StatelessWidget {
                               width: 100,
                               height: 100,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: color ?? Colors.white,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(100.0),
                                 ),
@@ -350,7 +364,7 @@ class MediterranesnDietView extends StatelessWidget {
                                             fontWeight: FontWeight.normal,
                                             fontSize: 19,
                                             letterSpacing: 0.0,
-                                            color: Colors.blueGrey,
+                                            color: textColor ?? Colors.black,
                                           ),
                                         )
                                       : Text(''),
@@ -383,10 +397,10 @@ class MediterranesnDietView extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 8),
+              padding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 8, bottom: 16),
               child: Container(
-                height: 2,
+                height: 1,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -395,7 +409,7 @@ class MediterranesnDietView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: 8, bottom: 16),
+                  left: 24, right: 24, top: 2, bottom: 16),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -408,9 +422,9 @@ class MediterranesnDietView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontSize: 12,
                             letterSpacing: -0.2,
-                            color: Colors.black,
+                            color: textColor ?? Colors.black,
                           ),
                         ),
                         Padding(
@@ -429,7 +443,7 @@ class MediterranesnDietView extends StatelessWidget {
                                   height: 4,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(colors: [
-                                      Colors.purple,
+                                      Colors.black,
                                       Colors.purpleAccent.withOpacity(0.5),
                                     ]),
                                     borderRadius:
@@ -469,9 +483,9 @@ class MediterranesnDietView extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                  fontSize: 12,
                                   letterSpacing: -0.2,
-                                  color: Colors.black),
+                                  color: textColor ?? Colors.black),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
@@ -489,8 +503,8 @@ class MediterranesnDietView extends StatelessWidget {
                                       height: 4,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(colors: [
-                                          Colors.purple.withOpacity(0.1),
-                                          Colors.purpleAccent,
+                                          Colors.amber.withOpacity(0.1),
+                                          Colors.green,
                                         ]),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(4.0)),
@@ -530,9 +544,9 @@ class MediterranesnDietView extends StatelessWidget {
                               'Matching',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                                fontSize: 12,
                                 letterSpacing: -0.2,
-                                color: Colors.black,
+                                color: textColor ?? Colors.black,
                               ),
                             ),
                             Padding(
@@ -541,7 +555,7 @@ class MediterranesnDietView extends StatelessWidget {
                                 height: 4,
                                 width: 70,
                                 decoration: BoxDecoration(
-                                  color: Colors.purple.withOpacity(0.2),
+                                  color: Colors.green.withOpacity(0.2),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(4.0)),
                                 ),

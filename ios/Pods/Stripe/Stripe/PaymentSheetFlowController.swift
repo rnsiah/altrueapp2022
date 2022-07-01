@@ -9,15 +9,30 @@
 import Foundation
 import UIKit
 @_spi(STP) import StripeCore
+@_spi(STP) import StripeUICore
 
 typealias PaymentOption = PaymentSheet.PaymentOption
 
 extension PaymentSheet {
     /// Represents the ways a customer can pay in PaymentSheet
     enum PaymentOption {
+        
+        enum LinkConfirmOption {
+            /// Signup for Link then pay
+            case forNewAccount(phoneNumber: PhoneNumber,
+                               paymentMethodParams: STPPaymentMethodParams)
+            
+            /// Confirm intent with paymentDetails
+            case withPaymentDetails(paymentDetails: ConsumerPaymentDetails)
+
+            /// Confirm with Payment Method Params
+            case withPaymentMethodParams(paymentMethodParams: STPPaymentMethodParams)
+        }
+        
         case applePay
         case saved(paymentMethod: STPPaymentMethod)
         case new(confirmParams: IntentConfirmParams)
+        case link(account: PaymentSheetLinkAccount, option: LinkConfirmOption)
     }
 
     /// A class that presents the individual steps of a payment flow
@@ -41,6 +56,15 @@ extension PaymentSheet {
                     label = paymentMethod.paymentSheetLabel
                 case .new(let confirmParams):
                     label = confirmParams.paymentMethodParams.paymentSheetLabel
+                case .link(_, let confirmOption):
+                    switch confirmOption {
+                    case .forNewAccount(_, paymentMethodParams: let paymentMethodParams):
+                        label = paymentMethodParams.paymentSheetLabel
+                    case .withPaymentDetails(let paymentDetails):
+                        label = paymentDetails.paymentSheetLabel
+                    case .withPaymentMethodParams(let paymentMethodParams):
+                        label = paymentMethodParams.paymentSheetLabel
+                    }
                 }
             }
         }
@@ -151,7 +175,7 @@ extension PaymentSheet {
                 configuration: configuration
             ) { result in
                 switch result {
-                case .success((let intent, let paymentMethods)):
+                case .success((let intent, let paymentMethods, _)): // TODO(csabol): Link in custom Payment Sheet
                     let manualFlow = FlowController(
                         intent: intent,
                         savedPaymentMethods: paymentMethods,
@@ -242,6 +266,8 @@ extension PaymentSheet.FlowController: ChoosePaymentOptionViewControllerDelegate
 }
 
 /// A simple STPAuthenticationContext that wraps a UIViewController
+/// For internal SDK use only
+@objc(STP_Internal_AuthenticationContext)
 class AuthenticationContext: NSObject, STPAuthenticationContext {
     let presentingViewController: UIViewController
 

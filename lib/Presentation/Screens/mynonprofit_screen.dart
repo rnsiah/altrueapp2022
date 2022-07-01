@@ -121,8 +121,8 @@ class CompanyMatchCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () => {},
         child: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           height: 130,
-          color: Colors.white,
           child: Stack(
             children: [
               Center(
@@ -130,8 +130,9 @@ class CompanyMatchCard extends StatelessWidget {
                   width: 180,
                   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
+                      color: Colors.black26,
                       image: DecorationImage(
-                          opacity: .45,
+                          opacity: 9,
                           image: NetworkImage(company.company!.logo))),
                 ),
               ),

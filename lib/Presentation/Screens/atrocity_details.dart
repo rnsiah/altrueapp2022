@@ -6,7 +6,6 @@ import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Presentation/Widgets/Atrocity_Details/atroc_donate.dart';
 import 'package:mobile/Presentation/Widgets/Atrocity_Details/atrocity_details_tabs.dart';
 import 'package:mobile/Presentation/Widgets/Circular_Clipper.dart';
-import 'package:mobile/Presentation/Widgets/atrocity_learn_more/atrocity_learn_more.dart';
 import 'package:mobile/Presentation/Widgets/atrocity_learn_more/atrocity_learn_more_tabs.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
@@ -292,14 +291,25 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
                                     NetworkImage(widget.atrocity.country!.flag),
                               )),
                           SizedBox(
-                            height: 4,
+                            height: 8,
                           ),
-                          Text(
-                            'REGION:' + widget.atrocity.region!.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'REGION:',
+                                style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white),
+                              ),
+                              Text(widget.atrocity.region!.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ))
+                            ],
                           ),
                         ],
                       )
@@ -308,6 +318,16 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
                   SizedBox(height: 6),
                   SizedBox(height: 8),
                   SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "What's Going On:",
+                        style: TextStyle(fontSize: 18, color: Colors.amber),
+                      ),
+                    ),
+                  ),
                   Container(
                     height: 200,
                     child: SingleChildScrollView(

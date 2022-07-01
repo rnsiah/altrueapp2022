@@ -25,13 +25,13 @@ class AtrocityRepository {
   }
 
   Future<Atrocity> getAtrocity(int id) async {
-    final response = await _provider.get('api/atrocities/$id');
+    final response = await _provider.get('api/atrocities/$id/');
     return Atrocity.fromJson(response);
   }
 
   Future<List<Atrocity>> getAtrocities() async {
     List<Atrocity> atrocities = [];
-    final response = await _provider.get('api/atrocities');
+    final response = await _provider.get('api/atrocities/');
     for (var responses in response) {
       atrocities.add(Atrocity.fromJson(responses));
     }

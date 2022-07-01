@@ -22,6 +22,7 @@ import 'package:mobile/Presentation/Router/functionality_router.dart';
 import 'package:mobile/Presentation/Screens/atrocity_details.dart';
 import 'package:mobile/Presentation/Widgets/cart_bottom_screen.dart';
 import 'package:mobile/Presentation/Widgets/cart_icon.dart';
+import 'package:mobile/Presentation/Widgets/company_dashboard/altrue_action_card.dart';
 
 import 'package:mobile/Presentation/Widgets/profile_drawer.dart';
 import 'package:mobile/Presentation/Widgets/weekly_featured_shirts.dart';
@@ -134,14 +135,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: [
             Center(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
                           color: Colors.black54,
                           offset: Offset(0, 4),
-                          blurRadius: 10)
+                          blurRadius: 6)
                     ]),
                 child: Center(
                   child: Hero(
@@ -189,7 +190,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ],
       child: Scaffold(
         onDrawerChanged: (isOpened) {},
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[900],
         drawer: ProfileDrawer(profile: widget.profile),
         appBar: AppBar(
           leading: IconButton(onPressed: () {}, icon: Icon(Icons.home)),
@@ -245,25 +246,48 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         body: ListView(
           children: [
-            Text(widget.profile.user.toString()),
             Container(
-              margin: EdgeInsets.all(7),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  'Featured Atrocities'.text.black.size(18).bold.make(),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 15.0),
+                    child: Text(
+                      'Ongoing Atrocities Of The Week',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 16,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<CategoryBloc>().add(FetchCategory());
+                      Navigator.of(context).pushNamed('/atrocities',
+                          arguments:
+                              AtrocityListArguments(profile: widget.profile));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8, right: 15.0),
                       child: Text(
-                        'All Atrocities',
-                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        'See All',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () {
-                        context.read<CategoryBloc>().add(FetchCategory());
-                        Navigator.of(context).pushNamed('/atrocities',
-                            arguments:
-                                AtrocityListArguments(profile: widget.profile));
-                      }),
+                    ),
+                  ),
+
+                  // // ElevatedButton(
+                  // //     style: ElevatedButton.styleFrom(),
+                  // //     child: Text(
+                  // //       'All Atrocities',
+                  // //       style: TextStyle(fontSize: 14, color: Colors.white),
+                  // //     ),
+                  //    ),
                 ],
               ),
             ),
@@ -285,8 +309,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   profile: widget.profile,
                   shirtlist: state.featuredShirts,
                   title: "Altrue's collection of the week",
-                  imageHeight: 180,
-                  imageWidth: 120);
+                  imageHeight: 200,
+                  imageWidth: 170);
             }),
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8),
@@ -408,6 +432,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ],
                 ),
               ),
+            ),
+            Container(
+              height: 220,
+              width: double.infinity,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.profile.requirementsForNextLevel!.length,
+                  itemBuilder: (context, index) => AltrueActionCard(
+                        levelNumber:
+                            widget.profile.altrueLevel!.levelNumber + 1,
+                        action: widget.profile.requirementsForNextLevel![index],
+                      )),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8),

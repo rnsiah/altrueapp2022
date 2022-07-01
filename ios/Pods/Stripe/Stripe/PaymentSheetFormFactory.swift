@@ -29,12 +29,22 @@ class PaymentSheetFormFactory {
     let intent: Intent
     let configuration: PaymentSheet.Configuration
     let addressSpecProvider: AddressSpecProvider
+    let offerSaveToLinkWhenSupported: Bool
+
+    var canSaveToLink: Bool {
+        return (
+            intent.supportsLink &&
+            paymentMethod == .card &&
+            saveMode != .merchantRequired
+        )
+    }
 
     init(
         intent: Intent,
         configuration: PaymentSheet.Configuration,
         paymentMethod: STPPaymentMethodType,
-        addressSpecProvider: AddressSpecProvider = .shared
+        addressSpecProvider: AddressSpecProvider = .shared,
+        offerSaveToLinkWhenSupported: Bool = false
     ) {
         switch intent {
         case let .paymentIntent(paymentIntent):
@@ -45,16 +55,7 @@ class PaymentSheetFormFactory {
             case (true, _, _):
                 saveMode = .merchantRequired
             case (false, true, true):
-                // Disable user selectable save if the PI contains any non-reusable payment methods
-                let nonReusablePaymentMethods: [STPPaymentMethodType] = [
-                    .cardPresent, .blik, .weChatPay, .grabPay, .FPX, .giropay, .przelewy24, .EPS,
-                    .netBanking, .OXXO, .afterpayClearpay, .payPal, .UPI, .boleto, .unknown
-                ]
-                if paymentIntent.orderedPaymentMethodTypes.contains(where: nonReusablePaymentMethods.contains) {
-                    saveMode = .none
-                } else {
-                    saveMode = .userSelectable
-                }
+                saveMode = .userSelectable
             case (false, true, false):
                 fallthrough
             case (false, false, _):
@@ -67,16 +68,17 @@ class PaymentSheetFormFactory {
         self.configuration = configuration
         self.paymentMethod = paymentMethod
         self.addressSpecProvider = addressSpecProvider
+        self.offerSaveToLinkWhenSupported = offerSaveToLinkWhenSupported
     }
     
     func make() -> PaymentMethodElement {
         // Card is not yet converted to Element
         if paymentMethod == .card {
-            return CardDetailsEditView(
-                shouldDisplaySaveThisPaymentMethodCheckbox: saveMode == .userSelectable,
-                configuration: configuration
-            )
+            return makeCard()
+        } else if paymentMethod == .linkInstantDebit {
+            return ConnectionsElement()
         }
+
         let formElements: [Element] = {
             switch paymentMethod {
             case .bancontact:
@@ -95,10 +97,15 @@ class PaymentSheetFormFactory {
                 return makeP24()
             case .afterpayClearpay:
                 return makeAfterpayClearpay()
+            case .klarna:
+                return makeKlarna()
+            case .payPal:
+                return []
             default:
                 fatalError()
             }
-        }()
+        }() + [makeSpacer()] // For non card PMs, add a spacer to the end of the element list to match card bottom spacing
+
         return FormElement(formElements)
     }
 }
@@ -165,6 +172,39 @@ extension PaymentSheetFormFactory {
     }
 
     // MARK: - PaymentMethod form definitions
+
+    func makeCard() -> PaymentMethodElement {
+        var checkboxText: String? {
+            guard saveMode == .userSelectable && !canSaveToLink else {
+                // Hide checkbox
+                return nil
+            }
+
+            return String(
+                format: STPLocalizedString(
+                    "Save this card for future %@ payments",
+                    "The label of a switch indicating whether to save the user's card for future payment"
+                ),
+                configuration.merchantDisplayName
+            )
+        }
+
+        let cardElement = CardDetailsEditView(
+            checkboxText: checkboxText,
+            includeCardScanning: true,
+            configuration: configuration
+        )
+
+        guard offerSaveToLinkWhenSupported, canSaveToLink else {
+            return cardElement
+        }
+
+        return LinkEnabledPaymentMethodElement(
+            type: .card,
+            paymentMethodElement: cardElement,
+            configuration: configuration
+        )
+    }
 
     func makeBancontact() -> [PaymentMethodElement] {
         let name = makeFullName()
@@ -295,6 +335,52 @@ extension PaymentSheetFormFactory {
             view: AfterpayPriceBreakdownView(amount: paymentIntent.amount, currency: paymentIntent.currency)
         )
         return [priceBreakdownView, makeFullName(), makeEmail(), makeBillingAddressSection()]
+    }
+    
+    func makeKlarna() -> [PaymentMethodElement] {
+        guard case let .paymentIntent(paymentIntent) = intent else {
+            assertionFailure("Klarna only be used with a PaymentIntent")
+            return []
+        }
+        
+        let countryCodes = Locale.current.sortedByTheirLocalizedNames(
+            KlarnaHelper.availableCountries(currency: paymentIntent.currency)
+        )
+        let country = PaymentMethodElementWrapper(DropdownFieldElement.Address.makeCountry(
+            label: String.Localized.country,
+            countryCodes: countryCodes,
+            defaultCountry: configuration.defaultBillingDetails.address.country,
+            locale: Locale.current
+        )) { dropdown, params in
+            let address = STPPaymentMethodAddress()
+            address.country = countryCodes[dropdown.selectedIndex]
+            params.paymentMethodParams.nonnil_billingDetails.address = address
+            return params
+        }
+        
+        return [makeKlarnaCopyLabel(), makeEmail(), country]
+    }
+    
+    func makeSpacer() -> StaticElement {
+        let spacerView = UIView()
+        spacerView.translatesAutoresizingMaskIntoConstraints = false
+        spacerView.heightAnchor.constraint(equalToConstant: STPFormView.interSectionSpacing).isActive =
+            true
+        
+        return StaticElement(view: spacerView)
+    }
+    
+    private func makeKlarnaCopyLabel() -> StaticElement {
+        let klarnaLabel = UILabel()
+        if KlarnaHelper.canBuyNow() {
+            klarnaLabel.text = STPLocalizedString("Buy now or pay later with Klarna.", "Klarna buy now or pay later copy")
+        } else {
+            klarnaLabel.text = STPLocalizedString("Pay later with Klarna.", "Klarna pay later copy")
+        }
+        klarnaLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        klarnaLabel.textColor = CompatibleColor.secondaryLabel
+        klarnaLabel.numberOfLines = 0
+        return StaticElement(view: klarnaLabel)
     }
 }
 

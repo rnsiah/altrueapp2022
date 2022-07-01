@@ -140,7 +140,8 @@ Widget _buildRoute(
       Profile profile = arguments as Profile;
       return CompanySignupPage(profile: profile);
     case '/companymatch':
-      return CompanyMatchScreen();
+      ForProfitCompany company = arguments as ForProfitCompany;
+      return CompanyMatchScreen(company: company);
     case '/creditCardDetails':
       return CreditCardPage();
 

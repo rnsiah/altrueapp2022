@@ -7,7 +7,7 @@ class CategoryRepository {
   Future<List<Category>> fetchCatgegories() async {
     List<Category> categories = [];
 
-    final response = await _provider.get('api/categories');
+    final response = await _provider.get('api/categories/');
     for (var incomingcategory in response) {
       categories.add(Category.fromJson(incomingcategory));
     }
@@ -15,7 +15,7 @@ class CategoryRepository {
   }
 
   Future<Category> fetchCategory(int id) async {
-    final response = await _provider.get('api/categories/$id');
+    final response = await _provider.get('api/categories/$id/');
     return Category.fromJson(response);
   }
 }
