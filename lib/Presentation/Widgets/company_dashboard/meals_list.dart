@@ -146,19 +146,19 @@ class MealsView extends StatelessWidget {
                           ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               donor != null
-                                  ? '\$' + donor!.amountDonated.toString()
+                                  ? donor!.lastName
                                   : 'Amount Raised: ' +
                                       project!.currentFunds.toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 8,
+                                fontSize: 14,
                                 letterSpacing: 0.2,
                                 color: Colors.amber,
                               ),
@@ -172,25 +172,12 @@ class MealsView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                donor!.lastName,
+                                '\$' + donor!.amountDonated.toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 0.2,
                                   color: Colors.white,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 4, bottom: 3),
-                                child: Text(
-                                  'kcal',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                    letterSpacing: 0.2,
-                                    color: Colors.red,
-                                  ),
                                 ),
                               ),
                             ],

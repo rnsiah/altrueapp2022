@@ -24,7 +24,7 @@ class _NewProjectState extends State<NewProject> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.black,
           elevation: 0,
@@ -37,7 +37,7 @@ class _NewProjectState extends State<NewProject> {
               onPressed: () => print('Search'),
               icon: Icon(Icons.search),
               iconSize: 30,
-              color: Colors.black,
+              color: Colors.amber,
             ),
           ],
         ),
@@ -48,19 +48,7 @@ class _NewProjectState extends State<NewProject> {
               child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          'titleTxt',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                              letterSpacing: 0.5,
-                              color: Colors.amber),
-                        ),
-                      ),
-                    ],
+                    children: <Widget>[],
                   )),
             ),
             TitleView(

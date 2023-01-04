@@ -35,8 +35,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     //     if (topBarOpacity != 1.0) {
     //       setState(() {
     //         topBarOpacity = 1.0;
-    //       });
-    //     }
+    //       });    //     }
     //   } else if (scrollController.offset <= 24 &&
     //       scrollController.offset >= 0) {
     //     if (topBarOpacity != scrollController.offset / 24) {
@@ -140,7 +139,9 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     );
 
     listViews.add(
-      WaterView(),
+      WaterView(
+        profile: widget.profile,
+      ),
     );
     // listViews.add(
     //   GlassView(

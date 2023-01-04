@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Data_Layer/Models/atrocity_model.dart';
 import 'package:mobile/Data_Layer/Models/company_model.dart';
 import 'package:selection_menu/components_configurations.dart';
 import 'package:selection_menu/selection_menu.dart';
@@ -36,25 +37,23 @@ class _CompanyMatchScreenState extends State<CompanyMatchScreen> {
       body: ListView(
         children: [
           Row(children: [
-            SelectionMenu(
-              componentsConfiguration:
-                  DropdownComponentsConfiguration<String>(),
-              itemsList: <String>[
-                "1st atrocity",
-                "2nd atrocity",
-                "3rd atrocity"
-              ],
-              onItemSelected: (String selectedItem) {
-                print(selectedItem);
-              },
-              itemBuilder: (BuildContext context, String item,
-                  OnItemTapped onItemTapped) {
-                return InkWell(
-                  onTap: onItemTapped,
-                  child: Text(item),
-                );
-              },
-            ),
+            // SelectionMenu(
+            //   componentsConfiguration:
+            //       DropdownComponentsConfiguration<String>(),
+            //   itemsList: <Atrocity>[
+
+            //   ],
+            //   onItemSelected: (Atrocity atrocity) {
+
+            //   },
+            //   itemBuilder: (BuildContext context, String item,
+            //       OnItemTapped onItemTapped) {
+            //     return InkWell(
+            //       onTap: onItemTapped,
+            //       child: Text(item),
+            //     );
+            //   },
+            // ),
             SelectionMenu(
               componentsConfiguration:
                   DropdownComponentsConfiguration<String>(),

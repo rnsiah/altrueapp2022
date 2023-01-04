@@ -94,6 +94,10 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
+                Text(
+                  'Altrue Stats',
+                  style: TextStyle(color: Colors.amber, fontSize: 14),
+                ),
                 BlocBuilder<ProfileBloc, ProfileState>(
                   builder: (context, state) {
                     return MediterranesnDietView(
@@ -104,6 +108,11 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.black87,
                     );
                   },
+                ),
+                Text(
+                  'Recent Donations',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(color: Colors.amber),
                 ),
                 profile.userdonations!.length > 0
                     ? Container(
@@ -117,17 +126,23 @@ class ProfileScreen extends StatelessWidget {
                                   null) {
                                 return Column(
                                   children: [
-                                    Container(
-                                        height: 100,
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: NetworkImage(profile
-                                                  .userdonations![index]
-                                                  .nonprofit!
-                                                  .logo)),
-                                          shape: BoxShape.circle,
-                                        ))
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadiusDirectional
+                                                    .circular(14),
+                                            image: DecorationImage(
+                                                image: NetworkImage(profile
+                                                    .userdonations![index]
+                                                    .nonprofit!
+                                                    .logo)),
+                                            shape: BoxShape.rectangle,
+                                          )),
+                                    )
                                   ],
                                 );
                               } else if (profile
@@ -136,21 +151,26 @@ class ProfileScreen extends StatelessWidget {
                                 return Column(
                                   children: [
                                     Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 6.0, right: 6),
+                                        padding: const EdgeInsets.all(8),
                                         child: Container(
                                             height: 100,
                                             width: 100,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(14),
-                                              color: Colors.red,
+                                              color: Colors.amberAccent,
                                             ),
                                             child: Center(
-                                                child: Text(profile
-                                                    .userdonations![index]
-                                                    .atrocity!
-                                                    .title))))
+                                                child: Text(
+                                              profile.userdonations![index]
+                                                  .atrocity!.title,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  backgroundColor:
+                                                      Colors.black38),
+                                            ))))
                                   ],
                                 );
                               } else if (profile
@@ -159,21 +179,20 @@ class ProfileScreen extends StatelessWidget {
                                 return Column(
                                   children: [
                                     Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 6.0, right: 6),
+                                        padding: const EdgeInsets.all(8),
                                         child: Container(
                                             height: 100,
                                             width: 100,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(14),
-                                              color: Colors.red,
+                                              color: Colors.white,
                                             ),
                                             child: Center(
                                                 child: Text(profile
                                                     .userdonations![index]
                                                     .project!
-                                                    .id
+                                                    .title
                                                     .toString()))))
                                   ],
                                 );

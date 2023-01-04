@@ -32,7 +32,7 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
               children: [
                 Text(
                   'Recent Donors',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(
                   height: 7,
@@ -58,7 +58,7 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
             ),
             Divider(
               height: 16,
-              color: Colors.black54,
+              color: Colors.white,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,10 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
                       SizedBox(
                         height: 12,
                       ),
-                      Text('Donate To Specific Project'),
+                      Text(
+                        'Donate To Specific Project',
+                        style: TextStyle(color: Colors.amber),
+                      ),
                       SizedBox(
                         height: 12,
                       ),
@@ -109,7 +112,9 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
                                 child: Column(
                                   children: [
                                     Text(
-                                        'Please raise funds to donate to this atrocity'),
+                                      'Please raise funds to donate to this atrocity',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                     MaterialButton(
                                         color: Colors.black.withOpacity(.7),
                                         child: Text(
@@ -126,7 +131,7 @@ class _AtrocityDonateModalState extends State<AtrocityDonateModal> {
                                 value: _amount,
                                 interval: 1,
                                 showTicks: true,
-                                activeColor: Colors.black,
+                                activeColor: Colors.white,
                                 showLabels: true,
                                 enableTooltip: true,
                                 thumbIcon: Container(
@@ -190,7 +195,7 @@ class AtrocityInfo extends StatelessWidget {
                 child: Attribute(
                   value: atrocity.category![0].name!,
                   name: 'Causes',
-                  textColor: Colors.black87,
+                  textColor: Colors.white,
                 ),
               ),
             ],
@@ -224,10 +229,9 @@ class ProfileDot extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            radius: 25,
-            foregroundImage: NetworkImage(profile.profilePicture!.url),
-            backgroundColor: Colors.black,
-          ),
+              radius: 25,
+              foregroundImage: NetworkImage(profile.profilePicture!.url),
+              backgroundColor: Colors.white),
           Text(profile.username)
         ],
       ),

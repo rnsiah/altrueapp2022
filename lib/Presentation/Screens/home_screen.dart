@@ -360,7 +360,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.black,
                             onPressed: () {
                               context.read<CategoryBloc>().add(FetchCategory());
-                              Navigator.of(context).pushNamed('/causes');
+                              Navigator.of(context).pushNamed('/causes',
+                                  arguments: CauseListArguments(
+                                      profile: widget.profile));
                             },
                           ),
                         ),

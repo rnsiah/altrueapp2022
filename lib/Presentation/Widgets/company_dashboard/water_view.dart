@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Presentation/Widgets/company_dashboard/wave_view.dart';
 
 class WaterView extends StatefulWidget {
+  final Profile profile;
   const WaterView({
     Key? key,
+    required this.profile,
   }) : super(key: key);
 
   @override

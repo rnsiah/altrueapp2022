@@ -1,16 +1,10 @@
-import 'package:awesome_dropdown/awesome_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_number_picker/flutter_number_picker.dart';
 import 'package:mobile/Data_Layer/Blocs/cart_bloc/bloc/cart_bloc.dart';
-import 'package:mobile/Data_Layer/Blocs/shirt_bloc/bloc/shirt_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/shirt_order_bloc/bloc/shirt_order_bloc_bloc.dart';
 import 'package:mobile/Data_Layer/Models/shirt_color_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_model.dart';
 import 'package:mobile/Data_Layer/Models/shirt_size_model.dart';
-import 'package:mobile/Data_Layer/Models/shirt_variation_model.dart';
-import 'package:mobile/Presentation/Widgets/shirt_order/shirt_couter.dart';
-import 'package:mobile/Presentation/Widgets/shirt_order/shirt_size_picker.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ShirtOrderForm extends StatefulWidget {
@@ -238,7 +232,12 @@ class _ShirtOrderFormState extends State<ShirtOrderForm> {
   }
 
   void _showSnackbar(BuildContext context, String message) {
-    final snackbar = SnackBar(content: Text(message));
+    final snackbar = SnackBar(
+        backgroundColor: Colors.black,
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.amber),
+        ));
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }

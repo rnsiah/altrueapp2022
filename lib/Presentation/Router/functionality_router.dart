@@ -35,6 +35,7 @@ import 'package:mobile/Presentation/Screens/userProfile_fillScreen.dart';
 import 'package:mobile/Presentation/Screens/user_nonprofitsList.dart';
 import 'package:mobile/Presentation/Screens/user_profile_screen.dart';
 import 'package:mobile/Presentation/Widgets/company/company_detail_page.dart';
+import 'package:mobile/Presentation/Widgets/payment_sheet.dart';
 
 Widget makeRoute(
     {required BuildContext context,
@@ -86,6 +87,8 @@ Widget _buildRoute(
       return ShirtList(
         profile: profile,
       );
+    case '/payment':
+      return PaymentScreen();
     case '/ShirtDetail':
       ShirtDetailArguments argument = arguments as ShirtDetailArguments;
       return ShirtDetails(
@@ -113,10 +116,14 @@ Widget _buildRoute(
         profile: atrocity.profile,
       );
     case '/causes':
-      return CauseList();
+      final CauseListArguments argument = arguments as CauseListArguments;
+      return CauseList(profile: argument.profile);
     case '/causeView':
-      Category cause = arguments as Category;
-      return CauseDetails(cause: cause);
+      final argument = arguments as CategoryArguments;
+      return CauseDetails(
+        cause: argument.category,
+        profile: argument.profile,
+      );
     case '/companies':
       return CompanyList();
     case '/companyDetails':
@@ -185,6 +192,18 @@ class ShirtDetailArguments {
   Shirt shirt;
   Profile profile;
   ShirtDetailArguments({required this.shirt, required this.profile});
+}
+
+class CauseListArguments {
+  Profile profile;
+  CauseListArguments({required this.profile});
+}
+
+class CategoryArguments {
+  Category category;
+  Profile profile;
+
+  CategoryArguments({required this.category, required this.profile});
 }
 
 class DashBoardScreenArguments {

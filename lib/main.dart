@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mobile/Data_Layer/Blocs/all_users_bloc/bloc/all_users_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/atrocity_bloc/bloc/atrocity_bloc_bloc.dart';
 import 'package:mobile/Data_Layer/Blocs/bloc/company_list_bloc.dart';
@@ -53,7 +54,8 @@ class SimpleBlocDelegate extends BlocObserver {
   }
 }
 
-void main() {
+void main() async {
+  Stripe.publishableKey = 'pk_test_osCkw6g4MDSTjwXhs0RzOwL0';
   SimpleBlocDelegate();
   runApp(RepositoryProvider(
       create: (context) => UserRepository(),

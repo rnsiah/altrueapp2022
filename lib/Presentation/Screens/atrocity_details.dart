@@ -69,12 +69,13 @@ class _AtrocityDetailsState extends State<AtrocityDetails> {
                 color: Colors.black,
                 onPressed: () {
                   showModalBottomSheet(
+                      backgroundColor: Colors.black87,
                       isDismissible: true,
                       isScrollControlled: true,
                       context: context,
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(50.0)),
+                            BorderRadius.vertical(top: Radius.circular(20.0)),
                       ),
                       builder: (context) => DraggableScrollableSheet(
                           minChildSize: 0.3,

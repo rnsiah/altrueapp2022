@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Data_Layer/Models/category_model.dart';
 import 'package:mobile/Data_Layer/Models/non_profit_model.dart';
+import 'package:mobile/Data_Layer/Models/user_model.dart';
 import 'package:mobile/Data_Layer/Repoositories/nonProfit_repository.dart';
+import 'package:mobile/Presentation/Router/functionality_router.dart';
 
 class CauseDetails extends StatelessWidget {
   final Category cause;
+  final Profile profile;
 
   final NonProfitRespository nonProfitRespository = NonProfitRespository();
-  CauseDetails({Key? key, required this.cause}) : super(key: key);
+  CauseDetails({Key? key, required this.cause, required this.profile})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +120,9 @@ class CauseDetails extends StatelessWidget {
                               NonProfit nonprofit =
                                   await nonProfitRespository.fetchNonProfit(
                                       cause.nonprofitList![index].id);
+                              Navigator.of(context).pushNamed('/nonProfitView',
+                                  arguments: NonProfitDetailArguments(
+                                      nonProfit: nonprofit, profile: profile));
                             },
                             child: Column(
                               children: [

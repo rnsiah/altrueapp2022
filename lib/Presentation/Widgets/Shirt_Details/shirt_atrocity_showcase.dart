@@ -15,7 +15,9 @@ class ShirtAtrocityShowcase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AtrocityRepository atrocityRepository = AtrocityRepository();
-    return ListView.builder(
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: .80, crossAxisSpacing: 12, crossAxisCount: 2),
       itemCount: shirt.atrocity!.length,
       itemBuilder: (context, int index) {
         return Padding(
@@ -29,21 +31,22 @@ class ShirtAtrocityShowcase extends StatelessWidget {
                       atrocity: atrocity, profile: profile));
             },
             child: Container(
-              height: 100,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       image: NetworkImage(shirt.atrocity![index].imageUrl!))),
               child: Stack(
                 children: [
                   Align(
-                    alignment: Alignment.bottomLeft,
+                    alignment: Alignment.centerLeft,
                     child: Positioned(
-                        width: 100,
                         child: Text(
-                          shirt.atrocity![index].title,
-                          style: TextStyle(),
-                        )),
+                      shirt.atrocity![index].title,
+                      style: TextStyle(
+                          backgroundColor: Colors.black38,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    )),
                   )
                 ],
               ),
